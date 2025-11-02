@@ -41,7 +41,7 @@ graph TB
     ConvertRes --> PlatformRes
 ```
 
-**Sources:** [src/mocket.js.mbt:61-149](), [src/mocket.native.mbt:95-207]()
+**Sources:** `src/mocket.js.mbt:61-149`, `src/mocket.native.mbt:95-207`
 
 ## Reading Request Headers
 
@@ -73,7 +73,7 @@ mocket.get("/api/data", fn(event) {
 })
 ```
 
-**Sources:** [src/mocket.js.mbt:87-96](), [src/mocket.native.mbt:157-161]()
+**Sources:** `src/mocket.js.mbt:87-96`, `src/mocket.native.mbt:157-161`
 
 ### JavaScript Backend Header Conversion
 
@@ -95,13 +95,13 @@ graph LR
     MapConvert --> FinalMap
 ```
 
-The conversion process at [src/mocket.js.mbt:64-77]():
+The conversion process at `src/mocket.js.mbt:64-77`:
 1. Calls `req.headers()` FFI function (line 32-34)
 2. Converts to JSON using `to_value().to_json()`
 3. Iterates through JSON object entries
 4. Filters for `String` values and stores in `Map[String, String]`
 
-**Sources:** [src/mocket.js.mbt:32-34](), [src/mocket.js.mbt:64-77]()
+**Sources:** `src/mocket.js.mbt:32-34`, `src/mocket.js.mbt:64-77`
 
 ### Native Backend Header Conversion
 
@@ -125,14 +125,14 @@ graph LR
     FilterMap --> FinalMap
 ```
 
-The conversion process at [src/mocket.native.mbt:136-148]():
+The conversion process at `src/mocket.native.mbt:136-148`:
 1. Calls `req.headers()` FFI function (line 24-26) returning `@native.CStr`
 2. Converts C string to MoonBit `String` using `from_cstr()` (line 217-221)
 3. Splits by newline character
 4. Parses each line as "key: value" format
 5. Filters out empty pairs and converts to `Map::from_array`
 
-**Sources:** [src/mocket.native.mbt:24-26](), [src/mocket.native.mbt:136-148](), [src/mocket.native.mbt:217-221]()
+**Sources:** `src/mocket.native.mbt:24-26`, `src/mocket.native.mbt:136-148`, `src/mocket.native.mbt:217-221`
 
 ## Setting Response Headers
 
@@ -160,7 +160,7 @@ Common response headers:
 | `X-Custom-Header` | Application-specific | Any custom value |
 | `Set-Cookie` | Cookie management | `session=abc123; HttpOnly` |
 
-**Sources:** [src/mocket.js.mbt:87-96](), [src/mocket.native.mbt:157-161]()
+**Sources:** `src/mocket.js.mbt:87-96`, `src/mocket.native.mbt:157-161`
 
 ### Automatic Content-Type Setting
 
@@ -187,7 +187,7 @@ graph TB
     SetType --> Bytes
 ```
 
-The automatic setting logic at [src/mocket.js.mbt:118-129]() and [src/mocket.native.mbt:178-189]():
+The automatic setting logic at `src/mocket.js.mbt:118-129` and `src/mocket.native.mbt:178-189`:
 
 | HttpBody Variant | Content-Type |
 |------------------|--------------|
@@ -206,7 +206,7 @@ mocket.get("/api/xml", fn(event) {
 })
 ```
 
-**Sources:** [src/mocket.js.mbt:118-129](), [src/mocket.native.mbt:178-189]()
+**Sources:** `src/mocket.js.mbt:118-129`, `src/mocket.native.mbt:178-189`
 
 ## Backend-Specific Implementation
 
@@ -228,7 +228,7 @@ graph LR
     JSValue --> WriteHead
 ```
 
-Implementation at [src/mocket.js.mbt:130-135]():
+Implementation at `src/mocket.js.mbt:130-135`:
 1. Converts `Map[String, String]` to JSON
 2. Converts JSON to `@js.Value`
 3. Calls `res.writeHead()` with status code and headers object (FFI at line 48-52)
@@ -242,7 +242,7 @@ extern "js" fn HttpResponseInternal::write_head(
 ) -> Unit = "(s, statusCode, headers) => s.writeHead(statusCode, headers)"
 ```
 
-**Sources:** [src/mocket.js.mbt:48-52](), [src/mocket.js.mbt:130-135]()
+**Sources:** `src/mocket.js.mbt:48-52`, `src/mocket.js.mbt:130-135`
 
 ### Native Backend Response Headers
 
@@ -262,7 +262,7 @@ graph LR
     SetHeader --> Mongoose
 ```
 
-Implementation at [src/mocket.native.mbt:191-193]():
+Implementation at `src/mocket.native.mbt:191-193`:
 1. Iterates through each header in `event.res.headers`
 2. Converts key and value to `@native.CStr` using `to_cstr()` (line 210-214)
 3. Calls `res.set_header()` FFI function for each pair (FFI at line 30-34)
@@ -285,7 +285,7 @@ fn[T : Show] to_cstr(s : T) -> @native.CStr {
 }
 ```
 
-**Sources:** [src/mocket.native.mbt:30-34](), [src/mocket.native.mbt:191-193](), [src/mocket.native.mbt:210-214]()
+**Sources:** `src/mocket.native.mbt:30-34`, `src/mocket.native.mbt:191-193`, `src/mocket.native.mbt:210-214`
 
 ## Common Header Patterns
 
@@ -381,12 +381,12 @@ graph TB
     CheckText -->|No| ParseBytes
 ```
 
-Implementation at [src/body_reader.mbt:9-29]():
+Implementation at `src/body_reader.mbt:9-29`:
 - `application/json` → UTF-8 decoded and parsed as JSON
 - `text/plain` or `text/html` → UTF-8 decoded as text
 - All other types → Raw bytes
 
-**Sources:** [src/body_reader.mbt:9-29]()
+**Sources:** `src/body_reader.mbt:9-29`
 
 ## Summary
 
@@ -399,4 +399,4 @@ Header manipulation in Mocket follows these principles:
 
 For middleware-based header manipulation patterns, see [Middleware System](#2.2). For response body type selection, see [Response Types](#2.3.1).
 
-**Sources:** [src/mocket.js.mbt:1-150](), [src/mocket.native.mbt:1-222](), [src/body_reader.mbt:1-30]()
+**Sources:** `src/mocket.js.mbt:1-150`, `src/mocket.native.mbt:1-222`, `src/body_reader.mbt:1-30`

@@ -20,7 +20,7 @@ The Advanced Features section covers three primary areas that distinguish produc
 
 These features operate across all backend implementations (JavaScript, Native, WASM stub) while maintaining the framework's backend-agnostic design principles.
 
-Sources: [src/logger.mbt:1-148](), [src/mocket.stub.c:1-354](), [README.md:1-219]()
+Sources: `src/logger.mbt:1-148`, `src/mocket.stub.c:1-354`, `README.md:1-219`
 
 ---
 
@@ -82,9 +82,9 @@ graph TB
 
 **Diagram: Logger System Architecture and Integration Points**
 
-The logging system provides zero-cost abstractions through lazy evaluation and compile-time optimization. The `Logger` struct at [src/logger.mbt:3-6]() controls both runtime enablement and minimum log level filtering.
+The logging system provides zero-cost abstractions through lazy evaluation and compile-time optimization. The `Logger` struct at `src/logger.mbt:3-6` controls both runtime enablement and minimum log level filtering.
 
-Sources: [src/logger.mbt:1-148](), [README.md:114](), [src/example/main.mbt:3]()
+Sources: `src/logger.mbt:1-148`, `README.md:114`, `src/example/main.mbt:3`
 
 ---
 
@@ -100,7 +100,7 @@ The framework provides three logger factory functions optimized for different us
 | `new_production_logger()` | Production deployment | `false` | `Error` | Zero-overhead production builds |
 | `new_debug_logger()` | Development | `true` | `Debug` | Full observability during development |
 
-The production logger at [src/logger.mbt:24-26]() is designed for compile-time optimization: when `enabled: false`, all logging calls become no-ops that the compiler can eliminate entirely.
+The production logger at `src/logger.mbt:24-26` is designed for compile-time optimization: when `enabled: false`, all logging calls become no-ops that the compiler can eliminate entirely.
 
 **Example Usage**:
 
@@ -108,9 +108,9 @@ The production logger at [src/logger.mbt:24-26]() is designed for compile-time o
 let app = @mocket.new(logger=@mocket.new_production_logger())
 ```
 
-From [src/example/main.mbt:3]()
+From `src/example/main.mbt:3`
 
-Sources: [src/logger.mbt:18-32](), [src/example/main.mbt:3](), [README.md:114]()
+Sources: `src/logger.mbt:18-32`, `src/example/main.mbt:3`, `README.md:114`
 
 ---
 
@@ -118,7 +118,7 @@ Sources: [src/logger.mbt:18-32](), [src/example/main.mbt:3](), [README.md:114]()
 
 ### LogLevel Enum
 
-The `LogLevel` enum at [src/logger.mbt:9-14]() defines four severity levels with hierarchical filtering:
+The `LogLevel` enum at `src/logger.mbt:9-14` defines four severity levels with hierarchical filtering:
 
 ```mermaid
 graph LR
@@ -139,9 +139,9 @@ graph LR
 
 **Diagram: Log Level Hierarchy and Filtering Behavior**
 
-The filtering logic at [src/logger.mbt:72-80]() implements hierarchical allowing: a `Debug` level logger allows all messages, while an `Error` level logger only allows error messages.
+The filtering logic at `src/logger.mbt:72-80` implements hierarchical allowing: a `Debug` level logger allows all messages, while an `Error` level logger only allows error messages.
 
-Sources: [src/logger.mbt:9-14](), [src/logger.mbt:72-80]()
+Sources: `src/logger.mbt:9-14`, `src/logger.mbt:72-80`
 
 ---
 
@@ -174,7 +174,7 @@ sequenceDiagram
 
 **Diagram: Lazy Evaluation Flow in Logging Methods**
 
-Each logging method at [src/logger.mbt:36-61]() accepts a function `() -> String` instead of a direct string. This enables lazy evaluation: the expensive string construction only occurs if logging is enabled and the level filter passes.
+Each logging method at `src/logger.mbt:36-61` accepts a function `() -> String` instead of a direct string. This enables lazy evaluation: the expensive string construction only occurs if logging is enabled and the level filter passes.
 
 **Method Signatures**:
 
@@ -183,9 +183,9 @@ Each logging method at [src/logger.mbt:36-61]() accepts a function `() -> String
 - `warn(self: Logger, message_fn: () -> String)`
 - `error(self: Logger, message_fn: () -> String)`
 
-**Convenience Method**: The `debug_str(self: Logger, message: String)` method at [src/logger.mbt:65-69]() accepts a string directly but incurs the construction cost regardless of logging state.
+**Convenience Method**: The `debug_str(self: Logger, message: String)` method at `src/logger.mbt:65-69` accepts a string directly but incurs the construction cost regardless of logging state.
 
-Sources: [src/logger.mbt:36-69](), [src/logger.mbt:34-35]()
+Sources: `src/logger.mbt:36-69`, `src/logger.mbt:34-35`
 
 ---
 
@@ -202,7 +202,7 @@ The logger provides specialized methods for route lifecycle observability:
 | `route_found(method, path)` | Log successful match | Static or dynamic route hit |
 | `route_not_found(path)` | Log 404 situation | Route lookup failure |
 
-All route-specific methods at [src/logger.mbt:84-147]() use lazy evaluation and are automatically filtered based on the logger's configuration.
+All route-specific methods at `src/logger.mbt:84-147` use lazy evaluation and are automatically filtered based on the logger's configuration.
 
 **Example Output with Debug Logger**:
 
@@ -214,7 +214,7 @@ All route-specific methods at [src/logger.mbt:84-147]() use lazy evaluation and 
 📝 [DEBUG] Request: GET /api/users
 ```
 
-Sources: [src/logger.mbt:84-147]()
+Sources: `src/logger.mbt:84-147`
 
 ---
 
@@ -263,7 +263,7 @@ graph TB
 
 The `serve()` method provides a unified interface that delegates to backend-specific implementations. The port binding and event loop initialization differ significantly between JavaScript and Native backends.
 
-Sources: [src/mocket.stub.c:259-285](), [README.md:22-36](), [src/example/main.mbt:83]()
+Sources: `src/mocket.stub.c:259-285`, `README.md:22-36`, `src/example/main.mbt:83`
 
 ---
 
@@ -275,7 +275,7 @@ The `serve()` method accepts a single configuration parameter:
 
 **Signature**: `serve(self: Mocket, ~port: Int) -> Unit`
 
-**Default Port**: While not explicitly defined in a constant, the example applications at [src/example/main.mbt:83]() and [README.md:189]() consistently use port `4000`.
+**Default Port**: While not explicitly defined in a constant, the example applications at `src/example/main.mbt:83` and `README.md:189` consistently use port `4000`.
 
 **Usage**:
 ```moonbit
@@ -290,22 +290,22 @@ app.serve(port=4000)
 - Event-driven architecture with non-blocking I/O
 
 #### Native Backend
-The C implementation at [src/mocket.stub.c:259-285]() follows this initialization sequence:
+The C implementation at `src/mocket.stub.c:259-285` follows this initialization sequence:
 
-1. **Server Creation** ([src/mocket.stub.c:260-267]()):
+1. **Server Creation** (`src/mocket.stub.c:260-267`):
    - Allocates `server_t` struct
    - Initializes Mongoose manager with `mg_mgr_init()`
    - Disables Mongoose logging with `mg_log_set(MG_LL_NONE)`
    - Stores handler callback
 
-2. **Listening** ([src/mocket.stub.c:270-285]()):
+2. **Listening** (`src/mocket.stub.c:270-285`):
    - Constructs URL string: `"http://0.0.0.0:{port}"`
    - Calls `mg_http_listen()` with event handler
    - Enters infinite event loop with `mg_mgr_poll()`
 
-The polling interval is fixed at 1000ms at [src/mocket.stub.c:283]().
+The polling interval is fixed at 1000ms at `src/mocket.stub.c:283`.
 
-Sources: [src/mocket.stub.c:259-285](), [src/example/main.mbt:83](), [README.md:189]()
+Sources: `src/mocket.stub.c:259-285`, `src/example/main.mbt:83`, `README.md:189`
 
 ---
 
@@ -355,7 +355,7 @@ graph TB
 
 Headers are accessed and manipulated differently in each backend but converge to a unified interface through the core `HttpRequest` and `HttpResponse` types.
 
-Sources: [src/mocket.stub.c:6-10](), [src/mocket.stub.c:44-94](), [src/mocket.stub.c:126-147]()
+Sources: `src/mocket.stub.c:6-10`, `src/mocket.stub.c:44-94`, `src/mocket.stub.c:126-147`
 
 ---
 
@@ -367,19 +367,19 @@ Request headers are accessed through the Node.js request object's `headers` prop
 
 ### Native Backend
 
-The native implementation at [src/mocket.stub.c:126-147]() extracts headers from the Mongoose `mg_http_message` structure:
+The native implementation at `src/mocket.stub.c:126-147` extracts headers from the Mongoose `mg_http_message` structure:
 
 **Implementation Details**:
 - Uses `mg_http_get_header()` to extract specific headers
 - Currently extracts `Content-Type` as an example
 - Constructs a newline-delimited string representation
-- Buffer limited to 1024 bytes at [src/mocket.stub.c:131]()
+- Buffer limited to 1024 bytes at `src/mocket.stub.c:131`
 
 **Function Signature**: `const char* req_headers(request_t* req)`
 
 The implementation demonstrates the pattern but could be extended to extract additional headers by calling `mg_http_get_header()` with different header names.
 
-Sources: [src/mocket.stub.c:126-147]()
+Sources: `src/mocket.stub.c:126-147`
 
 ---
 
@@ -389,7 +389,7 @@ Sources: [src/mocket.stub.c:126-147]()
 
 The native backend uses a `header_t` struct array to accumulate headers before sending:
 
-**Header Storage Structure** ([src/mocket.stub.c:6-10]()):
+**Header Storage Structure** (`src/mocket.stub.c:6-10`):
 ```c
 typedef struct {
   char key[128];
@@ -397,9 +397,9 @@ typedef struct {
 } header_t;
 ```
 
-**Maximum Headers**: Limited to 32 headers per response (`MAX_HEADERS` at [src/mocket.stub.c:12]())
+**Maximum Headers**: Limited to 32 headers per response (`MAX_HEADERS` at `src/mocket.stub.c:12`)
 
-**Response Structure** ([src/mocket.stub.c:36-42]()):
+**Response Structure** (`src/mocket.stub.c:36-42`):
 ```c
 struct response {
   struct mg_connection *c;
@@ -415,7 +415,7 @@ struct response {
 
 **Function**: `res_set_header(response_t* res, const char* key, const char* value)`
 
-Implementation at [src/mocket.stub.c:45-53]():
+Implementation at `src/mocket.stub.c:45-53`:
 - Appends header to `headers` array
 - Checks `header_count < MAX_HEADERS`
 - Uses `snprintf` for safe string copying
@@ -425,7 +425,7 @@ Implementation at [src/mocket.stub.c:45-53]():
 
 **Function**: `res_set_header_line(response_t* res, const char* header_line)`
 
-Implementation at [src/mocket.stub.c:169-200]():
+Implementation at `src/mocket.stub.c:169-200`:
 - Accepts `"Key: Value"` format strings
 - Parses by locating `:` character
 - Skips whitespace after colon
@@ -433,25 +433,25 @@ Implementation at [src/mocket.stub.c:169-200]():
 
 ### Header Serialization
 
-The `build_headers()` function at [src/mocket.stub.c:62-72]() serializes the header array into HTTP header format:
+The `build_headers()` function at `src/mocket.stub.c:62-72` serializes the header array into HTTP header format:
 
 **Process**:
 1. Iterates through `headers[0..header_count-1]`
 2. Concatenates each as `"{key}: {value}\r\n"`
 3. Produces string suitable for `mg_http_reply()`
 
-**Buffer**: Uses 2048-byte buffer at [src/mocket.stub.c:77]()
+**Buffer**: Uses 2048-byte buffer at `src/mocket.stub.c:77`
 
 ### Response Finalization
 
 Headers are sent when calling either:
 
-**Text Response** (`res_end` at [src/mocket.stub.c:75-83]()):
+**Text Response** (`res_end` at `src/mocket.stub.c:75-83`):
 ```c
 void res_end(response_t* res, const char* body)
 ```
 
-**Binary Response** (`res_end_bytes` at [src/mocket.stub.c:86-94]()):
+**Binary Response** (`res_end_bytes` at `src/mocket.stub.c:86-94`):
 ```c
 void res_end_bytes(response_t* res, uint8_t* body, size_t body_len)
 ```
@@ -461,7 +461,7 @@ Both functions:
 2. Invoke `mg_http_reply()` with status, headers, and body
 3. Send complete HTTP response
 
-Sources: [src/mocket.stub.c:6-94](), [src/mocket.stub.c:169-200]()
+Sources: `src/mocket.stub.c:6-94`, `src/mocket.stub.c:169-200`
 
 ---
 
@@ -475,7 +475,7 @@ Sources: [src/mocket.stub.c:6-94](), [src/mocket.stub.c:169-200]()
 | `new_debug_logger()` | Occurs on every log call | Moderate (string allocation) | Development/debugging |
 | Custom with `level: Error` | Only for error logs | Minimal | Production with error tracking |
 
-The lazy evaluation pattern at [src/logger.mbt:36-40]() ensures that expensive string formatting operations like:
+The lazy evaluation pattern at `src/logger.mbt:36-40` ensures that expensive string formatting operations like:
 
 ```moonbit
 logger.debug(fn() { "Processing request: \{event.req.http_method} \{event.req.url}" })
@@ -495,11 +495,11 @@ If either check fails, the lambda is never invoked and the string interpolation 
 - Consider environment variable configuration for deployment flexibility
 
 **Native Backend Polling**:
-- The 1000ms polling interval at [src/mocket.stub.c:283]() affects maximum request latency
+- The 1000ms polling interval at `src/mocket.stub.c:283` affects maximum request latency
 - Lower values increase CPU usage but reduce response latency
 - Current setting balances responsiveness and resource consumption
 
-Sources: [src/logger.mbt:18-40](), [src/mocket.stub.c:283]()
+Sources: `src/logger.mbt:18-40`, `src/mocket.stub.c:283`
 
 ---
 
@@ -520,7 +520,7 @@ Exceeding these limits results in:
 
 ### Content-Type Handling
 
-The native backend at [src/mocket.stub.c:135-142]() demonstrates extracting `Content-Type`:
+The native backend at `src/mocket.stub.c:135-142` demonstrates extracting `Content-Type`:
 
 ```c
 struct mg_str *content_type = mg_http_get_header(req->hm, "Content-Type");
@@ -544,4 +544,4 @@ app.get("/api/data", fn(event) {
 })
 ```
 
-Sources: [src/mocket.stub.c:6-12](), [src/mocket.stub.c:135-142]()
+Sources: `src/mocket.stub.c:6-12`, `src/mocket.stub.c:135-142`

@@ -18,7 +18,7 @@ A Mocket server instance is created using the `new` function, which accepts opti
 fn new(base_path? : String, logger? : Logger) -> Mocket
 ```
 
-**Sources:** [src/pkg.generated.mbti:12]()
+**Sources:** `src/pkg.generated.mbti:12`
 
 ### Configuration Parameters
 
@@ -35,7 +35,7 @@ The `logger` parameter allows you to configure logging behavior. Three factory f
 - `new_debug_logger()` - Verbose logging for development
 - `new_logger(enabled?, level?)` - Custom logger with fine-grained control
 
-**Sources:** [src/pkg.generated.mbti:12-18]()
+**Sources:** `src/pkg.generated.mbti:12-18`
 
 ### Mocket Structure
 
@@ -59,7 +59,7 @@ This structure maintains:
 - Middleware chains in `middlewares`
 - A `logger` instance for diagnostic output
 
-**Sources:** [src/pkg.generated.mbti:113-120]()
+**Sources:** `src/pkg.generated.mbti:113-120`
 
 ---
 
@@ -88,7 +88,7 @@ flowchart TD
     CreateServer --> Runtime
 ```
 
-**Sources:** [src/serve.mbt:1-4](), [src/pkg.generated.mbti:10](), [src/pkg.generated.mbti:22](), [src/pkg.generated.mbti:132]()
+**Sources:** `src/serve.mbt:1-4`, `src/pkg.generated.mbti:10`, `src/pkg.generated.mbti:22`, `src/pkg.generated.mbti:132`
 
 ### The serve Method
 
@@ -113,7 +113,7 @@ pub fn serve(self : Mocket, port~ : Int) -> Unit {
 
 The `serve` method acts as a unified interface that abstracts backend differences. The actual server creation logic is handled by the compilation-target-specific implementation.
 
-**Sources:** [src/serve.mbt:1-4](), [src/pkg.generated.mbti:132]()
+**Sources:** `src/serve.mbt:1-4`, `src/pkg.generated.mbti:132`
 
 ### Port Binding
 
@@ -128,7 +128,7 @@ The `port` parameter is a named integer argument (`port~`) that specifies which 
 
 The port must be available and not already bound by another process. Port numbers below 1024 typically require elevated privileges on Unix-like systems.
 
-**Sources:** [src/serve.mbt:2-3](), [src/pkg.generated.mbti:132]()
+**Sources:** `src/serve.mbt:2-3`, `src/pkg.generated.mbti:132`
 
 ---
 
@@ -172,7 +172,7 @@ graph TB
     Serve -->|"target: js"| CreateServerJS
 ```
 
-**Sources:** [src/serve.mbt:1-4](), [src/pkg.generated.mbti:10](), [src/pkg.generated.mbti:22]()
+**Sources:** `src/serve.mbt:1-4`, `src/pkg.generated.mbti:10`, `src/pkg.generated.mbti:22`
 
 ### JavaScript Backend: create_server
 
@@ -196,7 +196,7 @@ This function:
 
 The JavaScript backend operates on a Promise-based async model, where each request is processed asynchronously and the response is written when the handler completes.
 
-**Sources:** [src/pkg.generated.mbti:10]()
+**Sources:** `src/pkg.generated.mbti:10`
 
 ### Native Backend: serve_ffi
 
@@ -217,7 +217,7 @@ The native backend uses a callback-based model where C callbacks invoke MoonBit 
 
 The implementation delegates to C code in `mocket.stub.c` which bridges Mongoose to the MoonBit runtime.
 
-**Sources:** [src/pkg.generated.mbti:22](), [src/serve.mbt:3]()
+**Sources:** `src/pkg.generated.mbti:22`, `src/serve.mbt:3`
 
 ---
 
@@ -270,7 +270,7 @@ graph LR
     CustomLogger --> |"Custom level"| Logging
 ```
 
-**Sources:** [src/pkg.generated.mbti:12-18](), [src/pkg.generated.mbti:113-120]()
+**Sources:** `src/pkg.generated.mbti:12-18`, `src/pkg.generated.mbti:113-120`
 
 ---
 
@@ -287,7 +287,7 @@ When a server is started, the Mocket instance maintains several internal data st
 
 The `serve`/`serve_ffi` functions do not modify these structures. Route registration must be completed before calling `serve`.
 
-**Sources:** [src/pkg.generated.mbti:113-120](), [src/path_match.mbt:64-131]()
+**Sources:** `src/pkg.generated.mbti:113-120`, `src/path_match.mbt:64-131`
 
 ---
 
@@ -303,4 +303,4 @@ Additional functions related to server lifecycle:
 
 These functions are used internally by the backend implementations during request processing but are not typically called directly by application code.
 
-**Sources:** [src/pkg.generated.mbti:20-24](), [src/pkg.generated.mbti:71-83]()
+**Sources:** `src/pkg.generated.mbti:20-24`, `src/pkg.generated.mbti:71-83`

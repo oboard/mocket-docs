@@ -16,7 +16,7 @@ Mocket uses MoonBit's package configuration system to manage multi-target builds
 
 ### Package Configuration Structure
 
-The [src/moon.pkg.json:1-30]() file defines the build configuration:
+The `src/moon.pkg.json:1-30` file defines the build configuration:
 
 | Configuration Key | Purpose |
 |------------------|---------|
@@ -76,7 +76,7 @@ graph TB
     MongooseC --> NativeTarget
 ```
 
-Sources: [src/moon.pkg.json:1-30]()
+Sources: `src/moon.pkg.json:1-30`
 
 ---
 
@@ -106,7 +106,7 @@ moon check --target js
 moon build --target js
 ```
 
-The JavaScript target compiles to JavaScript modules compatible with Node.js and browser environments. It includes [src/mocket.js.mbt]() and async Promise support from the `oboard/mocket/js` package.
+The JavaScript target compiles to JavaScript modules compatible with Node.js and browser environments. It includes `src/mocket.js.mbt` and async Promise support from the `oboard/mocket/js` package.
 
 #### Native Target
 
@@ -118,7 +118,7 @@ moon check --target native
 moon build --target native
 ```
 
-The native target compiles to platform-specific binaries (Linux ELF, macOS Mach-O, Windows PE). It includes [src/mocket.native.mbt]() and links against [src/mocket.stub.c:1-]() and [mongoose.c]() FFI stubs.
+The native target compiles to platform-specific binaries (Linux ELF, macOS Mach-O, Windows PE). It includes `src/mocket.native.mbt` and links against `src/mocket.stub.c:1-` and `mongoose.c` FFI stubs.
 
 #### WASM Target
 
@@ -127,9 +127,9 @@ The native target compiles to platform-specific binaries (Linux ELF, macOS Mach-
 moon check --target wasm
 ```
 
-The WASM target is currently a stub implementation in [src/mocket.wasm.mbt:1-6](). The `serve_ffi` function panics when called.
+The WASM target is currently a stub implementation in `src/mocket.wasm.mbt:1-6`. The `serve_ffi` function panics when called.
 
-Sources: [src/moon.pkg.json:8-29](), [src/mocket.wasm.mbt:1-6]()
+Sources: `src/moon.pkg.json:8-29`, `src/mocket.wasm.mbt:1-6`
 
 ---
 
@@ -165,20 +165,20 @@ sequenceDiagram
     Moon->>Dev: "Display pass/fail status"
 ```
 
-The CI pipeline runs tests twice per target to verify deterministic behavior ([.github/workflows/check.yaml:74-76]()):
+The CI pipeline runs tests twice per target to verify deterministic behavior (`.github/workflows/check.yaml:74-76`):
 
 ```bash
 moon test --target native
 moon test --target native
 ```
 
-Sources: [.github/workflows/check.yaml:73-76]()
+Sources: `.github/workflows/check.yaml:73-76`
 
 ---
 
 ## Continuous Integration Pipeline
 
-The GitHub Actions workflow in [.github/workflows/check.yaml:1-77]() runs on every push, pull request, and weekly schedule. It ensures code quality across MoonBit versions.
+The GitHub Actions workflow in `.github/workflows/check.yaml:1-77` runs on every push, pull request, and weekly schedule. It ensures code quality across MoonBit versions.
 
 ### CI/CD Workflow Overview
 
@@ -234,13 +234,13 @@ graph TB
     Test --> Failure["Failure: Pipeline stops"]
 ```
 
-Sources: [.github/workflows/check.yaml:1-77]()
+Sources: `.github/workflows/check.yaml:1-77`
 
 ### Pipeline Stage Details
 
 #### 1. Environment Setup
 
-The workflow installs MoonBit using the `illusory0x0/setup-moonbit` action ([.github/workflows/check.yaml:37-40]()):
+The workflow installs MoonBit using the `illusory0x0/setup-moonbit` action (`.github/workflows/check.yaml:37-40`):
 
 ```yaml
 - name: Setup Moon
@@ -249,7 +249,7 @@ The workflow installs MoonBit using the `illusory0x0/setup-moonbit` action ([.gi
     version: ${{ matrix.version }}
 ```
 
-Dependencies are installed via ([.github/workflows/check.yaml:46-49]()):
+Dependencies are installed via (`.github/workflows/check.yaml:46-49`):
 
 ```bash
 moon update
@@ -258,7 +258,7 @@ moon install
 
 #### 2. Type Checking
 
-The `moon check` command runs with strict warning denial ([.github/workflows/check.yaml:51-52]()):
+The `moon check` command runs with strict warning denial (`.github/workflows/check.yaml:51-52`):
 
 ```bash
 moon check --deny-warn --target native
@@ -268,7 +268,7 @@ The `--deny-warn` flag treats all warnings as errors, enforcing zero-warning bui
 
 #### 3. Format Validation
 
-The pipeline verifies code formatting ([.github/workflows/check.yaml:59-62]()):
+The pipeline verifies code formatting (`.github/workflows/check.yaml:59-62`):
 
 ```bash
 moon fmt
@@ -279,7 +279,7 @@ If `moon fmt` modifies any files, `git diff --exit-code` fails with exit code 1,
 
 #### 4. Dependency Graph Check
 
-The `moon info` command generates dependency information and verifies no untracked changes ([.github/workflows/check.yaml:54-57]()):
+The `moon info` command generates dependency information and verifies no untracked changes (`.github/workflows/check.yaml:54-57`):
 
 ```bash
 moon info --target native
@@ -288,7 +288,7 @@ git diff --exit-code
 
 #### 5. Test Execution
 
-Tests run twice to catch non-deterministic behavior ([.github/workflows/check.yaml:68-76]()):
+Tests run twice to catch non-deterministic behavior (`.github/workflows/check.yaml:68-76`):
 
 ```bash
 ulimit -s 8176  # Set stack size on Unix
@@ -298,7 +298,7 @@ moon test --target native
 
 The `ulimit -s 8176` increases stack size to prevent stack overflow in native tests.
 
-Sources: [.github/workflows/check.yaml:32-77]()
+Sources: `.github/workflows/check.yaml:32-77`
 
 ---
 
@@ -383,7 +383,7 @@ graph LR
     TargetDir --> Artifacts
 ```
 
-Sources: [.github/workflows/check.yaml:46-76](), [src/moon.pkg.json:8-29]()
+Sources: `.github/workflows/check.yaml:46-76`, `src/moon.pkg.json:8-29`
 
 ---
 
@@ -394,9 +394,9 @@ Sources: [.github/workflows/check.yaml:46-76](), [src/moon.pkg.json:8-29]()
 | Error Type | Symptom | Solution |
 |------------|---------|----------|
 | Missing dependencies | `moon check` fails with import errors | Run `moon update && moon install` |
-| FFI linking failure | Native build fails to link C stubs | Verify `native-stub` files exist in [src/moon.pkg.json:14-17]() |
+| FFI linking failure | Native build fails to link C stubs | Verify `native-stub` files exist in `src/moon.pkg.json:14-17` |
 | Format check failure | CI format step fails | Run `moon fmt` and commit changes |
-| Warning as error | Build fails with `-deny-warn` | Fix warnings or update `warn-list` in [src/moon.pkg.json:13]() |
+| Warning as error | Build fails with `-deny-warn` | Fix warnings or update `warn-list` in `src/moon.pkg.json:13` |
 | Stack overflow in tests | Native tests crash | Increase stack size: `ulimit -s 8176` |
 
 ### Target-Specific Issues
@@ -407,14 +407,14 @@ Sources: [.github/workflows/check.yaml:46-76](), [src/moon.pkg.json:8-29]()
 
 **Native Backend:**
 - C compiler must be available (GCC/Clang on Unix, MSVC on Windows)
-- The [.github/workflows/check.yaml:64-66]() shows MSVC setup for Windows
+- The `.github/workflows/check.yaml:64-66` shows MSVC setup for Windows
 - Mongoose C library compiles as part of native-stub
 
 **WASM Backend:**
-- Currently unimplemented ([src/mocket.wasm.mbt:1-6]())
+- Currently unimplemented (`src/mocket.wasm.mbt:1-6`)
 - `serve_ffi` function panics when called
 
-Sources: [.github/workflows/check.yaml:51-76](), [src/moon.pkg.json:13-17](), [src/mocket.wasm.mbt:1-6]()
+Sources: `.github/workflows/check.yaml:51-76`, `src/moon.pkg.json:13-17`, `src/mocket.wasm.mbt:1-6`
 
 ---
 
@@ -473,13 +473,13 @@ graph TB
     Targets --> WASMMapping
 ```
 
-Sources: [src/moon.pkg.json:1-30]()
+Sources: `src/moon.pkg.json:1-30`
 
 ---
 
 ## Integration with Example Application
 
-The example application in [src/example/main.mbt]() can be built and tested using the same commands:
+The example application in `src/example/main.mbt` can be built and tested using the same commands:
 
 ```bash
 # Build example for native target
@@ -491,4 +491,4 @@ moon build --target native
 
 The example demonstrates all core Mocket features including routing, middleware, and multi-backend support. It serves as both a functional test and integration documentation.
 
-Sources: [src/moon.pkg.json:1-30]()
+Sources: `src/moon.pkg.json:1-30`

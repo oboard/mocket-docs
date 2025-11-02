@@ -8,7 +8,7 @@ title: Middleware Example
 
 This page demonstrates practical middleware patterns in Mocket through concrete examples. Middleware are functions that process requests before they reach route handlers or modify responses before they're sent to clients. For conceptual information about how the middleware system works, see [Middleware System](#2.2). For basic framework usage, see [Quick Start Guide](#1.1).
 
-Sources: [README.md:86-110]()
+Sources: `README.md:86-110`
 
 ## Overview
 
@@ -18,7 +18,7 @@ The framework supports two middleware scopes:
 - **Global middleware**: Applies to all routes registered on the `Mocket` instance
 - **Group middleware**: Applies only to routes within a specific route group
 
-Sources: [README.md:86-110](), [src/example/main.mbt:1-85]()
+Sources: `README.md:86-110`, `src/example/main.mbt:1-85`
 
 ## Middleware Execution Pipeline
 
@@ -44,7 +44,7 @@ sequenceDiagram
 
 **Execution Order**: Global middleware executes first for all requests, followed by group middleware (if the route is within a group), and finally the route handler. Each middleware can inspect or modify the `HttpEvent` before passing control to the next layer.
 
-Sources: [README.md:86-110]()
+Sources: `README.md:86-110`
 
 ## Global Middleware Examples
 
@@ -61,7 +61,7 @@ graph LR
     LogMW -.-> Logger["println()<br/>event.req.http_method<br/>event.req.url"]
 ```
 
-**Implementation Reference**: [src/example/main.mbt:6-9]() demonstrates global logging middleware that prints request method and URL for every request. The pattern uses `event.req.http_method` and `event.req.url` to extract request details.
+**Implementation Reference**: `src/example/main.mbt:6-9` demonstrates global logging middleware that prints request method and URL for every request. The pattern uses `event.req.http_method` and `event.req.url` to extract request details.
 
 **Usage Pattern**:
 | Code Entity | Purpose | Accessed Properties |
@@ -70,7 +70,7 @@ graph LR
 | `event.req.http_method` | HTTP method (GET, POST, etc.) | String |
 | `event.req.url` | Request path | String |
 
-Sources: [src/example/main.mbt:6-9](), [README.md:116-120]()
+Sources: `src/example/main.mbt:6-9`, `README.md:116-120`
 
 ### Response Header Middleware
 
@@ -92,7 +92,7 @@ graph TB
 
 The `HttpResponse` object accessible via `event.res` provides methods to set headers before the response is sent.
 
-Sources: [README.md:116-120](), [src/example/main.mbt:6-9]()
+Sources: `README.md:116-120`, `src/example/main.mbt:6-9`
 
 ## Group Middleware Examples
 
@@ -124,7 +124,7 @@ graph TB
     GroupMW --> Route3
 ```
 
-**Implementation Reference**: [src/example/main.mbt:16-27]() shows a group with middleware that logs API-specific information. The pattern uses `app.group("/api", group => {...})` to create a group and `group.use_middleware()` to register group-level middleware.
+**Implementation Reference**: `src/example/main.mbt:16-27` shows a group with middleware that logs API-specific information. The pattern uses `app.group("/api", group => {...})` to create a group and `group.use_middleware()` to register group-level middleware.
 
 **Key Characteristics**:
 - Executes after global middleware
@@ -132,7 +132,7 @@ graph TB
 - Can access all `HttpEvent` properties
 - Multiple groups can have different middleware
 
-Sources: [src/example/main.mbt:16-27](), [README.md:86-110]()
+Sources: `src/example/main.mbt:16-27`, `README.md:86-110`
 
 ## Complete Middleware Flow Example
 
@@ -155,7 +155,7 @@ flowchart TB
 | `GET /` | Logs: `📝 Request: GET /` | None | Returns `Text("⚡️ Tadaa!")` |
 | `GET /api/hello` | Logs: `📝 Request: GET /api/hello` | Logs: `🔒 API Group Middleware: GET /api/hello` | Returns `Text("Hello world!")` |
 
-Sources: [src/example/main.mbt:6-27](), [README.md:113-138]()
+Sources: `src/example/main.mbt:6-27`, `README.md:113-138`
 
 ## Common Middleware Patterns
 
@@ -181,7 +181,7 @@ graph LR
 - Debug logger provides detailed route tracking
 - Use `logger.route_found()`, `logger.route_not_found()` for route-specific logs
 
-Sources: [logger.mbt:1-148](), [src/example/main.mbt:3]()
+Sources: `logger.mbt:1-148`, `src/example/main.mbt:3`
 
 ### Performance Timing Middleware
 
@@ -198,7 +198,7 @@ Track request processing time:
 - `event.res`: Response object for setting status and headers
 - `event.params`: Route parameters extracted from dynamic routes
 
-Sources: [README.md:113-138]()
+Sources: `README.md:113-138`
 
 ### Error Handling Middleware
 
@@ -210,7 +210,7 @@ Catch and format errors uniformly:
 - Return standardized error responses
 - Log errors using the logger system
 
-Sources: [src/example/main.mbt:64-75]()
+Sources: `src/example/main.mbt:64-75`
 
 ## Middleware Registration Patterns
 
@@ -223,9 +223,9 @@ graph LR
     MW2 -->|use_middleware| MW3["Middleware 3"]
 ```
 
-**Code Pattern**: Method chaining allows multiple middleware registrations using the fluent API pattern demonstrated in [src/example/main.mbt:6-9](). Each `use_middleware` call returns the `Mocket` instance for chaining.
+**Code Pattern**: Method chaining allows multiple middleware registrations using the fluent API pattern demonstrated in `src/example/main.mbt:6-9`. Each `use_middleware` call returns the `Mocket` instance for chaining.
 
-Sources: [src/example/main.mbt:6-84]()
+Sources: `src/example/main.mbt:6-84`
 
 ### Group Middleware Registration
 
@@ -240,9 +240,9 @@ graph TB
     GroupMW -.-> Route2
 ```
 
-**Code Pattern**: Inside the group callback function, call `group.use_middleware()` before registering routes. Example at [src/example/main.mbt:16-27]() shows group middleware registration followed by route definitions using `group.get()` and `group.post()`.
+**Code Pattern**: Inside the group callback function, call `group.use_middleware()` before registering routes. Example at `src/example/main.mbt:16-27` shows group middleware registration followed by route definitions using `group.get()` and `group.post()`.
 
-Sources: [src/example/main.mbt:16-27](), [README.md:86-110]()
+Sources: `src/example/main.mbt:16-27`, `README.md:86-110`
 
 ## Accessing Request and Response in Middleware
 
@@ -280,7 +280,7 @@ classDiagram
 - `event.res.status_code`: Set response status (200, 404, etc.)
 - `event.params`: Route parameters from dynamic routes
 
-Sources: [src/example/main.mbt:1-85](), [README.md:43-71]()
+Sources: `src/example/main.mbt:1-85`, `README.md:43-71`
 
 ## Backend-Specific Considerations
 
@@ -292,4 +292,4 @@ Both JavaScript and native backends support middleware identically from the appl
 
 The unified `HttpEvent` abstraction ensures middleware written once works across all backends without modification.
 
-Sources: [README.md:14-36]()
+Sources: `README.md:14-36`

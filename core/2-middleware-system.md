@@ -14,7 +14,7 @@ For information about route handling and parameter extraction, see [Routing Syst
 
 Middleware in Mocket are async functions that execute before route handlers. They receive an `HttpEvent` object containing request and response data, allowing them to inspect requests, modify responses, perform logging, or implement authentication logic. Middleware can be registered at two levels: globally (affecting all routes) or per-group (affecting only routes within a specific group).
 
-Sources: [src/index.mbt:11-27](), [src/example/main.mbt:7-20](), [README.md:91-109]()
+Sources: `src/index.mbt:11-27`, `src/example/main.mbt:7-20`, `README.md:91-109`
 
 ## Middleware Storage Architecture
 
@@ -54,7 +54,7 @@ graph TB
 
 The `Mocket` struct stores middleware as an array of tuples, where each tuple contains a path prefix (String) and an async function. This design allows middleware to be associated with specific route groups while maintaining a unified storage mechanism.
 
-Sources: [src/index.mbt:11-27]()
+Sources: `src/index.mbt:11-27`
 
 ## Middleware Registration
 
@@ -77,7 +77,7 @@ Global middleware is particularly useful for:
 - Global authentication checks
 - Request/response transformation
 
-Sources: [src/example/main.mbt:6-9](), [README.md:116-120]()
+Sources: `src/example/main.mbt:6-9`, `README.md:116-120`
 
 ### Group Middleware
 
@@ -98,7 +98,7 @@ app.group("/api", group => {
 
 When route groups are created, their middleware is merged into the parent application's middleware array during group finalization.
 
-Sources: [src/example/main.mbt:16-27](), [README.md:91-109](), [src/index.mbt:253-254]()
+Sources: `src/example/main.mbt:16-27`, `README.md:91-109`, `src/index.mbt:253-254`
 
 ## Execution Flow
 
@@ -137,7 +137,7 @@ The middleware execution follows a specific order:
 
 Each middleware function receives the same `HttpEvent` object, allowing cumulative modifications to flow through the pipeline.
 
-Sources: [src/index.mbt:253-254](), [README.md:109]()
+Sources: `src/index.mbt:253-254`, `README.md:109`
 
 ## Middleware Function Signature
 
@@ -154,7 +154,7 @@ The `HttpEvent` parameter provides access to:
 - `event.res` - The `HttpResponse` object for setting status codes and headers
 - `event.params` - A `Map[String, String]` containing route parameters
 
-Sources: [src/index.mbt:14](), [src/index.mbt:48-60]()
+Sources: `src/index.mbt:14`, `src/index.mbt:48-60`
 
 ## Practical Middleware Patterns
 
@@ -201,7 +201,7 @@ app.use_middleware(event => {
 
 Add common security or informational headers to all responses.
 
-Sources: [src/example/main.mbt:7-9](), [src/example/main.mbt:18-20](), [README.md:93-95]()
+Sources: `src/example/main.mbt:7-9`, `src/example/main.mbt:18-20`, `README.md:93-95`
 
 ## Route Group Middleware Merging
 
@@ -247,7 +247,7 @@ When a route group is created:
 
 This ensures that group middleware executes in the correct order while maintaining the group's path prefix context.
 
-Sources: [src/index.mbt:222-255]()
+Sources: `src/index.mbt:222-255`
 
 ## Middleware and Async Operations
 
@@ -265,7 +265,7 @@ app.use_middleware(async fn(event) noraise {
 
 For backend-specific async capabilities, see [Asynchronous Operations](#3.1.1) for the JavaScript backend and [Native FFI Patterns](#3.2.2) for the native backend.
 
-Sources: [src/index.mbt:14](), [src/index.mbt:93]()
+Sources: `src/index.mbt:14`, `src/index.mbt:93`
 
 ## Summary Table: Middleware Characteristics
 
@@ -278,4 +278,4 @@ Sources: [src/index.mbt:14](), [src/index.mbt:93]()
 | Use Cases | Logging, CORS, global auth | API versioning, section-specific auth |
 | Storage | `app.middlewares` array | Merged into `app.middlewares` on group creation |
 
-Sources: [src/index.mbt:14](), [src/index.mbt:253-254](), [README.md:91-109]()
+Sources: `src/index.mbt:14`, `src/index.mbt:253-254`, `README.md:91-109`

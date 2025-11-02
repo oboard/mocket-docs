@@ -17,7 +17,7 @@ The framework follows these design principles:
 - **Type safety**: Comprehensive type system for requests, responses, and errors across FFI boundaries
 - **Express.js-like ergonomics**: Familiar routing patterns with `get`, `post`, middleware chains, and route groups
 
-**Sources:** [moon.mod.json:1-20](), [README.md:1-19]()
+**Sources:** `moon.mod.json:1-20`, `README.md:1-19`
 
 ## Framework Architecture
 
@@ -75,7 +75,7 @@ graph TB
 | **Backend Implementation** | `mocket.js.mbt`, `mocket.native.mbt`, `mocket.wasm.mbt` | Platform-specific server creation, request/response conversion |
 | **Runtime/FFI** | `async.mbt`, `js.mbt`, `mocket.stub.c` | Platform interop, async operations, native bindings |
 
-**Sources:** [moon.mod.json:18-19](), [README.md:14-34]()
+**Sources:** `moon.mod.json:18-19`, `README.md:14-34`
 
 ## Multi-Backend Design
 
@@ -129,7 +129,7 @@ graph LR
 
 Both JavaScript and native backends convert platform-specific request/response objects to the framework's unified `HttpEvent` type, enabling the core routing and middleware systems to remain platform-agnostic.
 
-**Sources:** [README.md:14-34](), [moon.mod.json:19]()
+**Sources:** `README.md:14-34`, `moon.mod.json:19`
 
 ## Core Type System
 
@@ -177,7 +177,7 @@ graph TB
 - **`HttpBody`**: Tagged union representing different response body types
 - **`Handler`**: Function type `(HttpEvent) -> HttpBody` for route handlers
 
-**Sources:** [README.md:114-195]()
+**Sources:** `README.md:114-195`
 
 ## Request Processing Pipeline
 
@@ -236,7 +236,7 @@ sequenceDiagram
 7. **Response Conversion**: Backend converts `HttpBody` to platform-specific response format
 8. **Logging**: `Logger` tracks `route_found`, `route_not_found`, and `route_sent` events
 
-**Sources:** [README.md:114-195]()
+**Sources:** `README.md:114-195`
 
 ## Package Structure
 
@@ -276,7 +276,7 @@ src/
 | `mocket.stub.c` | C FFI | `request_t`, `response_t`, `header_t` structs |
 | `async.mbt` | Async support | `Promise` wrapper, `suspend`/`resume` helpers |
 
-**Sources:** [moon.mod.json:18]()
+**Sources:** `moon.mod.json:18`
 
 ## External Dependencies
 
@@ -291,7 +291,7 @@ Mocket relies on four external packages declared in `moon.mod.json`:
 
 These dependencies enable core features: `regexp` powers the dynamic routing system ([2.1.2](#2.1.2)), `native` facilitates C interop for the Mongoose backend ([3.2](#3.2)), and `moonbitlang/x` provides essential data structure support.
 
-**Sources:** [moon.mod.json:4-9]()
+**Sources:** `moon.mod.json:4-9`
 
 ## Usage Example
 
@@ -324,4 +324,4 @@ This example shows:
 
 For complete examples, see [7](#7). For detailed API documentation, see [4](#4).
 
-**Sources:** [README.md:113-195]()
+**Sources:** `README.md:113-195`

@@ -10,7 +10,7 @@ For conceptual explanations of routing mechanisms, see [Routing System](#2.1). F
 
 ## Overview
 
-Mocket includes a comprehensive example application located at [src/example/main.mbt:1-85]() that demonstrates all core features. This example serves as both documentation and a test suite, ensuring patterns shown here remain functional across framework updates.
+Mocket includes a comprehensive example application located at `src/example/main.mbt:1-85` that demonstrates all core features. This example serves as both documentation and a test suite, ensuring patterns shown here remain functional across framework updates.
 
 The following diagram maps example patterns to their implementations:
 
@@ -63,7 +63,7 @@ graph TB
     style Routes fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
-Sources: [src/example/main.mbt:1-85](), [README.md:111-195]()
+Sources: `src/example/main.mbt:1-85`, `README.md:111-195`
 
 ## Hello World Example
 
@@ -90,13 +90,13 @@ sequenceDiagram
     Note over Server: "Native: Mongoose mg_http_listen"
 ```
 
-Sources: [src/example/main.mbt:3](), [src/example/main.mbt:12](), [src/example/main.mbt:83]()
+Sources: `src/example/main.mbt:3`, `src/example/main.mbt:12`, `src/example/main.mbt:83`
 
 ### Text Response Pattern
 
 The basic text response pattern uses the `Text()` variant of the `HttpBody` enum:
 
-[src/example/main.mbt:12]()
+`src/example/main.mbt:12`
 ```
 ..get("/", _event => Text("⚡️ Tadaa!"))
 ```
@@ -108,13 +108,13 @@ This route:
 
 The `Text` constructor is defined in the `HttpBody` enum alongside `Json`, `HTML`, `Bytes`, and `Empty` variants. See [Response Types](#2.3.1) for all response type options.
 
-Sources: [src/example/main.mbt:12](), [README.md:122]()
+Sources: `src/example/main.mbt:12`, `README.md:122`
 
 ### Accessing the Event Object
 
 Most handlers need request data, which comes through the `HttpEvent` parameter:
 
-[src/example/main.mbt:15]()
+`src/example/main.mbt:15`
 ```
 ..on("GET", "/hello", _ => Text("Hello world!"))
 ```
@@ -124,7 +124,7 @@ The `on()` method is the low-level registration function. The convenience method
 - `event.res` - `HttpResponse` for status codes and headers  
 - `event.params` - `Map[String, String]` for path parameters
 
-Sources: [src/example/main.mbt:15]()
+Sources: `src/example/main.mbt:15`
 
 ## REST API Example
 
@@ -134,7 +134,7 @@ REST APIs typically require JSON responses, multiple HTTP methods, and organized
 
 The `Json()` constructor automatically serializes MoonBit values and sets `Content-Type: application/json`:
 
-[src/example/main.mbt:30-34]()
+`src/example/main.mbt:30-34`
 ```
 ..get("/json", _event => Json({
   "name": "John Doe",
@@ -145,13 +145,13 @@ The `Json()` constructor automatically serializes MoonBit values and sets `Conte
 
 The object literal syntax creates a MoonBit struct that gets serialized to JSON. This pattern works with any JSON-serializable MoonBit type.
 
-Sources: [src/example/main.mbt:30-34](), [README.md:141-145]()
+Sources: `src/example/main.mbt:30-34`, `README.md:141-145`
 
 ### Route Organization with Groups
 
 The `group()` method creates prefixed route namespaces with shared middleware:
 
-[src/example/main.mbt:16-27]()
+`src/example/main.mbt:16-27`
 ```
 ..group("/api", group => {
   group.use_middleware(event => println(...))
@@ -166,7 +166,7 @@ This creates:
 
 Both routes execute the group middleware before their handlers. Groups can nest arbitrarily for hierarchical APIs.
 
-Sources: [src/example/main.mbt:16-27](), [README.md:86-110]()
+Sources: `src/example/main.mbt:16-27`, `README.md:86-110`
 
 ### Complete REST API Structure
 
@@ -206,13 +206,13 @@ graph TB
     JsonRoute --> Handler
 ```
 
-Sources: [src/example/main.mbt:7-61]()
+Sources: `src/example/main.mbt:7-61`
 
 ### Asynchronous Handlers
 
 For I/O operations or async computations, use `async fn` syntax:
 
-[src/example/main.mbt:37-39]()
+`src/example/main.mbt:37-39`
 ```
 ..get("/async_data", async fn(_event) noraise {
   Json({ "name": "John Doe", "age": 30, "city": "New York" })
@@ -221,20 +221,20 @@ For I/O operations or async computations, use `async fn` syntax:
 
 The `async` keyword enables suspension points in the handler. The `noraise` annotation indicates this handler doesn't throw exceptions. On the JavaScript backend, this compiles to Promise-based code. See [Asynchronous Operations](#3.1.1) for backend-specific async behavior.
 
-Sources: [src/example/main.mbt:37-39](), [README.md:147-150]()
+Sources: `src/example/main.mbt:37-39`, `README.md:147-150`
 
 ### Request Body Echo
 
 The echo pattern demonstrates body passthrough:
 
-[src/example/main.mbt:61]()
+`src/example/main.mbt:61`
 ```
 ..post("/echo", e => e.req.body)
 ```
 
 This handler returns the request body directly. The `body` field is already an `HttpBody` enum, so it can be returned as-is. The response inherits the original `Content-Type` header.
 
-Sources: [src/example/main.mbt:61](), [README.md:172]()
+Sources: `src/example/main.mbt:61`, `README.md:172`
 
 ## Middleware Example
 
@@ -258,13 +258,13 @@ graph LR
     Handler --> Response
 ```
 
-Sources: [src/example/main.mbt:7-9](), [src/example/main.mbt:18-20]()
+Sources: `src/example/main.mbt:7-9`, `src/example/main.mbt:18-20`
 
 ### Global Middleware Registration
 
 Global middleware runs for all routes:
 
-[src/example/main.mbt:7-9]()
+`src/example/main.mbt:7-9`
 ```
 app.use_middleware(event => println(
   "📝 Request: \{event.req.http_method} \{event.req.url}",
@@ -279,13 +279,13 @@ The middleware receives the full `HttpEvent` object with access to:
 
 Middleware functions run in registration order. Each middleware must complete before the next executes.
 
-Sources: [src/example/main.mbt:7-9]()
+Sources: `src/example/main.mbt:7-9`
 
 ### Group-Specific Middleware
 
 Group middleware only affects routes within that group:
 
-[src/example/main.mbt:18-20]()
+`src/example/main.mbt:18-20`
 ```
 group.use_middleware(event => println(
   "🔒 API Group Middleware: \{event.req.http_method} \{event.req.url}",
@@ -301,13 +301,13 @@ For a request to `GET /` (outside the group):
 1. Global middleware runs (line 7)
 2. Route handler runs (line 12)
 
-Sources: [src/example/main.mbt:18-20](), [README.md:91-110]()
+Sources: `src/example/main.mbt:18-20`, `README.md:91-110`
 
 ### Logging Middleware Pattern
 
 The example uses direct `println()` for demonstration, but production code should use the Logger system:
 
-[src/example/main.mbt:3]()
+`src/example/main.mbt:3`
 ```
 let app = @mocket.new(logger=@mocket.new_production_logger())
 ```
@@ -319,7 +319,7 @@ Available logger constructors:
 
 For detailed logging patterns, see [Logging System](#5.1).
 
-Sources: [src/example/main.mbt:3](), [src/logger.mbt:23-31]()
+Sources: `src/example/main.mbt:3`, `src/logger.mbt:23-31`
 
 ## Dynamic Route Parameters
 
@@ -360,13 +360,13 @@ graph TB
     Unwrap --> Value
 ```
 
-Sources: [src/example/main.mbt:43-58](), [README.md:44-71]()
+Sources: `src/example/main.mbt:43-58`, `README.md:44-71`
 
 ### Named Parameters
 
 Named parameters use `:name` syntax:
 
-[src/example/main.mbt:43-46]()
+`src/example/main.mbt:43-46`
 ```
 ..get("/hello/:name", fn(event) {
   let name = event.params.get("name").unwrap_or("World")
@@ -386,13 +386,13 @@ Multiple parameters are supported:
 | `/users/:id/posts/:postId` | `/users/123/posts/456` | `id: "123"`, `postId: "456"` |
 | `/api/:version/:resource` | `/api/v1/users` | `version: "v1"`, `resource: "users"` |
 
-Sources: [src/example/main.mbt:43-46](), [README.md:49-53](), [README.md:197-208]()
+Sources: `src/example/main.mbt:43-46`, `README.md:49-53`, `README.md:197-208`
 
 ### Single Wildcard Routes
 
 Single wildcards (`*`) match one path segment:
 
-[src/example/main.mbt:48-51]()
+`src/example/main.mbt:48-51`
 ```
 ..get("/hello2/*", fn(event) {
   let name = event.params.get("_").unwrap_or("World")
@@ -405,13 +405,13 @@ The wildcard value is stored under the key `"_"`:
 - `/hello2/Alice` → `_: "Alice"`
 - `/hello2/foo/bar` → No match (only one segment)
 
-Sources: [src/example/main.mbt:48-51](), [README.md:55-64]()
+Sources: `src/example/main.mbt:48-51`, `README.md:55-64`
 
 ### Double Wildcard Routes
 
 Double wildcards (`**`) match multiple path segments:
 
-[src/example/main.mbt:55-58]()
+`src/example/main.mbt:55-58`
 ```
 ..get("/hello3/**", fn(event) {
   let name = event.params.get("_").unwrap_or("World")
@@ -424,7 +424,7 @@ The captured path includes all remaining segments:
 - `/hello3/foo/bar` → `_: "foo/bar"`
 - `/hello3/a/b/c/d` → `_: "a/b/c/d"`
 
-Sources: [src/example/main.mbt:55-58](), [README.md:66-71]()
+Sources: `src/example/main.mbt:55-58`, `README.md:66-71`
 
 ## Custom Status Codes and HTML
 
@@ -432,7 +432,7 @@ HTTP status codes and HTML responses require accessing the response object.
 
 ### Setting Status Codes
 
-[src/example/main.mbt:64-75]()
+`src/example/main.mbt:64-75`
 ```
 ..get("/404", e => {
   e.res.status_code = 404
@@ -452,7 +452,7 @@ The response object `e.res` allows setting:
 
 The `HTML()` constructor sets `Content-Type: text/html` and returns the string content. The `#|` syntax is MoonBit's multiline string literal.
 
-Sources: [src/example/main.mbt:64-75](), [README.md:174-186]()
+Sources: `src/example/main.mbt:64-75`, `README.md:174-186`
 
 ## Running the Examples
 
@@ -464,7 +464,7 @@ moon run src/example --target js
 
 The JavaScript backend uses Node.js's `http.createServer()` with Promise-based async support. See [JavaScript Backend](#3.1) for implementation details.
 
-Sources: [README.md:22-24](), [README.md:16-24]()
+Sources: `README.md:22-24`, `README.md:16-24`
 
 ### Native Backend
 
@@ -474,13 +474,13 @@ moon run src/example --target native
 
 The native backend uses the Mongoose embedded web server via C FFI. Performance characteristics differ from the JavaScript backend. See [Native Backend](#3.2) for implementation details.
 
-Sources: [README.md:32-34](), [README.md:26-36]()
+Sources: `README.md:32-34`, `README.md:26-36`
 
 ### Accessing the Server
 
 After starting either backend, the server listens on `http://localhost:4000`. The example application prints all registered routes:
 
-[src/example/main.mbt:78-80]()
+`src/example/main.mbt:78-80`
 ```
 for path in app.mappings.keys() {
   println("\{path.0} http://localhost:4000\{path.1}")
@@ -495,7 +495,7 @@ GET http://localhost:4000/api/hello
 ...
 ```
 
-Sources: [src/example/main.mbt:78-80](), [README.md:36]()
+Sources: `src/example/main.mbt:78-80`, `README.md:36`
 
 ## Route Matching Reference
 
@@ -503,18 +503,18 @@ The following table summarizes route pattern matching from the example applicati
 
 | Route Pattern | Example URL | Parameters Extracted | Handler Location |
 |--------------|-------------|---------------------|------------------|
-| `/` | `/` | None | [line 12]() |
-| `/hello` | `/hello` | None | [line 15]() |
-| `/api/hello` | `/api/hello` | None | [line 21]() |
-| `/json` | `/json` | None | [line 30]() |
-| `/async_data` | `/async_data` | None | [line 37]() |
-| `/hello/:name` | `/hello/Alice` | `name: "Alice"` | [line 43]() |
-| `/hello2/*` | `/hello2/Bob` | `_: "Bob"` | [line 48]() |
-| `/hello3/**` | `/hello3/a/b/c` | `_: "a/b/c"` | [line 55]() |
-| `/echo` (POST) | `/echo` | None | [line 61]() |
-| `/404` | `/404` | None | [line 64]() |
+| `/` | `/` | None | line 12 |
+| `/hello` | `/hello` | None | line 15 |
+| `/api/hello` | `/api/hello` | None | line 21 |
+| `/json` | `/json` | None | line 30 |
+| `/async_data` | `/async_data` | None | line 37 |
+| `/hello/:name` | `/hello/Alice` | `name: "Alice"` | line 43 |
+| `/hello2/*` | `/hello2/Bob` | `_: "Bob"` | line 48 |
+| `/hello3/**` | `/hello3/a/b/c` | `_: "a/b/c"` | line 55 |
+| `/echo` (POST) | `/echo` | None | line 61 |
+| `/404` | `/404` | None | line 64 |
 
-Sources: [src/example/main.mbt:12-75](), [README.md:197-208]()
+Sources: `src/example/main.mbt:12-75`, `README.md:197-208`
 
 ## Middleware Execution Order
 
@@ -556,7 +556,7 @@ sequenceDiagram
     Handler-->>Client: "Hello world!"
 ```
 
-Sources: [src/example/main.mbt:7-27]()
+Sources: `src/example/main.mbt:7-27`
 
 ## Additional Examples
 
@@ -564,7 +564,7 @@ Sources: [src/example/main.mbt:7-27]()
 
 For a minimal standalone example outside the main repository, see the separate example repository:
 
-[README.md:40]()
+`README.md:40`
 ```
 Minimum Example: https://github.com/oboard/mocket_example
 ```
@@ -574,7 +574,7 @@ This repository demonstrates:
 - Single-file application structure
 - Deployment setup
 
-Sources: [README.md:38-40]()
+Sources: `README.md:38-40`
 
 ### Example Code Structure Summary
 
@@ -610,4 +610,4 @@ graph TB
     style Lines83 fill:#f9f,stroke:#333,stroke-width:2px
 ```
 
-Sources: [src/example/main.mbt:1-85]()
+Sources: `src/example/main.mbt:1-85`

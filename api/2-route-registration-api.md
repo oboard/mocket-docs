@@ -10,7 +10,7 @@ This document describes the API for registering HTTP routes in Mocket. It covers
 
 Mocket provides a fluent API for registering routes that follows Express.js conventions. All route registration methods are defined on the `Mocket` struct and follow a consistent signature pattern. Routes are registered by associating an HTTP method and path pattern with an async handler function that returns an `HttpBody`.
 
-Sources: [src/index.mbt:11-27](), [src/pkg.generated.mbti:113-134]()
+Sources: `src/index.mbt:11-27`, `src/pkg.generated.mbti:113-134`
 
 ## Core Registration Method: `on`
 
@@ -69,9 +69,9 @@ flowchart TD
     dynamic_cache -.-> lookup_slow["O(n) regex matching"]
 ```
 
-Sources: [src/index.mbt:89-128]()
+Sources: `src/index.mbt:89-128`
 
-The method optimizes route lookup by storing static routes (exact path matches) in a nested Map structure for O(1) access, while dynamic routes (containing parameters or wildcards) are stored in Arrays that require sequential regex matching at lookup time [src/index.mbt:99-127]().
+The method optimizes route lookup by storing static routes (exact path matches) in a nested Map structure for O(1) access, while dynamic routes (containing parameters or wildcards) are stored in Arrays that require sequential regex matching at lookup time `src/index.mbt:99-127`.
 
 ## HTTP Method Convenience Methods
 
@@ -143,21 +143,21 @@ flowchart LR
     all -->|"event='*'"| on
 ```
 
-Sources: [src/index.mbt:131-218]()
+Sources: `src/index.mbt:131-218`
 
 ### Implementation Details
 
 Each convenience method is implemented as a single-line delegation:
 
-- `get`: delegates to `on("GET", path, handler)` [src/index.mbt:131-137]()
-- `post`: delegates to `on("POST", path, handler)` [src/index.mbt:140-146]()
-- `patch`: delegates to `on("PATCH", path, handler)` [src/index.mbt:149-155]()
-- `connect`: delegates to `on("CONNECT", path, handler)` [src/index.mbt:158-164]()
-- `put`: delegates to `on("PUT", path, handler)` [src/index.mbt:167-173]()
-- `delete`: delegates to `on("DELETE", path, handler)` [src/index.mbt:176-182]()
-- `head`: delegates to `on("HEAD", path, handler)` [src/index.mbt:185-191]()
-- `options`: delegates to `on("OPTIONS", path, handler)` [src/index.mbt:194-200]()
-- `trace`: delegates to `on("TRACE", path, handler)` [src/index.mbt:203-209]()
+- `get`: delegates to `on("GET", path, handler)` `src/index.mbt:131-137`
+- `post`: delegates to `on("POST", path, handler)` `src/index.mbt:140-146`
+- `patch`: delegates to `on("PATCH", path, handler)` `src/index.mbt:149-155`
+- `connect`: delegates to `on("CONNECT", path, handler)` `src/index.mbt:158-164`
+- `put`: delegates to `on("PUT", path, handler)` `src/index.mbt:167-173`
+- `delete`: delegates to `on("DELETE", path, handler)` `src/index.mbt:176-182`
+- `head`: delegates to `on("HEAD", path, handler)` `src/index.mbt:185-191`
+- `options`: delegates to `on("OPTIONS", path, handler)` `src/index.mbt:194-200`
+- `trace`: delegates to `on("TRACE", path, handler)` `src/index.mbt:203-209`
 
 ### The `all` Method
 
@@ -175,7 +175,7 @@ pub fn all(
 
 This is useful for implementing catch-all handlers or routes that should respond identically regardless of the HTTP method used.
 
-Sources: [src/index.mbt:212-218]()
+Sources: `src/index.mbt:212-218`
 
 ## Route Groups
 
@@ -236,16 +236,16 @@ flowchart TD
     temp -.->|"middlewares.iter()"| merge_middleware
 ```
 
-Sources: [src/index.mbt:222-255]()
+Sources: `src/index.mbt:222-255`
 
 ### Merge Operations
 
 The group method performs four distinct merge operations:
 
-1. **Mappings Merge** [src/index.mbt:230](): All entries from `group.mappings` are set into `self.mappings`
-2. **Static Routes Merge** [src/index.mbt:231-241](): For each HTTP method in `group.static_routes`, either merge into existing method map or create new entry
-3. **Dynamic Routes Merge** [src/index.mbt:242-252](): For each HTTP method in `group.dynamic_routes`, append routes to existing array or create new array
-4. **Middleware Merge** [src/index.mbt:254](): All middleware from `group.middlewares` are pushed to `self.middlewares`
+1. **Mappings Merge** `src/index.mbt:230`: All entries from `group.mappings` are set into `self.mappings`
+2. **Static Routes Merge** `src/index.mbt:231-241`: For each HTTP method in `group.static_routes`, either merge into existing method map or create new entry
+3. **Dynamic Routes Merge** `src/index.mbt:242-252`: For each HTTP method in `group.dynamic_routes`, append routes to existing array or create new array
+4. **Middleware Merge** `src/index.mbt:254`: All middleware from `group.middlewares` are pushed to `self.middlewares`
 
 ## Handler Function Signature
 
@@ -269,7 +269,7 @@ The `HttpEvent` type provides access to:
 - `res : HttpResponse` - The response object for setting status codes and headers
 - `params : Map[String, String]` - Extracted path parameters from dynamic routes
 
-Sources: [src/pkg.generated.mbti:49-61]()
+Sources: `src/pkg.generated.mbti:49-61`
 
 ## Internal Storage Structure
 
@@ -304,7 +304,7 @@ graph TB
     dynamic_routes --> dynamic_ex
 ```
 
-Sources: [src/index.mbt:11-27]()
+Sources: `src/index.mbt:11-27`
 
 ### Storage Fields
 
@@ -316,4 +316,4 @@ Sources: [src/index.mbt:11-27]()
 
 The dual caching strategy in `static_routes` and `dynamic_routes` optimizes route lookup performance by separating routes that can be matched with exact string comparison from those requiring regex pattern matching. See [Static Routes](#2.1.1) and [Dynamic Routes and Parameters](#2.1.2) for details on the lookup process.
 
-Sources: [src/index.mbt:11-27](), [src/index.mbt:99-127]()
+Sources: `src/index.mbt:11-27`, `src/index.mbt:99-127`

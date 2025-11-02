@@ -10,7 +10,7 @@ The Logging System provides structured observability for the Mocket web framewor
 
 This document covers the `Logger` struct, log levels, factory functions, and route-specific logging methods. For information about configuring the server itself, see [Server Configuration](#5.2). For details on the request processing pipeline that generates log events, see [Request and Response Handling](#2.3).
 
-Sources: [src/logger.mbt:1-148]()
+Sources: `src/logger.mbt:1-148`
 
 ## Logger Architecture
 
@@ -67,7 +67,7 @@ graph TB
     Logger --> RoutesAvailable
 ```
 
-Sources: [src/logger.mbt:1-148](), [src/pkg.generated.mbti:85-111]()
+Sources: `src/logger.mbt:1-148`, `src/pkg.generated.mbti:85-111`
 
 ## Logger Structure
 
@@ -87,7 +87,7 @@ The `LogLevel` enum defines four severity levels in ascending order:
 | `Warn` | Warning messages for potentially problematic situations |
 | `Error` | Error messages for serious problems |
 
-Sources: [src/logger.mbt:3-14](), [src/pkg.generated.mbti:85-95]()
+Sources: `src/logger.mbt:3-14`, `src/pkg.generated.mbti:85-95`
 
 ## Logger Creation
 
@@ -116,21 +116,21 @@ graph LR
 
 Creates a logger with customizable settings. Both parameters are optional with defaults: `enabled=true` and `level=Debug`.
 
-**Location:** [src/logger.mbt:18-20]()
+**Location:** `src/logger.mbt:18-20`
 
 ### new_production_logger()
 
 Creates a logger optimized for production environments with `enabled=false` and `level=Error`. When disabled, all logging calls become no-ops, resulting in zero runtime overhead through compiler optimization.
 
-**Location:** [src/logger.mbt:24-26]()
+**Location:** `src/logger.mbt:24-26`
 
 ### new_debug_logger()
 
 Creates a logger for development with full verbosity: `enabled=true` and `level=Debug`. All log messages will be output.
 
-**Location:** [src/logger.mbt:30-32]()
+**Location:** `src/logger.mbt:30-32`
 
-Sources: [src/logger.mbt:18-32](), [src/pkg.generated.mbti:12-18]()
+Sources: `src/logger.mbt:18-32`, `src/pkg.generated.mbti:12-18`
 
 ## Log Level Filtering
 
@@ -159,7 +159,7 @@ graph TD
     Compare --> Output["Output or Skip"]
 ```
 
-Sources: [src/logger.mbt:72-80]()
+Sources: `src/logger.mbt:72-80`
 
 ## General Logging Methods
 
@@ -184,7 +184,7 @@ logger.debug(fn() { "Expensive operation: \{compute_diagnostic()}" })
 // compute_diagnostic() only called if debug logging is enabled
 ```
 
-Sources: [src/logger.mbt:36-61](), [src/pkg.generated.mbti:96-99]()
+Sources: `src/logger.mbt:36-61`, `src/pkg.generated.mbti:96-99`
 
 ### Direct String Method
 
@@ -196,7 +196,7 @@ pub fn debug_str(self: Logger, message: String) -> Unit
 
 This method is simpler to use but has slightly worse performance since the string is constructed regardless of logger state.
 
-Sources: [src/logger.mbt:65-69]()
+Sources: `src/logger.mbt:65-69`
 
 ## Zero-Cost Abstraction Pattern
 
@@ -239,7 +239,7 @@ When enabled, the closure pattern defers string construction until after level c
 | `logger.debug_str("msg: \{x}")` | Zero (optimized away) | Always constructs string |
 | Direct `println()` | Always executes | Always executes |
 
-Sources: [src/logger.mbt:35-40](), [src/logger.mbt:17-26]()
+Sources: `src/logger.mbt:35-40`, `src/logger.mbt:17-26`
 
 ## Route-Specific Logging Methods
 
@@ -288,7 +288,7 @@ graph TB
 | `route_added(path)` | Route added to existing group | ✅ Added /api/users to existing routes |
 | `route_created(path)` | New route group created | ✅ Created new routes and added /api/admin |
 
-Sources: [src/logger.mbt:84-147](), [src/pkg.generated.mbti:100-110]()
+Sources: `src/logger.mbt:84-147`, `src/pkg.generated.mbti:100-110`
 
 ### Request Processing Methods
 
@@ -301,7 +301,7 @@ Sources: [src/logger.mbt:84-147](), [src/pkg.generated.mbti:100-110]()
 
 The `route_found` method outputs two lines: a success message and the request details.
 
-Sources: [src/logger.mbt:107-127]()
+Sources: `src/logger.mbt:107-127`
 
 ## Integration with Request Pipeline
 
@@ -338,7 +338,7 @@ sequenceDiagram
     end
 ```
 
-Sources: [src/logger.mbt:1-148](), Diagram 2 from high-level architecture
+Sources: `src/logger.mbt:1-148`, Diagram 2 from high-level architecture
 
 ## Logger Initialization
 
@@ -364,7 +364,7 @@ let app = @mocket.new(
 **Default logger (if not specified):**
 If no logger is provided, a default logger is created based on the framework's configuration.
 
-Sources: [src/example/main.mbt:3](), [src/pkg.generated.mbti:12]()
+Sources: `src/example/main.mbt:3`, `src/pkg.generated.mbti:12`
 
 ## Accessing the Logger
 
@@ -398,7 +398,7 @@ classDiagram
 
 The `Mocket.logger` field is used internally by routing and middleware systems. User code typically doesn't access the logger directly but can implement custom middleware that logs using standard output.
 
-Sources: [src/pkg.generated.mbti:113-120]()
+Sources: `src/pkg.generated.mbti:113-120`
 
 ## Usage Examples
 
@@ -453,7 +453,7 @@ fn main {
 }
 ```
 
-Sources: [src/example/main.mbt:1-84]()
+Sources: `src/example/main.mbt:1-84`
 
 ## Performance Characteristics
 
@@ -472,7 +472,7 @@ The logging system is designed for zero-cost abstraction:
 3. **Use appropriate log levels** to minimize unnecessary log output
 4. **Avoid logging in hot paths** even with production logger, as surrounding code may prevent optimization
 
-Sources: [src/logger.mbt:17-26](), [src/logger.mbt:35-40]()
+Sources: `src/logger.mbt:17-26`, `src/logger.mbt:35-40`
 
 ## Summary
 
@@ -486,4 +486,4 @@ The Mocket logging system provides:
 
 The system balances observability in development with zero overhead in production, following the principle that developers shouldn't pay for features they don't use.
 
-Sources: [src/logger.mbt:1-148](), [src/pkg.generated.mbti:85-111]()
+Sources: `src/logger.mbt:1-148`, `src/pkg.generated.mbti:85-111`

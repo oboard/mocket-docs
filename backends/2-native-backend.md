@@ -95,7 +95,7 @@ graph TB
     EvHandler --> ResponseT
 ```
 
-**Sources:** [src/mocket.native.mbt:1-222](), [src/mocket.stub.c:1-354]()
+**Sources:** `src/mocket.native.mbt:1-222`, `src/mocket.stub.c:1-354`
 
 ---
 
@@ -111,7 +111,7 @@ The native backend defines three external types that represent opaque C pointers
 | `HttpRequestInternal` | `request_t*` | Incoming HTTP request |
 | `HttpResponseInternal` | `response_t*` | Outgoing HTTP response |
 
-**Sources:** [src/mocket.native.mbt:2-11]()
+**Sources:** `src/mocket.native.mbt:2-11`
 
 ### FFI Function Bindings
 
@@ -160,7 +160,7 @@ graph LR
     SrvListen -.-> CSrvListen
 ```
 
-**Sources:** [src/mocket.native.mbt:14-89](), [src/mocket.stub.c:45-285]()
+**Sources:** `src/mocket.native.mbt:14-89`, `src/mocket.stub.c:45-285`
 
 Key characteristics:
 - `#owned` annotation indicates the C side takes ownership of parameters
@@ -233,7 +233,7 @@ sequenceDiagram
     end
 ```
 
-**Sources:** [src/mocket.stub.c:213-257](), [src/mocket.native.mbt:108-207]()
+**Sources:** `src/mocket.stub.c:213-257`, `src/mocket.native.mbt:108-207`
 
 ### Entry Point: serve_ffi
 
@@ -260,9 +260,9 @@ graph TB
     MgMgrPoll --> MgMgrPoll
 ```
 
-**Sources:** [src/mocket.native.mbt:95-105](), [src/mocket.stub.c:260-285]()
+**Sources:** `src/mocket.native.mbt:95-105`, `src/mocket.stub.c:260-285`
 
-The `server_map` global variable ([src/mocket.native.mbt:92]()) maps port numbers to `Mocket` instances, allowing the single C callback to dispatch to multiple application instances.
+The `server_map` global variable (`src/mocket.native.mbt:92`) maps port numbers to `Mocket` instances, allowing the single C callback to dispatch to multiple application instances.
 
 ---
 
@@ -308,7 +308,7 @@ graph LR
     end
 ```
 
-**Sources:** [src/mocket.native.mbt:210-221]()
+**Sources:** `src/mocket.native.mbt:210-221`
 
 **Key observations:**
 - `to_cstr()` uses `unsafe_coerce()` to convert `Bytes` to `CStr` without copying
@@ -319,7 +319,7 @@ graph LR
 
 ## Request Handling
 
-The `handle_request_native()` function ([src/mocket.native.mbt:108-207]()) orchestrates the complete request lifecycle.
+The `handle_request_native()` function (`src/mocket.native.mbt:108-207`) orchestrates the complete request lifecycle.
 
 ### Request Data Extraction
 
@@ -343,9 +343,9 @@ graph TB
     ParsePairs --> BuildMap
 ```
 
-**Sources:** [src/mocket.native.mbt:113-148]()
+**Sources:** `src/mocket.native.mbt:113-148`
 
-Header parsing logic ([src/mocket.native.mbt:136-148]()):
+Header parsing logic (`src/mocket.native.mbt:136-148`):
 1. Get headers as single string from `req.headers()`
 2. Split by newlines
 3. Split each line by `": "` to get key-value pairs
@@ -381,9 +381,9 @@ graph TB
     RawBytes --> SetBody
 ```
 
-**Sources:** [src/mocket.native.mbt:162-173](), [src/body_reader.mbt:9-29]()
+**Sources:** `src/mocket.native.mbt:162-173`, `src/body_reader.mbt:9-29`
 
-The `read_body()` function ([src/body_reader.mbt:9-29]()) returns different `HttpBody` variants:
+The `read_body()` function (`src/body_reader.mbt:9-29`) returns different `HttpBody` variants:
 - `Json`: For `application/json` Content-Type
 - `Text`: For `text/plain` or `text/html`
 - `Bytes`: For all other types or missing Content-Type
@@ -430,7 +430,7 @@ graph TB
     EndCstr --> MgHttpReply
 ```
 
-**Sources:** [src/mocket.native.mbt:174-206]()
+**Sources:** `src/mocket.native.mbt:174-206`
 
 ### Content-Type Mapping
 
@@ -442,17 +442,17 @@ graph TB
 | `Json(_)` | `application/json; charset=utf-8` |
 | `Empty` | (no header set) |
 
-**Sources:** [src/mocket.native.mbt:181-187]()
+**Sources:** `src/mocket.native.mbt:181-187`
 
 Response functions use different C endpoints:
-- `res.end_bytes()` for binary data ([src/mocket.native.mbt:194-195]())
-- `res.end()` for text data ([src/mocket.native.mbt:197-204]())
+- `res.end_bytes()` for binary data (`src/mocket.native.mbt:194-195`)
+- `res.end()` for text data (`src/mocket.native.mbt:197-204`)
 
 ---
 
 ## C Layer Implementation Details
 
-The C stub ([src/mocket.stub.c]()) provides the glue between Mongoose and MoonBit.
+The C stub (`src/mocket.stub.c`) provides the glue between Mongoose and MoonBit.
 
 ### Core C Structures
 
@@ -486,11 +486,11 @@ graph TB
     ResHeaders -.-> HeaderValue
 ```
 
-**Sources:** [src/mocket.stub.c:6-42]()
+**Sources:** `src/mocket.stub.c:6-42`
 
 ### Event Handler
 
-The `ev_handler()` function ([src/mocket.stub.c:213-257]()) is registered as Mongoose's event callback:
+The `ev_handler()` function (`src/mocket.stub.c:213-257`) is registered as Mongoose's event callback:
 
 ```mermaid
 graph TB
@@ -515,7 +515,7 @@ graph TB
     CheckHandler -->|No| Invoke404
 ```
 
-**Sources:** [src/mocket.stub.c:213-257]()
+**Sources:** `src/mocket.stub.c:213-257`
 
 Key points:
 - Mongoose calls `ev_handler()` for all connection events
@@ -541,7 +541,7 @@ The native backend offers distinct performance properties:
 | **String conversion** | Minimal copies | `unsafe_coerce` for MoonBit→C, single copy for C→MoonBit |
 | **Binary responses** | Zero-copy | `end_bytes()` passes pointer directly |
 
-**Sources:** [src/mocket.native.mbt:210-221](), [src/mocket.stub.c:86-94]()
+**Sources:** `src/mocket.native.mbt:210-221`, `src/mocket.stub.c:86-94`
 
 ### Comparison with JavaScript Backend
 
@@ -575,7 +575,7 @@ graph TB
     ResEnd --> Return
 ```
 
-**Sources:** [src/mocket.native.mbt:165-171](), [src/body_reader.mbt:2-6]()
+**Sources:** `src/mocket.native.mbt:165-171`, `src/body_reader.mbt:2-6`
 
 Error types defined in `body_reader.mbt`:
 - `InvalidJsonCharset`: UTF-8 decoding failed
@@ -592,8 +592,8 @@ Current limitations:
 1. **No async support**: Cannot use `async` functions in route handlers (JavaScript backend only)
 2. **Callback staging incomplete**: `on_headers`, `on_body_chunk` callbacks defined but not utilized
 3. **Single-threaded**: Mongoose event loop runs on one thread
-4. **Static header buffer**: Maximum 32 headers, 128-byte keys, 256-byte values ([src/mocket.stub.c:12]())
-5. **Static string buffers**: URL limited to 512 bytes, method to 16 bytes ([src/mocket.stub.c:103-108]())
+4. **Static header buffer**: Maximum 32 headers, 128-byte keys, 256-byte values (`src/mocket.stub.c:12`)
+5. **Static string buffers**: URL limited to 512 bytes, method to 16 bytes (`src/mocket.stub.c:103-108`)
 
 Future enhancements:
 - Request/response streaming via staged callbacks
@@ -601,4 +601,4 @@ Future enhancements:
 - WebSocket support through Mongoose
 - SSL/TLS configuration exposure
 
-**Sources:** [src/mocket.stub.c:18-33](), [src/mocket.stub.c:99-124]()
+**Sources:** `src/mocket.stub.c:18-33`, `src/mocket.stub.c:99-124`

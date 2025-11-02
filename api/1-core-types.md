@@ -41,7 +41,7 @@ graph TB
     HttpBody --> EmptyVariant
 ```
 
-**Sources:** [src/pkg.generated.mbti:49-120](), [src/event.mbt:2-6]()
+**Sources:** `src/pkg.generated.mbti:49-120`, `src/event.mbt:2-6`
 
 ## HttpEvent
 
@@ -57,7 +57,7 @@ The `HttpEvent` struct is the primary object passed to route handlers and middle
 
 ### Definition Location
 
-The `HttpEvent` type is defined at [src/event.mbt:2-6]() and declared public in [src/pkg.generated.mbti:57-61]().
+The `HttpEvent` type is defined at `src/event.mbt:2-6` and declared public in `src/pkg.generated.mbti:57-61`.
 
 ### Usage Pattern
 
@@ -69,7 +69,7 @@ async fn handler(event : HttpEvent) -> HttpBody noraise
 
 The `params` map contains values extracted from dynamic route segments. For example, a route pattern `/users/:id` accessed with `/users/123` would populate `params` with `{"id": "123"}`.
 
-**Sources:** [src/event.mbt:2-6](), [src/pkg.generated.mbti:57-61]()
+**Sources:** `src/event.mbt:2-6`, `src/pkg.generated.mbti:57-61`
 
 ## HttpRequest
 
@@ -86,7 +86,7 @@ The `HttpRequest` struct contains all data from the incoming HTTP request.
 
 ### Definition Location
 
-Defined at [src/pkg.generated.mbti:63-68]().
+Defined at `src/pkg.generated.mbti:63-68`.
 
 ### Body Mutability
 
@@ -111,7 +111,7 @@ sequenceDiagram
     Handler-->>Backend: "Return HttpBody"
 ```
 
-**Sources:** [src/pkg.generated.mbti:63-68]()
+**Sources:** `src/pkg.generated.mbti:63-68`
 
 ## HttpResponse
 
@@ -126,7 +126,7 @@ The `HttpResponse` struct allows handlers to configure the outgoing HTTP respons
 
 ### Definition Location
 
-Defined at [src/pkg.generated.mbti:75-78]().
+Defined at `src/pkg.generated.mbti:75-78`.
 
 ### Header Types
 
@@ -144,7 +144,7 @@ async fn handler(event : HttpEvent) -> HttpBody {
 }
 ```
 
-**Sources:** [src/pkg.generated.mbti:75-78]()
+**Sources:** `src/pkg.generated.mbti:75-78`
 
 ## HttpBody
 
@@ -162,7 +162,7 @@ The `HttpBody` enum represents different content types that can be sent or recei
 
 ### Definition Location
 
-Defined at [src/pkg.generated.mbti:49-55]().
+Defined at `src/pkg.generated.mbti:49-55`.
 
 ### Content-Type Handling
 
@@ -190,7 +190,7 @@ graph TD
     Empty --> Auto5["No Content-Type"]
 ```
 
-**Sources:** [src/pkg.generated.mbti:49-55]()
+**Sources:** `src/pkg.generated.mbti:49-55`
 
 ## Mocket
 
@@ -209,7 +209,7 @@ The `Mocket` struct is the main framework instance that holds routing configurat
 
 ### Definition Location
 
-Defined at [src/pkg.generated.mbti:113-120]().
+Defined at `src/pkg.generated.mbti:113-120`.
 
 ### Route Storage Architecture
 
@@ -251,7 +251,7 @@ graph TB
 
 All route handlers in Mocket use the signature `async (HttpEvent) -> HttpBody noraise`. The `noraise` annotation indicates these handlers cannot raise exceptions, enforcing error handling through the return value.
 
-**Sources:** [src/pkg.generated.mbti:113-120](), [src/pkg.generated.mbti:121-134]()
+**Sources:** `src/pkg.generated.mbti:113-120`, `src/pkg.generated.mbti:121-134`
 
 ## Logger
 
@@ -277,7 +277,7 @@ pub enum LogLevel {
 
 ### Definition Location
 
-Defined at [src/pkg.generated.mbti:85-111]().
+Defined at `src/pkg.generated.mbti:85-111`.
 
 ### Specialized Methods
 
@@ -299,13 +299,13 @@ The `Logger` type provides route-specific logging methods that track routing ope
 
 ### Logger Construction
 
-The framework provides three factory functions defined in [src/pkg.generated.mbti:13-18]():
+The framework provides three factory functions defined in `src/pkg.generated.mbti:13-18`:
 
 - `new_logger(enabled?: Bool, level?: LogLevel) -> Logger` - Custom configuration
 - `new_debug_logger() -> Logger` - All logs enabled at Debug level
 - `new_production_logger() -> Logger` - Info level and above
 
-**Sources:** [src/pkg.generated.mbti:85-111](), [src/pkg.generated.mbti:13-18]()
+**Sources:** `src/pkg.generated.mbti:85-111`, `src/pkg.generated.mbti:13-18`
 
 ## Internal Types
 
@@ -345,7 +345,7 @@ graph LR
 
 ### Methods on Internal Types
 
-Defined at [src/pkg.generated.mbti:70-83]():
+Defined at `src/pkg.generated.mbti:70-83`:
 
 **HttpRequestInternal:**
 - `req_method(Self) -> String` - Extract HTTP method
@@ -357,7 +357,7 @@ Defined at [src/pkg.generated.mbti:70-83]():
 
 These methods provide the bridge between platform-specific implementations and the core framework types.
 
-**Sources:** [src/pkg.generated.mbti:70-83]()
+**Sources:** `src/pkg.generated.mbti:70-83`
 
 ## Type Relationships in Request Processing
 
@@ -392,17 +392,17 @@ sequenceDiagram
     M-->>R: "Convert to platform response"
 ```
 
-**Sources:** [src/pkg.generated.mbti:49-120](), [src/event.mbt:2-6]()
+**Sources:** `src/pkg.generated.mbti:49-120`, `src/event.mbt:2-6`
 
 ## Summary Table
 
 | Type | Purpose | Mutability | Location |
 |------|---------|------------|----------|
-| `Mocket` | Framework instance with routing and middleware | Contains mutable maps | [src/pkg.generated.mbti:113-120]() |
-| `HttpEvent` | Request context passed to handlers | Immutable wrapper | [src/event.mbt:2-6]() |
-| `HttpRequest` | Incoming request data | `body` field is mutable | [src/pkg.generated.mbti:63-68]() |
-| `HttpResponse` | Outgoing response configuration | `status_code` is mutable | [src/pkg.generated.mbti:75-78]() |
-| `HttpBody` | Content type enum | Immutable value | [src/pkg.generated.mbti:49-55]() |
-| `Logger` | Logging system | Immutable configuration | [src/pkg.generated.mbti:92-111]() |
+| `Mocket` | Framework instance with routing and middleware | Contains mutable maps | `src/pkg.generated.mbti:113-120` |
+| `HttpEvent` | Request context passed to handlers | Immutable wrapper | `src/event.mbt:2-6` |
+| `HttpRequest` | Incoming request data | `body` field is mutable | `src/pkg.generated.mbti:63-68` |
+| `HttpResponse` | Outgoing response configuration | `status_code` is mutable | `src/pkg.generated.mbti:75-78` |
+| `HttpBody` | Content type enum | Immutable value | `src/pkg.generated.mbti:49-55` |
+| `Logger` | Logging system | Immutable configuration | `src/pkg.generated.mbti:92-111` |
 
-**Sources:** [src/pkg.generated.mbti:49-120](), [src/event.mbt:2-6]()
+**Sources:** `src/pkg.generated.mbti:49-120`, `src/event.mbt:2-6`

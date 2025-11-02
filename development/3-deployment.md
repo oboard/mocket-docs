@@ -44,7 +44,7 @@ flowchart TD
     SetWorkdir --> SetCmd
 ```
 
-**Sources:** [Dockerfile:1-37]()
+**Sources:** `Dockerfile:1-37`
 
 ### Builder Stage Configuration
 
@@ -58,9 +58,9 @@ The builder stage uses the `gcc:12` base image, which provides the complete GCC 
 | Dependency Caching | `COPY moon.* ./` then `moon update` | Leverages Docker layer caching for dependencies |
 | Source Compilation | `moon build --target native --release` | Produces optimized native binary |
 
-The builder stage explicitly uses `--platform=linux/amd64` to ensure consistent builds across different host architectures [Dockerfile:4]().
+The builder stage explicitly uses `--platform=linux/amd64` to ensure consistent builds across different host architectures `Dockerfile:4`.
 
-**Sources:** [Dockerfile:4-25]()
+**Sources:** `Dockerfile:4-25`
 
 ### Runtime Stage Configuration
 
@@ -77,12 +77,12 @@ graph LR
 ```
 
 The runtime configuration is minimal:
-- Base image: `alpine:latest` [Dockerfile:31]()
-- Working directory: `/app` [Dockerfile:33]()
-- Executable location: `/app/example` [Dockerfile:34]()
-- Entry point: `CMD ["./example"]` [Dockerfile:36]()
+- Base image: `alpine:latest` `Dockerfile:31`
+- Working directory: `/app` `Dockerfile:33`
+- Executable location: `/app/example` `Dockerfile:34`
+- Entry point: `CMD ["./example"]` `Dockerfile:36`
 
-**Sources:** [Dockerfile:31-37]()
+**Sources:** `Dockerfile:31-37`
 
 ### Building and Running the Container
 
@@ -96,9 +96,9 @@ docker build -t mocket-app .
 docker run -p 8080:8080 mocket-app
 ```
 
-The Dockerfile expects the application executable to be located at `target/native/release/build/example/example.exe` after compilation [Dockerfile:34](). Applications with different names or locations should modify the `COPY` instruction accordingly.
+The Dockerfile expects the application executable to be located at `target/native/release/build/example/example.exe` after compilation `Dockerfile:34`. Applications with different names or locations should modify the `COPY` instruction accordingly.
 
-**Sources:** [Dockerfile:34]()
+**Sources:** `Dockerfile:34`
 
 ---
 
@@ -117,7 +117,7 @@ The workflow executes on multiple events:
 | `workflow_dispatch` | Manual trigger | Allow on-demand pipeline execution |
 | `schedule` | `30 2 * * 5` (Fridays at 02:30) | Weekly compatibility verification |
 
-**Sources:** [.github/workflows/check.yaml:3-14]()
+**Sources:** `.github/workflows/check.yaml:3-14`
 
 ### Build Matrix Strategy
 
@@ -153,31 +153,31 @@ graph TB
     Format --> Test
 ```
 
-**Sources:** [.github/workflows/check.yaml:18-31]()
+**Sources:** `.github/workflows/check.yaml:18-31`
 
 ### Quality Gates
 
 The pipeline enforces several quality gates that must pass before code can be deployed:
 
-1. **Zero-Warning Compilation**: `moon check --deny-warn --target native` [.github/workflows/check.yaml:52]()
+1. **Zero-Warning Compilation**: `moon check --deny-warn --target native` `.github/workflows/check.yaml:52`
    - Fails the build if any warnings are present
    - Ensures code quality standards
 
-2. **Generated File Consistency**: `moon info --target native` followed by `git diff --exit-code` [.github/workflows/check.yaml:55-57]()
+2. **Generated File Consistency**: `moon info --target native` followed by `git diff --exit-code` `.github/workflows/check.yaml:55-57`
    - Verifies that generated files are committed
    - Prevents inconsistencies between local and CI builds
 
-3. **Format Compliance**: `moon fmt` followed by `git diff --exit-code` [.github/workflows/check.yaml:60-62]()
+3. **Format Compliance**: `moon fmt` followed by `git diff --exit-code` `.github/workflows/check.yaml:60-62`
    - Ensures all code follows consistent formatting
    - Fails if any files would be modified by formatting
 
-4. **Test Execution**: `moon test --target native` (executed twice) [.github/workflows/check.yaml:74-76]()
+4. **Test Execution**: `moon test --target native` (executed twice) `.github/workflows/check.yaml:74-76`
    - Validates functionality through automated tests
    - Runs twice to catch non-deterministic failures
 
-The `fail-fast: false` configuration [.github/workflows/check.yaml:29]() ensures that all matrix combinations are tested even if one fails, providing complete visibility into compatibility issues.
+The `fail-fast: false` configuration `.github/workflows/check.yaml:29` ensures that all matrix combinations are tested even if one fails, providing complete visibility into compatibility issues.
 
-**Sources:** [.github/workflows/check.yaml:29,52,55-62,74-76]()
+**Sources:** `.github/workflows/check.yaml:29,52,55-62,74-76`
 
 ### Resource Configuration
 
@@ -187,9 +187,9 @@ The pipeline sets specific resource limits for Unix systems:
 ulimit -s 8176
 ```
 
-This configures a stack size of 8176 KB before running tests [.github/workflows/check.yaml:68-71](). This limit prevents stack overflow issues during test execution and ensures consistent behavior across environments.
+This configures a stack size of 8176 KB before running tests `.github/workflows/check.yaml:68-71`. This limit prevents stack overflow issues during test execution and ensures consistent behavior across environments.
 
-**Sources:** [.github/workflows/check.yaml:68-71]()
+**Sources:** `.github/workflows/check.yaml:68-71`
 
 ---
 
@@ -242,7 +242,7 @@ moon build --target native --release
 ./target/native/release/build/example/example.exe
 ```
 
-**Sources:** [Dockerfile:25](), [.github/workflows/check.yaml:52]()
+**Sources:** `Dockerfile:25`, `.github/workflows/check.yaml:52`
 
 ### JavaScript Backend Deployment
 
@@ -298,13 +298,13 @@ Always use the `--release` flag when building for production:
 moon build --target native --release
 ```
 
-The `--release` flag [Dockerfile:25]() enables compiler optimizations that significantly improve runtime performance:
+The `--release` flag `Dockerfile:25` enables compiler optimizations that significantly improve runtime performance:
 - Dead code elimination
 - Inlining optimizations
 - Reduced binary size
 - No debug symbols
 
-**Sources:** [Dockerfile:25]()
+**Sources:** `Dockerfile:25`
 
 ### Port Configuration
 
@@ -345,23 +345,23 @@ When deploying native binaries, consider system resource constraints:
 | File descriptors | 65536 | `ulimit -n 65536` |
 | Memory | Based on workload | Container/systemd limits |
 
-The CI pipeline sets `ulimit -s 8176` [.github/workflows/check.yaml:71]() to ensure consistent stack behavior.
+The CI pipeline sets `ulimit -s 8176` `.github/workflows/check.yaml:71` to ensure consistent stack behavior.
 
-**Sources:** [.github/workflows/check.yaml:71]()
+**Sources:** `.github/workflows/check.yaml:71`
 
 ### Deployment Verification Checklist
 
 Before deploying to production:
 
-1. ✓ Build passes with `--deny-warn` flag [.github/workflows/check.yaml:52]()
-2. ✓ All tests execute successfully [.github/workflows/check.yaml:74-76]()
-3. ✓ Code formatting is consistent [.github/workflows/check.yaml:60-62]()
-4. ✓ Release optimizations are enabled (`--release` flag) [Dockerfile:25]()
+1. ✓ Build passes with `--deny-warn` flag `.github/workflows/check.yaml:52`
+2. ✓ All tests execute successfully `.github/workflows/check.yaml:74-76`
+3. ✓ Code formatting is consistent `.github/workflows/check.yaml:60-62`
+4. ✓ Release optimizations are enabled (`--release` flag) `Dockerfile:25`
 5. ✓ Port mapping is configured correctly
 6. ✓ Resource limits are set appropriately
 7. ✓ Logging level is set to production mode
 
-**Sources:** [.github/workflows/check.yaml:52,60-62,74-76](), [Dockerfile:25]()
+**Sources:** `.github/workflows/check.yaml:52,60-62,74-76`, `Dockerfile:25`
 
 ---
 
@@ -384,6 +384,6 @@ The multi-stage Dockerfile produces images suitable for distribution through:
 - Private container registries
 - Cloud provider registries (ECR, GCR, ACR)
 
-The minimal Alpine-based runtime stage [Dockerfile:31]() ensures that distributed images are small and secure, containing only the compiled binary and essential system libraries.
+The minimal Alpine-based runtime stage `Dockerfile:31` ensures that distributed images are small and secure, containing only the compiled binary and essential system libraries.
 
-**Sources:** [Dockerfile:31]()
+**Sources:** `Dockerfile:31`

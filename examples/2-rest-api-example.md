@@ -60,7 +60,7 @@ graph TB
     POST2 --> JsonResp
 ```
 
-Sources: [README.md:38-195](), [src/example/main.mbt:1-85]()
+Sources: `README.md:38-195`, `src/example/main.mbt:1-85`
 
 ## Application Initialization
 
@@ -70,14 +70,14 @@ The core setup follows this pattern from the example application:
 
 | Component | Code Reference | Purpose |
 |-----------|---------------|---------|
-| `@mocket.new()` | [src/example/main.mbt:3]() | Creates framework instance |
-| `logger` parameter | [src/example/main.mbt:3]() | Configures logging behavior |
-| `use_middleware()` | [src/example/main.mbt:7-9]() | Adds global request interceptors |
-| `serve()` | [src/example/main.mbt:83]() | Starts HTTP server |
+| `@mocket.new()` | `src/example/main.mbt:3` | Creates framework instance |
+| `logger` parameter | `src/example/main.mbt:3` | Configures logging behavior |
+| `use_middleware()` | `src/example/main.mbt:7-9` | Adds global request interceptors |
+| `serve()` | `src/example/main.mbt:83` | Starts HTTP server |
 
 The example uses `@mocket.new_production_logger()` for production deployments, which disables debug logging for performance.
 
-Sources: [src/example/main.mbt:3-9](), [src/logger.mbt:24-26]()
+Sources: `src/example/main.mbt:3-9`, `src/logger.mbt:24-26`
 
 ## Route Group Organization
 
@@ -104,14 +104,14 @@ graph LR
     MW --> PostData
 ```
 
-The group pattern is implemented in [src/example/main.mbt:16-27]():
+The group pattern is implemented in `src/example/main.mbt:16-27`:
 - Line 16: `app.group("/api", group => { ... })` creates the group
 - Lines 18-20: Group middleware applies to all routes in the group
 - Lines 21-26: Individual routes are registered on the `group` object
 
 All routes registered within the group callback automatically receive the `/api` prefix and execute the group middleware before their handlers.
 
-Sources: [src/example/main.mbt:16-27](), [README.md:86-109]()
+Sources: `src/example/main.mbt:16-27`, `README.md:86-109`
 
 ## CRUD Endpoint Implementation
 
@@ -121,14 +121,14 @@ GET endpoints return JSON data representing resources. Static data endpoints ret
 
 **Static JSON Response Pattern:**
 
-[src/example/main.mbt:22-26]() demonstrates returning a JSON object:
+`src/example/main.mbt:22-26` demonstrates returning a JSON object:
 - The handler returns `Json({ ... })` wrapping a MoonBit struct
 - The framework serializes the struct to JSON automatically
 - Content-Type header is set to `application/json`
 
 **Dynamic Parameter Extraction:**
 
-[src/example/main.mbt:43-46]() shows parameter access:
+`src/example/main.mbt:43-46` shows parameter access:
 - Route pattern: `/hello/:name` defines a parameter placeholder
 - `event.params.get("name")` extracts the parameter value
 - `unwrap_or("World")` provides a default if missing
@@ -139,7 +139,7 @@ GET endpoints return JSON data representing resources. Static data endpoints ret
 | `/users/:id/posts/:postId` | `/users/5/posts/42` | `event.params.get("id")` → `"5"`<br/>`event.params.get("postId")` → `"42"` |
 | `/api/**` | `/api/v1/users` | `event.params.get("_")` → `"v1/users"` |
 
-Sources: [src/example/main.mbt:22-26](), [src/example/main.mbt:43-46](), [README.md:44-71](), [README.md:197-207]()
+Sources: `src/example/main.mbt:22-26`, `src/example/main.mbt:43-46`, `README.md:44-71`, `README.md:197-207`
 
 ### POST Endpoints - Creating Resources
 
@@ -147,7 +147,7 @@ POST endpoints receive JSON request bodies and return JSON responses. The reques
 
 **Echo Server Pattern:**
 
-[src/example/main.mbt:61]() demonstrates the simplest POST handler:
+`src/example/main.mbt:61` demonstrates the simplest POST handler:
 ```
 ..post("/echo", e => e.req.body)
 ```
@@ -159,7 +159,7 @@ This handler:
 
 The body parsing happens automatically in the framework based on the Content-Type header. For `application/json`, the body is parsed into `HttpBody::Json` with the JSON object accessible.
 
-Sources: [src/example/main.mbt:61](), [README.md:172]()
+Sources: `src/example/main.mbt:61`, `README.md:172`
 
 ### PUT/DELETE Endpoints - Updates and Deletion
 
@@ -173,12 +173,12 @@ PUT and DELETE endpoints follow the same pattern as GET/POST, typically using ro
 | PATCH | `/users/:id` | `event.params.get("id")` + `event.req.body` |
 | DELETE | `/users/:id` | `event.params.get("id")` |
 
-The framework provides method-specific registration functions referenced in [README.md:197-207]():
+The framework provides method-specific registration functions referenced in `README.md:197-207`:
 - `app.put("/users/:id", handler)` - Full replacement
 - `app.patch("/users/:id", handler)` - Partial update  
 - `app.delete("/users/:id", handler)` - Resource deletion
 
-Sources: [README.md:197-207]()
+Sources: `README.md:197-207`
 
 ## JSON Request/Response Flow
 
@@ -207,7 +207,7 @@ sequenceDiagram
     Backend->>Client: "HTTP 200<br/>Content-Type: application/json<br/>{\"id\": 123, \"name\": \"Alice\"}"
 ```
 
-Sources: [README.md:38-195](), [src/example/main.mbt:1-85]()
+Sources: `README.md:38-195`, `src/example/main.mbt:1-85`
 
 ## Complete REST API Example Structure
 
@@ -215,25 +215,25 @@ The following table maps a complete user management API to the code patterns in 
 
 | Endpoint | Method | Handler Pattern | Example Reference |
 |----------|--------|----------------|-------------------|
-| `/api/users` | GET | `group.get("/users", _ => Json({ "users": [...] }))` | [src/example/main.mbt:22-26]() pattern |
-| `/api/users` | POST | `group.post("/users", e => Json({ "id": ..., ...e.req.body }))` | [src/example/main.mbt:61]() pattern |
-| `/api/users/:id` | GET | `group.get("/users/:id", e => Json({ "id": e.params.get("id") }))` | [src/example/main.mbt:43-46]() pattern |
-| `/api/users/:id` | PUT | `group.put("/users/:id", e => { /* update */ Json(...) })` | Method from [README.md:197-207]() |
-| `/api/users/:id` | DELETE | `group.delete("/users/:id", e => { /* delete */ Text("OK") })` | Method from [README.md:197-207]() |
+| `/api/users` | GET | `group.get("/users", _ => Json({ "users": [...] }))` | `src/example/main.mbt:22-26` pattern |
+| `/api/users` | POST | `group.post("/users", e => Json({ "id": ..., ...e.req.body }))` | `src/example/main.mbt:61` pattern |
+| `/api/users/:id` | GET | `group.get("/users/:id", e => Json({ "id": e.params.get("id") }))` | `src/example/main.mbt:43-46` pattern |
+| `/api/users/:id` | PUT | `group.put("/users/:id", e => { /* update */ Json(...) })` | Method from `README.md:197-207` |
+| `/api/users/:id` | DELETE | `group.delete("/users/:id", e => { /* delete */ Text("OK") })` | Method from `README.md:197-207` |
 
 All endpoints within the `/api` group would:
-1. Execute the group middleware from [src/example/main.mbt:18-20]()
-2. Execute any global middleware from [src/example/main.mbt:7-9]()
+1. Execute the group middleware from `src/example/main.mbt:18-20`
+2. Execute any global middleware from `src/example/main.mbt:7-9`
 3. Execute the route-specific handler
 4. Return responses that are automatically serialized by the framework
 
-Sources: [src/example/main.mbt:16-27](), [README.md:197-207]()
+Sources: `src/example/main.mbt:16-27`, `README.md:197-207`
 
 ## Async JSON Endpoints
 
 Mocket supports asynchronous handlers for I/O operations or long-running computations that return JSON responses.
 
-The async pattern is demonstrated in [src/example/main.mbt:37-39]():
+The async pattern is demonstrated in `src/example/main.mbt:37-39`:
 ```
 ..get("/async_data", async fn(_event) noraise {
   Json({ "name": "John Doe", "age": 30, "city": "New York" })
@@ -248,7 +248,7 @@ Key characteristics:
 
 This pattern works identically for POST, PUT, and other HTTP methods, enabling async database queries, external API calls, or file operations.
 
-Sources: [src/example/main.mbt:37-39](), [README.md:73-84]()
+Sources: `src/example/main.mbt:37-39`, `README.md:73-84`
 
 ## HTTP Method Registration
 
@@ -265,15 +265,15 @@ The framework provides convenience methods for all standard HTTP methods that de
 
 The same methods are available on route groups:
 - `group.get()`, `group.post()`, etc.
-- Example: [src/example/main.mbt:21-26]()
+- Example: `src/example/main.mbt:21-26`
 
-For custom HTTP methods not covered by convenience functions, use `app.on(method, path, handler)` as shown in [src/example/main.mbt:15]().
+For custom HTTP methods not covered by convenience functions, use `app.on(method, path, handler)` as shown in `src/example/main.mbt:15`.
 
-Sources: [src/example/main.mbt:12-27](), [README.md:86-109]()
+Sources: `src/example/main.mbt:12-27`, `README.md:86-109`
 
 ## Testing the API
 
-After starting the server with `app.serve(port=4000)` from [src/example/main.mbt:83](), the API can be tested with standard HTTP clients:
+After starting the server with `app.serve(port=4000)` from `src/example/main.mbt:83`, the API can be tested with standard HTTP clients:
 
 **Example curl Commands:**
 
@@ -295,6 +295,6 @@ curl -X POST http://localhost:4000/echo \
   -d '{"message":"test"}'
 ```
 
-The example application prints all registered routes at startup ([src/example/main.mbt:78-80]()), making it easy to see all available endpoints.
+The example application prints all registered routes at startup (`src/example/main.mbt:78-80`), making it easy to see all available endpoints.
 
-Sources: [src/example/main.mbt:78-83](), [README.md:36]()
+Sources: `src/example/main.mbt:78-83`, `README.md:36`

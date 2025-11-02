@@ -100,8 +100,8 @@ export default withMermaid(defineConfig({
     },
 
     footer: {
-      message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2024 Mocket Contributors'
+      message: 'Released under the Apache 2.0 License.',
+      copyright: 'Copyright © 2025 oboard'
     }
   },
 

@@ -43,7 +43,7 @@ graph TB
 | `.gitignore` | Excludes `node_modules/`, `target/`, `.mooncakes/`, and OS artifacts |
 | `LICENSE` | Apache License 2.0 terms |
 
-Sources: [moon.mod.json:1-20](), [.gitignore:1-4](), [LICENSE:1-203]()
+Sources: `moon.mod.json:1-20`, .gitignore:1-4, `LICENSE:1-203`
 
 ## Package Metadata (moon.mod.json)
 
@@ -77,7 +77,7 @@ graph LR
 
 The dependency list includes four external packages that provide critical functionality not available in the MoonBit standard library. For detailed information on why these dependencies are needed, see [Package Dependencies](#1.2).
 
-Sources: [moon.mod.json:1-20]()
+Sources: `moon.mod.json:1-20`
 
 ## Build Configuration (moon.pkg.json)
 
@@ -114,7 +114,7 @@ graph TB
     WASMTarget -->|"always includes"| CoreFiles
 ```
 
-The `targets` mapping at [src/moon.pkg.json:18-29]() ensures that:
+The `targets` mapping at `src/moon.pkg.json:18-29` ensures that:
 - When compiling for `js`, only `mocket.js.mbt` is included
 - When compiling for `native`, only `mocket.native.mbt` is included  
 - When compiling for `wasm` or `wasm-gc`, only `mocket.wasm.mbt` is included
@@ -145,7 +145,7 @@ The build configuration specifies several important settings:
 - `supported-targets`: This package can be compiled to JavaScript, native binaries, and LLVM IR
 - `warn-list`: Disables specific compiler warnings (codes 15-29)
 
-Sources: [src/moon.pkg.json:1-30]()
+Sources: `src/moon.pkg.json:1-30`
 
 ## Source Code Organization
 
@@ -191,7 +191,7 @@ graph LR
 Each backend file implements the `serve_ffi` function with a platform-specific signature:
 - **JavaScript**: Integrates with Node.js HTTP server via `js.Value` FFI types
 - **Native**: Integrates with Mongoose C library via `native.CStr` FFI types  
-- **WASM**: Currently contains only a stub that panics at [src/mocket.wasm.mbt:2-5]()
+- **WASM**: Currently contains only a stub that panics at `src/mocket.wasm.mbt:2-5`
 
 ### Backend-Specific Subdirectories
 
@@ -204,7 +204,7 @@ The `js/` and `native/` subdirectories contain supporting code for their respect
 **Native Backend (`src/native/`):**
 - `body_reader.mbt` - Request body parsing for Mongoose C structures
 
-Sources: [src/moon.pkg.json:14-29](), [src/mocket.wasm.mbt:1-5]()
+Sources: `src/moon.pkg.json:14-29`, `src/mocket.wasm.mbt:1-5`
 
 ## Multi-Target Build System
 
@@ -239,7 +239,7 @@ graph TB
 
 This architecture allows the same application code to run on multiple platforms without modification, as the core framework API remains consistent across all targets.
 
-Sources: [src/moon.pkg.json:8-29]()
+Sources: `src/moon.pkg.json:8-29`
 
 ## Build Artifacts and Exclusions
 
@@ -254,7 +254,7 @@ The `.gitignore` file specifies which directories are excluded from version cont
 
 These directories are regenerated during the build process and should not be committed to the repository.
 
-Sources: [.gitignore:1-4]()
+Sources: .gitignore:1-4
 
 ## Example Application Structure
 
@@ -273,4 +273,4 @@ graph TB
 
 The example application demonstrates typical usage patterns including route registration, middleware, and response handling. It serves as both documentation and a test case for the framework's public API.
 
-Sources: [moon.mod.json:18]()
+Sources: `moon.mod.json:18`

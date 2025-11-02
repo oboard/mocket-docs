@@ -48,7 +48,7 @@ graph TB
 
 The error hierarchy is flat, with each error type being an independent suberror. Only `BodyError` defines specific error variants, while `ExecError`, `IOError`, and `NetworkError` are opaque error types whose internal structure is backend-specific.
 
-**Sources:** [src/pkg.generated.mbti:27-46]()
+**Sources:** `src/pkg.generated.mbti:27-46`
 
 ---
 
@@ -94,7 +94,7 @@ sequenceDiagram
 
 The body parser raises specific `BodyError` variants based on the failure mode. Backends catch these errors and convert them to appropriate HTTP error responses (typically 400 Bad Request).
 
-**Sources:** [src/pkg.generated.mbti:27-31]()
+**Sources:** `src/pkg.generated.mbti:27-31`
 
 ---
 
@@ -124,7 +124,7 @@ While the specific error variants are not exposed, `ExecError` typically occurs 
 - Middleware execution errors
 - Internal framework state corruption
 
-**Sources:** [src/pkg.generated.mbti:33-36]()
+**Sources:** `src/pkg.generated.mbti:33-36`
 
 ---
 
@@ -155,7 +155,7 @@ The `IOError` type is used differently across backends:
 | Native | Reading from C file descriptors via FFI bindings |
 | WASM | Currently unimplemented |
 
-**Sources:** [src/pkg.generated.mbti:38-41]()
+**Sources:** `src/pkg.generated.mbti:38-41`
 
 ---
 
@@ -201,7 +201,7 @@ Network errors can occur at various stages:
 - Response transmission (network timeouts)
 - DNS resolution (backend-dependent)
 
-**Sources:** [src/pkg.generated.mbti:43-46]()
+**Sources:** `src/pkg.generated.mbti:43-46`
 
 ---
 
@@ -237,7 +237,7 @@ graph TB
 
 The `suspend` function enables async functions to use `raise` syntax while working with callback-based APIs. When the error callback is invoked, `suspend` raises the error in the async context.
 
-**Sources:** [src/pkg.generated.mbti:24]()
+**Sources:** `src/pkg.generated.mbti:24`
 
 ### Error Propagation in Handlers
 
@@ -265,7 +265,7 @@ This design means:
 
 These conversions are handled by backend-specific code and may vary slightly between implementations.
 
-**Sources:** [src/pkg.generated.mbti:115]()
+**Sources:** `src/pkg.generated.mbti:115`
 
 ---
 
@@ -296,7 +296,7 @@ graph LR
 
 The `output` method is used for logging errors during request processing, while `to_string` is used when errors need to be included in HTTP response bodies or error messages.
 
-**Sources:** [src/pkg.generated.mbti:34-36,39-41,44-46]()
+**Sources:** `src/pkg.generated.mbti:34-36,39-41,44-46`
 
 ### Integration with Logger System
 
@@ -373,4 +373,4 @@ This sequence shows:
 3. **Handler errors** are caught by handlers themselves (noraise guarantee) and converted to appropriate error responses
 4. **All errors** are logged using the `Show` trait's `to_string()` method
 
-**Sources:** [src/pkg.generated.mbti:27-46,115-134]()
+**Sources:** `src/pkg.generated.mbti:27-46,115-134`

@@ -73,7 +73,7 @@ graph TB
     HttpBody -.->|parsing errors| BodyError
 ```
 
-**Sources:** [src/pkg.generated.mbti:1-141](), [src/index.mbt:1-256]()
+**Sources:** `src/pkg.generated.mbti:1-141`, `src/index.mbt:1-256`
 
 ## Type Definitions
 
@@ -103,7 +103,7 @@ pub(all) struct Mocket {
 | `dynamic_routes` | `Map[String, Array[(String, async (HttpEvent) -> HttpBody noraise)]]` | Routes with parameters (`:param`) or wildcards (`*`, `**`) |
 | `logger` | `Logger` | Logger instance for framework diagnostics |
 
-**Sources:** [src/index.mbt:11-27](), [src/pkg.generated.mbti:113-120]()
+**Sources:** `src/index.mbt:11-27`, `src/pkg.generated.mbti:113-120`
 
 ### HttpEvent
 
@@ -125,7 +125,7 @@ pub(all) struct HttpEvent {
 | `res` | `HttpResponse` | Response object for setting status and headers |
 | `params` | `Map[String, String]` | Route parameters extracted from dynamic routes (e.g., `:id` → `"123"`) |
 
-**Sources:** [src/pkg.generated.mbti:57-61]()
+**Sources:** `src/pkg.generated.mbti:57-61`
 
 ### HttpRequest
 
@@ -149,7 +149,7 @@ pub(all) struct HttpRequest {
 | `headers` | `Map[String, String]` | HTTP request headers |
 | `body` | `mut HttpBody` | Parsed request body (mutable to support lazy parsing) |
 
-**Sources:** [src/index.mbt:48-53](), [src/pkg.generated.mbti:63-68]()
+**Sources:** `src/index.mbt:48-53`, `src/pkg.generated.mbti:63-68`
 
 ### HttpResponse
 
@@ -169,7 +169,7 @@ pub(all) struct HttpResponse {
 | `status_code` | `mut Int` | HTTP status code (default: 200, mutable to allow handlers to set errors) |
 | `headers` | `Map[StringView, StringView]` | Response headers to send to client |
 
-**Sources:** [src/index.mbt:56-60](), [src/pkg.generated.mbti:75-78]()
+**Sources:** `src/index.mbt:56-60`, `src/pkg.generated.mbti:75-78`
 
 ### HttpBody
 
@@ -195,7 +195,7 @@ pub(all) enum HttpBody {
 | `Bytes(BytesView)` | `BytesView` | Binary data (images, files, etc.) |
 | `Empty` | (none) | No response body (e.g., 204 No Content) |
 
-**Sources:** [src/index.mbt:2-8](), [src/pkg.generated.mbti:49-55]()
+**Sources:** `src/index.mbt:2-8`, `src/pkg.generated.mbti:49-55`
 
 ## Route Registration API
 
@@ -247,7 +247,7 @@ graph LR
     MiddlewareFn -->|registers| Middlewares["middlewares:<br/>Array[(String, async fn)]"]
 ```
 
-**Sources:** [src/index.mbt:89-255](), [src/pkg.generated.mbti:121-134]()
+**Sources:** `src/index.mbt:89-255`, `src/pkg.generated.mbti:121-134`
 
 ### Core Route Registration
 
@@ -266,7 +266,7 @@ The fundamental route registration function. All HTTP method aliases delegate to
 3. If the path contains no dynamic segments (`:`, `*`), stores in `static_routes` for O(1) lookup
 4. Otherwise, stores in `dynamic_routes` for regex-based matching
 
-**Sources:** [src/index.mbt:89-128](), [src/pkg.generated.mbti:127]()
+**Sources:** `src/index.mbt:89-128`, `src/pkg.generated.mbti:127`
 
 ### HTTP Method Convenience Functions
 
@@ -285,7 +285,7 @@ All of these functions have the signature: `(self: Mocket, path: String, handler
 | `connect(path, handler)` | CONNECT | Establish tunnels (rarely used) |
 | `all(path, handler)` | * | Catch-all for any method |
 
-**Sources:** [src/index.mbt:131-218](), [src/pkg.generated.mbti:121-133]()
+**Sources:** `src/index.mbt:131-218`, `src/pkg.generated.mbti:121-133`
 
 ### Route Organization Functions
 
@@ -310,7 +310,7 @@ app.group("/api", fn(api) {
 })
 ```
 
-**Sources:** [src/index.mbt:222-255](), [src/pkg.generated.mbti:125]()
+**Sources:** `src/index.mbt:222-255`, `src/pkg.generated.mbti:125`
 
 #### `use_middleware(middleware: async (HttpEvent) -> Unit noraise, base_path?: String) -> Unit`
 
@@ -324,7 +324,7 @@ Registers middleware that executes before route handlers. Middleware can modify 
 - Adds the middleware to `self.middlewares` array
 - Middleware executes in registration order before the matched route handler
 
-**Sources:** [src/pkg.generated.mbti:134]()
+**Sources:** `src/pkg.generated.mbti:134`
 
 ## Logger System
 
@@ -379,7 +379,7 @@ graph TB
     LoggerStruct -->|methods| RouteRegister
 ```
 
-**Sources:** [src/pkg.generated.mbti:85-111]()
+**Sources:** `src/pkg.generated.mbti:85-111`
 
 ### Logger Type
 
@@ -405,7 +405,7 @@ pub enum LogLevel {
 | `new_production_logger` | `() -> Logger` | Create production logger (typically warnings/errors only) |
 | `new_debug_logger` | `() -> Logger` | Create debug logger (all messages enabled) |
 
-**Sources:** [src/pkg.generated.mbti:14-18](), [src/pkg.generated.mbti:85-95]()
+**Sources:** `src/pkg.generated.mbti:14-18`, `src/pkg.generated.mbti:85-95`
 
 ### Logger Methods Reference
 
@@ -437,7 +437,7 @@ These specialized methods are used internally by the framework to track routing 
 | `route_merge_new` | `(String) -> Unit` | When creating new route map |
 | `routes_available` | `(Array[String]) -> Unit` | Lists all available routes |
 
-**Sources:** [src/pkg.generated.mbti:96-111]()
+**Sources:** `src/pkg.generated.mbti:96-111`
 
 ## Error Types
 
@@ -470,7 +470,7 @@ graph TB
     BodyErr -->|variants| InvalidText
 ```
 
-**Sources:** [src/pkg.generated.mbti:27-46]()
+**Sources:** `src/pkg.generated.mbti:27-46`
 
 ### BodyError
 
@@ -489,7 +489,7 @@ pub suberror BodyError {
 - `InvalidJson`: JSON parsing failed (malformed JSON)
 - `InvalidText`: Text content parsing failed
 
-**Sources:** [src/pkg.generated.mbti:27-31]()
+**Sources:** `src/pkg.generated.mbti:27-31`
 
 ### ExecError
 
@@ -501,7 +501,7 @@ pub suberror ExecError
 
 Implements `Show` trait with `output()` and `to_string()` methods.
 
-**Sources:** [src/pkg.generated.mbti:33-36]()
+**Sources:** `src/pkg.generated.mbti:33-36`
 
 ### IOError
 
@@ -513,7 +513,7 @@ pub suberror IOError
 
 Implements `Show` trait with `output()` and `to_string()` methods.
 
-**Sources:** [src/pkg.generated.mbti:38-41]()
+**Sources:** `src/pkg.generated.mbti:38-41`
 
 ### NetworkError
 
@@ -525,7 +525,7 @@ pub suberror NetworkError
 
 Implements `Show` trait with `output()` and `to_string()` methods.
 
-**Sources:** [src/pkg.generated.mbti:43-46]()
+**Sources:** `src/pkg.generated.mbti:43-46`
 
 ## FFI Boundary Types
 
@@ -547,7 +547,7 @@ fn HttpRequestInternal::url(Self) -> String
 - **JavaScript**: Wraps Node.js `IncomingMessage` object
 - **Native**: Wraps C `request_t` struct from Mongoose
 
-**Sources:** [src/pkg.generated.mbti:70-73]()
+**Sources:** `src/pkg.generated.mbti:70-73`
 
 ### HttpResponseInternal
 
@@ -565,7 +565,7 @@ fn HttpResponseInternal::url(Self) -> String
 - **JavaScript**: Wraps Node.js `ServerResponse` object
 - **Native**: Wraps C `response_t` struct from Mongoose
 
-**Sources:** [src/pkg.generated.mbti:80-83]()
+**Sources:** `src/pkg.generated.mbti:80-83`
 
 ## Server Lifecycle Functions
 
@@ -576,7 +576,7 @@ fn HttpResponseInternal::url(Self) -> String
 | `serve_ffi` | `(Mocket, port~: Int) -> Unit` | Start server (native backend) |
 | `create_server` | `((HttpRequestInternal, HttpResponseInternal, () -> Unit) -> Unit, Int) -> Unit` | Low-level JS server creation |
 
-**Sources:** [src/pkg.generated.mbti:10-22](), [src/pkg.generated.mbti:132]()
+**Sources:** `src/pkg.generated.mbti:10-22`, `src/pkg.generated.mbti:132`
 
 ## Type Alias
 
@@ -588,7 +588,7 @@ pub typealias Mocket as T
 
 This allows users to import the package and use `T` as a shorthand for the main type.
 
-**Sources:** [src/pkg.generated.mbti:137](), [src/index.mbt:30]()
+**Sources:** `src/pkg.generated.mbti:137`, `src/index.mbt:30`
 
 ## Summary Table: All Public Functions
 
@@ -614,4 +614,4 @@ This allows users to import the package and use `T` as a shorthand for the main 
 | | `new_production_logger` | `()` | `Logger` |
 | | `new_debug_logger` | `()` | `Logger` |
 
-**Sources:** [src/pkg.generated.mbti:1-141]()
+**Sources:** `src/pkg.generated.mbti:1-141`

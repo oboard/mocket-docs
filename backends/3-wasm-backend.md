@@ -16,7 +16,7 @@ The WASM backend is currently unimplemented and serves as a placeholder for futu
 
 ### Stub Implementation
 
-The WASM backend is defined in [src/mocket.wasm.mbt:1-5]() and contains only the following:
+The WASM backend is defined in `src/mocket.wasm.mbt:1-5` and contains only the following:
 
 ```
 pub fn serve_ffi(mocket : Mocket, port~ : Int) -> Unit {
@@ -48,7 +48,7 @@ graph TB
     style Panic fill:#f99,stroke:#333,stroke-width:2px
 ```
 
-**Sources:** [src/mocket.wasm.mbt:1-5]()
+**Sources:** `src/mocket.wasm.mbt:1-5`
 
 ---
 
@@ -58,14 +58,14 @@ The WASM backend is configured to support both standard WebAssembly and WebAssem
 
 ### Build System Configuration
 
-The target configuration is specified in [src/moon.pkg.json:18-29]():
+The target configuration is specified in `src/moon.pkg.json:18-29`:
 
 | Configuration Key | Value | Purpose |
 |------------------|-------|---------|
 | `targets.mocket.wasm.mbt` | `["wasm", "wasm-gc"]` | Associates the WASM backend file with both WASM targets |
 | `supported-targets` | `["js", "native", "llvm"]` | Lists generally supported targets (WASM not yet supported) |
 
-**Note:** While the `targets` section includes WASM and WASM-GC mappings, these targets are **not** listed in the `supported-targets` array [src/moon.pkg.json:8-12](), indicating they are not yet fully supported by the framework.
+**Note:** While the `targets` section includes WASM and WASM-GC mappings, these targets are **not** listed in the `supported-targets` array `src/moon.pkg.json:8-12`, indicating they are not yet fully supported by the framework.
 
 **Diagram: Backend Target Configuration**
 ```mermaid
@@ -109,7 +109,7 @@ graph LR
     style WASMGCTarget fill:#ddd,stroke:#333
 ```
 
-**Sources:** [src/moon.pkg.json:8-12](), [src/moon.pkg.json:18-29]()
+**Sources:** `src/moon.pkg.json:8-12`, `src/moon.pkg.json:18-29`
 
 ---
 
@@ -169,7 +169,7 @@ graph TB
     style WASMRuntime fill:#ddd,stroke:#333,stroke-width:2px
 ```
 
-**Sources:** [src/mocket.wasm.mbt:1-5](), [src/moon.pkg.json:18-29]()
+**Sources:** `src/mocket.wasm.mbt:1-5`, `src/moon.pkg.json:18-29`
 
 ---
 
@@ -250,7 +250,7 @@ graph TB
     style WBody fill:#f99,stroke:#333
 ```
 
-**Sources:** [src/mocket.wasm.mbt:1-5](), [src/moon.pkg.json:18-29]()
+**Sources:** `src/mocket.wasm.mbt:1-5`, `src/moon.pkg.json:18-29`
 
 ---
 
@@ -260,7 +260,7 @@ When the WASM backend is eventually implemented, several technical decisions wil
 
 ### WASM vs WASM-GC Targets
 
-The configuration specifies both `wasm` and `wasm-gc` targets [src/moon.pkg.json:25-28]():
+The configuration specifies both `wasm` and `wasm-gc` targets `src/moon.pkg.json:25-28`:
 
 - **`wasm`** - Standard WebAssembly without garbage collection, requires manual memory management
 - **`wasm-gc`** - WebAssembly with garbage collection proposal, allows high-level language GC integration
@@ -336,7 +336,7 @@ graph TB
     style WASMTypes fill:#ddd,stroke:#333
 ```
 
-**Sources:** [src/mocket.wasm.mbt:1-5](), [src/moon.pkg.json:18-29]()
+**Sources:** `src/mocket.wasm.mbt:1-5`, `src/moon.pkg.json:18-29`
 
 ---
 
@@ -355,10 +355,10 @@ Developers interested in implementing the WASM backend should:
 3. **Implement `serve_ffi`** - Replace the panic with actual server initialization
 4. **Create conversion layer** - Build `HttpRequestInternal` and `HttpResponseInternal` types for WASM
 5. **Handle async patterns** - Define how async operations work in the WASM context
-6. **Add to supported targets** - Update [src/moon.pkg.json:8-12]() to include `wasm` and/or `wasm-gc`
+6. **Add to supported targets** - Update `src/moon.pkg.json:8-12` to include `wasm` and/or `wasm-gc`
 
 ### Testing Strategy
 
 Once implemented, the WASM backend should be tested against the same behavioral contracts as the JavaScript and Native backends to ensure consistent routing, middleware, and response handling across all platforms.
 
-**Sources:** [src/mocket.wasm.mbt:1-5](), [src/moon.pkg.json:8-12](), [src/moon.pkg.json:18-29]()
+**Sources:** `src/mocket.wasm.mbt:1-5`, `src/moon.pkg.json:8-12`, `src/moon.pkg.json:18-29`

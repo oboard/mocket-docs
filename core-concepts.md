@@ -15,7 +15,7 @@ Mocket's type system is built around four primary types that represent the HTTP 
 
 ### The Mocket Application Object
 
-The `Mocket` struct [src/index.mbt:11-27]() is the main application object that holds all routes, middleware, and configuration:
+The `Mocket` struct `src/index.mbt:11-27` is the main application object that holds all routes, middleware, and configuration:
 
 | Field | Type | Purpose |
 |-------|------|---------|
@@ -53,25 +53,25 @@ graph TB
 ```
 
 **HttpEvent** encapsulates the complete request context:
-- `req`: The incoming `HttpRequest` [src/index.mbt:48-53]()
-- `res`: The outgoing `HttpResponse` [src/index.mbt:56-60]()
+- `req`: The incoming `HttpRequest` `src/index.mbt:48-53`
+- `res`: The outgoing `HttpResponse` `src/index.mbt:56-60`
 - `params`: Extracted route parameters from dynamic path segments
 
-**HttpRequest** [src/index.mbt:48-53]() contains:
+**HttpRequest** `src/index.mbt:48-53` contains:
 - `http_method`: HTTP verb (GET, POST, etc.)
 - `url`: Request path
 - `headers`: Request headers as key-value map
 - `body`: Parsed request body as `HttpBody`
 
-**HttpResponse** [src/index.mbt:56-60]() contains:
+**HttpResponse** `src/index.mbt:56-60` contains:
 - `status_code`: HTTP status code (mutable)
 - `headers`: Response headers (mutable map)
 
-**Sources:** [src/index.mbt:11-60](), [README.md:42-208]()
+**Sources:** `src/index.mbt:11-60`, `README.md:42-208`
 
 ### HttpBody Type Variants
 
-The `HttpBody` enum [src/index.mbt:2-8]() represents both request and response body content:
+The `HttpBody` enum `src/index.mbt:2-8` represents both request and response body content:
 
 ```mermaid
 graph LR
@@ -97,13 +97,13 @@ graph LR
 | `Bytes(BytesView)` | Binary files, images | `application/octet-stream` |
 | `Empty` | 204 No Content, HEAD responses | None |
 
-**Sources:** [src/index.mbt:2-8](), [README.md:122-186]()
+**Sources:** `src/index.mbt:2-8`, `README.md:122-186`
 
 ## Routing Fundamentals
 
 ### Route Registration API
 
-Mocket provides HTTP method-specific functions that delegate to a core `on` function [src/index.mbt:89-128]():
+Mocket provides HTTP method-specific functions that delegate to a core `on` function `src/index.mbt:89-128`:
 
 ```mermaid
 graph TD
@@ -148,7 +148,7 @@ graph TD
     On --> DynamicRoutes
 ```
 
-Each method function [src/index.mbt:131-218]() follows this signature:
+Each method function `src/index.mbt:131-218` follows this signature:
 ```moonbit
 pub fn METHOD(
   self : Mocket,
@@ -157,11 +157,11 @@ pub fn METHOD(
 ) -> Unit
 ```
 
-**Sources:** [src/index.mbt:89-218](), [README.md:114-189]()
+**Sources:** `src/index.mbt:89-218`, `README.md:114-189`
 
 ### Static vs Dynamic Route Classification
 
-When a route is registered via `on()`, it is classified as either static or dynamic based on path analysis [src/index.mbt:100-127]():
+When a route is registered via `on()`, it is classified as either static or dynamic based on path analysis `src/index.mbt:100-127`:
 
 **Static Routes** - Exact path matches with no special characters:
 - Path contains neither `:` parameter markers nor `*` wildcards
@@ -174,7 +174,7 @@ When a route is registered via `on()`, it is classified as either static or dyna
 - Stored in `dynamic_routes` array, requires regex matching
 - Example: `/hello/:name`, `/files/*`, `/api/**`
 
-The `template_to_regex` function [src/index.mbt:64-86]() converts dynamic path templates to regex patterns:
+The `template_to_regex` function `src/index.mbt:64-86` converts dynamic path templates to regex patterns:
 
 | Template Segment | Regex Pattern | Matches |
 |-----------------|---------------|---------|
@@ -183,7 +183,7 @@ The `template_to_regex` function [src/index.mbt:64-86]() converts dynamic path t
 | `**` | `(.*)` | Multiple path segments (stored as `_` param) |
 | literal | `literal` | Exact match |
 
-**Sources:** [src/index.mbt:64-127](), [README.md:44-71](), [README.md:197-207]()
+**Sources:** `src/index.mbt:64-127`, `README.md:44-71`, `README.md:197-207`
 
 ## Request Processing Flow
 
@@ -236,11 +236,11 @@ sequenceDiagram
     MW-->>Router: HttpBody
 ```
 
-**Sources:** [src/index.mbt:89-128]()
+**Sources:** `src/index.mbt:89-128`
 
 ## Middleware Execution Model
 
-Middleware functions have the signature `async (HttpEvent) -> Unit noraise` [src/index.mbt:14]() and can modify the `HttpEvent` before it reaches route handlers.
+Middleware functions have the signature `async (HttpEvent) -> Unit noraise` `src/index.mbt:14` and can modify the `HttpEvent` before it reaches route handlers.
 
 ### Middleware Storage and Execution
 
@@ -280,17 +280,17 @@ Middleware execution characteristics:
 - **Access**: Has read access to `event.req` and `event.params`
 
 Common middleware use cases:
-- Request logging [README.md:116-120]()
+- Request logging `README.md:116-120`
 - Header manipulation
 - Authentication/authorization
 - CORS handling
 - Request timing
 
-**Sources:** [src/index.mbt:14](), [README.md:86-109](), [README.md:116-120]()
+**Sources:** `src/index.mbt:14`, `README.md:86-109`, `README.md:116-120`
 
 ## Route Groups
 
-Route groups allow organizing routes under a common base path with shared middleware [src/index.mbt:222-255]():
+Route groups allow organizing routes under a common base path with shared middleware `src/index.mbt:222-255`:
 
 ```mermaid
 graph TB
@@ -326,13 +326,13 @@ graph TB
     FinalMappings -->|"contains"| Route2["/api/data"]
 ```
 
-Group functionality [src/index.mbt:222-255]():
+Group functionality `src/index.mbt:222-255`:
 1. Creates a new `Mocket` instance with combined `base_path`
 2. Applies configuration function to populate routes and middleware
 3. Merges group's `mappings`, `static_routes`, `dynamic_routes` into parent
 4. Appends group's middleware to parent's middleware array
 
-Example from README [README.md:86-109]():
+Example from README `README.md:86-109`:
 ```moonbit
 app.group("/api", group => {
   group.use_middleware(event => println("API middleware"))
@@ -343,7 +343,7 @@ app.group("/api", group => {
 
 This creates routes at `/api/hello` and `/api/users`, both executing the group middleware plus any global middleware.
 
-**Sources:** [src/index.mbt:222-255](), [README.md:86-109](), [README.md:127-138]()
+**Sources:** `src/index.mbt:222-255`, `README.md:86-109`, `README.md:127-138`
 
 ## Type System Integration Across Backends
 
@@ -389,4 +389,4 @@ This abstraction enables:
 
 See [Multi-Backend Architecture](#3) for platform-specific implementation details.
 
-**Sources:** [src/index.mbt:1-256](), [README.md:12-35]()
+**Sources:** `src/index.mbt:1-256`, `README.md:12-35`

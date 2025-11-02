@@ -60,11 +60,11 @@ graph TB
     WASMBackend --> WASMTarget
 ```
 
-**Sources:** [moon.mod.json:1-20](), [src/moon.pkg.json:1-30]()
+**Sources:** `moon.mod.json:1-20`, `src/moon.pkg.json:1-30`
 
 ### Target Specification
 
-The build system uses conditional compilation to include only the relevant backend for each target. This is configured in [src/moon.pkg.json:18-29]():
+The build system uses conditional compilation to include only the relevant backend for each target. This is configured in `src/moon.pkg.json:18-29`:
 
 | Target | File | Status | Purpose |
 |--------|------|--------|---------|
@@ -74,7 +74,7 @@ The build system uses conditional compilation to include only the relevant backe
 | `wasm-gc` | `mocket.wasm.mbt` | Stub | WASM-GC specific optimizations |
 | `llvm` | Platform-agnostic | Active | LLVM-based compilation |
 
-**Sources:** [src/moon.pkg.json:18-29]()
+**Sources:** `src/moon.pkg.json:18-29`
 
 ## Package Configuration
 
@@ -101,9 +101,9 @@ graph LR
     Mocket --> URI
 ```
 
-**Sources:** [moon.mod.json:1-20]()
+**Sources:** `moon.mod.json:1-20`
 
-Key metadata fields in [moon.mod.json:1-20]():
+Key metadata fields in `moon.mod.json:1-20`:
 
 - **name**: `oboard/mocket` - Package identifier
 - **version**: `0.5.4` - Semantic version
@@ -123,7 +123,7 @@ The `src/moon.pkg.json` file controls compilation behavior:
 | `native-stub` | `["mocket.stub.c", "mongoose.c"]` | C FFI sources for native backend |
 | `import` | Various packages | Import dependencies |
 
-**Sources:** [src/moon.pkg.json:1-30]()
+**Sources:** `src/moon.pkg.json:1-30`
 
 ## Working with Backend Implementations
 
@@ -146,7 +146,7 @@ sequenceDiagram
     Core->>App: "Invoke route handlers"
 ```
 
-**Sources:** [src/mocket.wasm.mbt:1-5]()
+**Sources:** `src/mocket.wasm.mbt:1-5`
 
 ### Backend Requirements
 
@@ -160,7 +160,7 @@ When implementing a new backend or modifying an existing one, ensure:
 
 ### WASM Backend Status
 
-The WASM backend is currently a stub [src/mocket.wasm.mbt:1-5]():
+The WASM backend is currently a stub `src/mocket.wasm.mbt:1-5`:
 
 ```moonbit
 pub fn serve_ffi(mocket : Mocket, port~ : Int) -> Unit {
@@ -175,7 +175,7 @@ Contributors interested in implementing WASM support should:
 - Implement `HttpRequestInternal` and `HttpResponseInternal` types
 - Add WASM-specific FFI bindings if needed
 
-**Sources:** [src/mocket.wasm.mbt:1-5]()
+**Sources:** `src/mocket.wasm.mbt:1-5`
 
 ## Development Workflow
 
@@ -183,8 +183,8 @@ Contributors interested in implementing WASM support should:
 
 1. **Install MoonBit**: Ensure you have the MoonBit compiler installed
 2. **Clone Repository**: `git clone https://github.com/oboard/mocket`
-3. **Review Dependencies**: Check [moon.mod.json:4-9]() for required packages
-4. **Select Target**: Choose your development target (native recommended as per [moon.mod.json:19]())
+3. **Review Dependencies**: Check `moon.mod.json:4-9` for required packages
+4. **Select Target**: Choose your development target (native recommended as per `moon.mod.json:19`)
 
 ### Build Commands
 
@@ -209,7 +209,7 @@ When modifying the codebase:
 
 Ensure core framework changes remain platform-agnostic and do not depend on target-specific features.
 
-**Sources:** [src/moon.pkg.json:18-29]()
+**Sources:** `src/moon.pkg.json:18-29`
 
 ## CI/CD Integration
 
@@ -286,13 +286,13 @@ When adding features:
 
 ### Warning Configuration
 
-The project suppresses warnings `-15-29` in [src/moon.pkg.json:13]() for specific reasons. Contributors should:
+The project suppresses warnings `-15-29` in `src/moon.pkg.json:13` for specific reasons. Contributors should:
 
 - Understand what these warnings represent
 - Not add new warning suppressions without justification
 - Document any necessary suppressions in code comments
 
-**Sources:** [src/moon.pkg.json:13]()
+**Sources:** `src/moon.pkg.json:13`
 
 ## Native Backend Development
 
@@ -309,11 +309,11 @@ When modifying native backend:
 3. Test on Linux (primary platform as per CI: ubuntu-latest)
 4. Verify callback mechanisms work correctly
 
-**Sources:** [src/moon.pkg.json:14-16]()
+**Sources:** `src/moon.pkg.json:14-16`
 
 ## Version Management
 
-The package version [moon.mod.json:3]() follows semantic versioning:
+The package version `moon.mod.json:3` follows semantic versioning:
 
 - **Major**: Breaking API changes
 - **Minor**: New features, backward compatible
@@ -326,4 +326,4 @@ Before releasing:
 3. Tag release in Git
 4. Ensure CI passes on tag
 
-**Sources:** [moon.mod.json:3]()
+**Sources:** `moon.mod.json:3`

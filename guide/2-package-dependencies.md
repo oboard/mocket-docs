@@ -44,9 +44,9 @@ graph TB
 
 **Dependency Declaration Structure**
 
-The dependency manifest is located at [moon.mod.json:4-9]() and uses semantic versioning for all external packages. The framework specifies exact version numbers to ensure reproducible builds across different environments.
+The dependency manifest is located at `moon.mod.json:4-9` and uses semantic versioning for all external packages. The framework specifies exact version numbers to ensure reproducible builds across different environments.
 
-Sources: [moon.mod.json:1-20]()
+Sources: `moon.mod.json:1-20`
 
 ## Dependency Details
 
@@ -83,7 +83,7 @@ The regex package is invoked during:
 
 Dynamic route matching follows a two-phase approach where static routes are checked first (O(1) lookup), and only if no static match is found does the system iterate through regex patterns. This design choice minimizes the performance impact of regex operations on the common case of static routes.
 
-Sources: [moon.mod.json:5](), High-level architecture Diagram 4
+Sources: `moon.mod.json:5`, High-level architecture Diagram 4
 
 ### illusory0x0/native (v0.2.1)
 
@@ -126,7 +126,7 @@ The native backend defines internal types (`HttpRequestInternal`, `HttpResponseI
 
 The FFI boundary is carefully managed to minimize unsafe operations. The native backend converts C structures to Mocket's platform-agnostic types (`HttpRequest`, `HttpResponse`) as early as possible, isolating FFI concerns to the backend implementation layer.
 
-Sources: [moon.mod.json:6](), High-level architecture Diagrams 1, 3, and 5
+Sources: `moon.mod.json:6`, High-level architecture Diagrams 1, 3, and 5
 
 ### tonyfettes/uri (v0.1.0)
 
@@ -161,7 +161,7 @@ URI parsing occurs early in the request processing pipeline, before route matchi
 
 The package is particularly important for handling special characters in URLs, ensuring that routes like `/search?q=hello+world` are correctly interpreted and that path parameters containing reserved characters are properly decoded.
 
-Sources: [moon.mod.json:8](), High-level architecture Diagram 4
+Sources: `moon.mod.json:8`, High-level architecture Diagram 4
 
 ### moonbitlang/x (v0.4.34)
 
@@ -217,7 +217,7 @@ The standard library dependency is pervasive and used for fundamental operations
 
 Unlike the other three dependencies which serve specific architectural purposes, `moonbitlang/x` provides the basic building blocks for implementing the framework itself.
 
-Sources: [moon.mod.json:7](), High-level architecture Diagrams 1 and 6
+Sources: `moon.mod.json:7`, High-level architecture Diagrams 1 and 6
 
 ## Dependency Usage Matrix
 
@@ -241,7 +241,7 @@ The following table summarizes which components depend on each external package:
 - `native` is exclusively used by the native backend implementation
 - The JavaScript and WASM backends have no specialized dependencies beyond the standard library
 
-Sources: [moon.mod.json:4-9]()
+Sources: `moon.mod.json:4-9`
 
 ## Dependency Isolation and Backend Portability
 
@@ -285,11 +285,11 @@ This isolation enables:
 
 The dependency graph demonstrates Mocket's adherence to the **Dependency Inversion Principle**, where high-level modules (core framework) do not depend on low-level modules (backend implementations), and both depend on abstractions.
 
-Sources: [moon.mod.json:4-9](), High-level architecture Diagrams 1 and 3
+Sources: `moon.mod.json:4-9`, High-level architecture Diagrams 1 and 3
 
 ## Version Management
 
-All dependencies use semantic versioning and are pinned to specific versions in [moon.mod.json:4-9](). This ensures:
+All dependencies use semantic versioning and are pinned to specific versions in `moon.mod.json:4-9`. This ensures:
 
 - **Reproducible Builds**: Identical builds across different machines and CI environments
 - **Stability**: Protection against breaking changes in dependency updates
@@ -310,4 +310,4 @@ When updating dependencies, consider:
 3. Checking URI parsing edge cases after `uri` updates
 4. Running the full test suite defined in the CI/CD pipeline (see [Building and Testing](#6.2))
 
-Sources: [moon.mod.json:4-9]()
+Sources: `moon.mod.json:4-9`

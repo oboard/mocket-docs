@@ -63,7 +63,7 @@ graph TB
     ServeFfi --> ExecMiddleware
 ```
 
-**Sources:** [src/mocket.js.mbt:1-150](), [src/js/pkg.generated.mbti:1-213]()
+**Sources:** `src/mocket.js.mbt:1-150`, `src/js/pkg.generated.mbti:1-213`
 
 ## Platform-Specific Internal Types
 
@@ -71,33 +71,33 @@ The JavaScript backend defines two opaque external types that wrap Node.js reque
 
 ### HttpRequestInternal
 
-The `HttpRequestInternal` type [src/mocket.js.mbt:3]() wraps Node.js's `IncomingMessage` object. It provides FFI methods to extract request properties:
+The `HttpRequestInternal` type `src/mocket.js.mbt:3` wraps Node.js's `IncomingMessage` object. It provides FFI methods to extract request properties:
 
 | Method | Purpose | FFI Binding |
 |--------|---------|-------------|
-| `url()` | Extract request URL | [src/mocket.js.mbt:15-17]() |
-| `req_method()` | Extract HTTP method | [src/mocket.js.mbt:20-22]() |
-| `headers()` | Access request headers | [src/mocket.js.mbt:32-34]() |
-| `on()` | Register event listeners | [src/mocket.js.mbt:25-29]() |
+| `url()` | Extract request URL | `src/mocket.js.mbt:15-17` |
+| `req_method()` | Extract HTTP method | `src/mocket.js.mbt:20-22` |
+| `headers()` | Access request headers | `src/mocket.js.mbt:32-34` |
+| `on()` | Register event listeners | `src/mocket.js.mbt:25-29` |
 
 The `on()` method is critical for handling POST request bodies, as it allows subscribing to Node.js stream events like `"data"` and `"end"`.
 
 ### HttpResponseInternal
 
-The `HttpResponseInternal` type [src/mocket.js.mbt:7]() wraps Node.js's `ServerResponse` object. It provides methods for sending responses:
+The `HttpResponseInternal` type `src/mocket.js.mbt:7` wraps Node.js's `ServerResponse` object. It provides methods for sending responses:
 
 | Method | Purpose | FFI Binding |
 |--------|---------|-------------|
-| `write_head()` | Set status code and headers | [src/mocket.js.mbt:48-52]() |
-| `end()` | Send response body and close | [src/mocket.js.mbt:42-45]() |
+| `write_head()` | Set status code and headers | `src/mocket.js.mbt:48-52` |
+| `end()` | Send response body and close | `src/mocket.js.mbt:42-45` |
 
-**Sources:** [src/mocket.js.mbt:3-52]()
+**Sources:** `src/mocket.js.mbt:3-52`
 
 ## Server Creation and Binding
 
 ### create_server Function
 
-The `create_server` function [src/mocket.js.mbt:55-58]() creates a Node.js HTTP server and binds it to the specified port:
+The `create_server` function `src/mocket.js.mbt:55-58` creates a Node.js HTTP server and binds it to the specified port:
 
 ```
 create_server(
@@ -108,11 +108,11 @@ create_server(
 
 This function uses inline JavaScript FFI to invoke `require('node:http').createServer(handler).listen(port)`. The handler receives three parameters: the request object, response object, and a continuation callback (currently unused).
 
-**Sources:** [src/mocket.js.mbt:55-58]()
+**Sources:** `src/mocket.js.mbt:55-58`
 
 ## Request Processing Pipeline
 
-The `serve_ffi` function [src/mocket.js.mbt:61-149]() implements the complete request processing pipeline. It orchestrates header conversion, route matching, body parsing, middleware execution, and response generation.
+The `serve_ffi` function `src/mocket.js.mbt:61-149` implements the complete request processing pipeline. It orchestrates header conversion, route matching, body parsing, middleware execution, and response generation.
 
 ```mermaid
 sequenceDiagram
@@ -158,11 +158,11 @@ sequenceDiagram
     Response->>NodeHTTP: "HTTP Response"
 ```
 
-**Sources:** [src/mocket.js.mbt:61-149]()
+**Sources:** `src/mocket.js.mbt:61-149`
 
 ### Header Conversion
 
-Headers are converted from Node.js's header object to Mocket's `Map[String, String]` representation [src/mocket.js.mbt:64-77]():
+Headers are converted from Node.js's header object to Mocket's `Map[String, String]` representation `src/mocket.js.mbt:64-77`:
 
 1. Extract headers using `req.headers()` which returns a `js.Object`
 2. Convert to JSON representation using `to_value().to_json()`
@@ -172,11 +172,11 @@ Headers are converted from Node.js's header object to Mocket's `Map[String, Stri
 
 If header conversion fails, a 400 response is immediately returned without further processing.
 
-**Sources:** [src/mocket.js.mbt:64-77]()
+**Sources:** `src/mocket.js.mbt:64-77`
 
 ### Route Resolution
 
-After header conversion, the request is passed to the core routing system [src/mocket.js.mbt:78-86]():
+After header conversion, the request is passed to the core routing system `src/mocket.js.mbt:78-86`:
 
 ```
 match mocket.find_route(req.req_method(), req.url()) {
@@ -191,21 +191,21 @@ match mocket.find_route(req.req_method(), req.url()) {
 
 If no matching route is found, a 404 response is sent immediately. Otherwise, the handler function and extracted parameters are obtained.
 
-**Sources:** [src/mocket.js.mbt:78-86]()
+**Sources:** `src/mocket.js.mbt:78-86`
 
 ### HttpEvent Construction
 
-An `HttpEvent` is constructed [src/mocket.js.mbt:87-96]() with:
+An `HttpEvent` is constructed `src/mocket.js.mbt:87-96` with:
 
 - **req**: Contains HTTP method, URL, empty body (initially), and converted headers
 - **res**: Contains default status code 200 and empty headers map
 - **params**: Route parameters extracted by the pattern matcher
 
-**Sources:** [src/mocket.js.mbt:87-96]()
+**Sources:** `src/mocket.js.mbt:87-96`
 
 ### Asynchronous Body Parsing
 
-For POST requests, the body is parsed asynchronously [src/mocket.js.mbt:99-113]() using the `suspend` function from the async module:
+For POST requests, the body is parsed asynchronously `src/mocket.js.mbt:99-113` using the `suspend` function from the async module:
 
 1. Create a buffer to accumulate incoming data
 2. Use `suspend` to convert Node.js callback-based events to async/await
@@ -214,13 +214,13 @@ For POST requests, the body is parsed asynchronously [src/mocket.js.mbt:99-113](
 5. Call `read_body` with headers and buffer bytes to parse based on Content-Type
 6. On error, return 400 Bad Request
 
-The `suspend` function [src/js/async.mbt:2-4]() is the core primitive enabling this callback-to-Promise conversion.
+The `suspend` function `src/js/async.mbt:2-4` is the core primitive enabling this callback-to-Promise conversion.
 
-**Sources:** [src/mocket.js.mbt:99-113](), [src/js/async.mbt:2-4]()
+**Sources:** `src/mocket.js.mbt:99-113`, `src/js/async.mbt:2-4`
 
 ### Response Generation
 
-After middleware and handler execution, the response is generated [src/mocket.js.mbt:118-144]():
+After middleware and handler execution, the response is generated `src/mocket.js.mbt:118-144`:
 
 1. Set Content-Type header based on `HttpBody` variant:
    - `Bytes(_)`: "application/octet-stream"
@@ -235,7 +235,7 @@ After middleware and handler execution, the response is generated [src/mocket.js
 
 Each `HttpBody` variant is converted to the appropriate JavaScript representation using `js.Value::cast_from`.
 
-**Sources:** [src/mocket.js.mbt:118-144]()
+**Sources:** `src/mocket.js.mbt:118-144`
 
 ## JavaScript FFI Type System
 
@@ -285,11 +285,11 @@ graph TB
     Cast -.->|"implements"| Array
 ```
 
-**Sources:** [src/js/pkg.generated.mbti:1-213]()
+**Sources:** `src/js/pkg.generated.mbti:1-213`
 
 ### Value Type
 
-The `Value` type [src/js/pkg.generated.mbti:166]() is the fundamental JavaScript interop type. It represents any JavaScript value and provides extensive methods for manipulation:
+The `Value` type `src/js/pkg.generated.mbti:166` is the fundamental JavaScript interop type. It represents any JavaScript value and provides extensive methods for manipulation:
 
 | Category | Methods |
 |----------|---------|
@@ -302,11 +302,11 @@ The `Value` type [src/js/pkg.generated.mbti:166]() is the fundamental JavaScript
 
 These methods enable complete interaction with JavaScript objects, allowing MoonBit code to call JavaScript functions, access properties, and construct objects.
 
-**Sources:** [src/js/pkg.generated.mbti:166-197]()
+**Sources:** `src/js/pkg.generated.mbti:166-197`
 
 ### Object Type
 
-The `Object` type [src/js/pkg.generated.mbti:45]() wraps a `Value` and provides dictionary-like operations:
+The `Object` type `src/js/pkg.generated.mbti:45` wraps a `Value` and provides dictionary-like operations:
 
 - `new()`: Create empty JavaScript object
 - `op_get[K, V]`: Access properties with type-safe getters
@@ -314,13 +314,13 @@ The `Object` type [src/js/pkg.generated.mbti:45]() wraps a `Value` and provides 
 - `from_iter` / `from_iter2`: Construct from MoonBit iterators
 - `extend_object`: Merge two objects
 
-The `Object` type is used extensively in `serve_ffi` for header manipulation [src/mocket.js.mbt:67, 82, 108, 132]().
+The `Object` type is used extensively in `serve_ffi` for header manipulation `src/mocket.js.mbt:67, 82, 108, 132`.
 
-**Sources:** [src/js/pkg.generated.mbti:45-58](), [src/mocket.js.mbt:67]()
+**Sources:** `src/js/pkg.generated.mbti:45-58`, `src/mocket.js.mbt:67`
 
 ### Nullable and Optional
 
-`Nullable[T]` [src/js/pkg.generated.mbti:36]() represents JavaScript `null`, while `Optional[T]` [src/js/pkg.generated.mbti:60]() represents JavaScript `undefined`:
+`Nullable[T]` `src/js/pkg.generated.mbti:36` represents JavaScript `null`, while `Optional[T]` `src/js/pkg.generated.mbti:60` represents JavaScript `undefined`:
 
 | Type | JavaScript Value | Methods |
 |------|------------------|---------|
@@ -329,11 +329,11 @@ The `Object` type is used extensively in `serve_ffi` for header manipulation [sr
 
 These types enable safe handling of JavaScript's dual null-ness concepts.
 
-**Sources:** [src/js/pkg.generated.mbti:36-67]()
+**Sources:** `src/js/pkg.generated.mbti:36-67`
 
 ### Union Types
 
-The FFI layer provides `Union2` through `Union8` [src/js/pkg.generated.mbti:81-163]() for TypeScript-style union types:
+The FFI layer provides `Union2` through `Union8` `src/js/pkg.generated.mbti:81-163` for TypeScript-style union types:
 
 ```
 Union2[A, B]    // A | B
@@ -348,11 +348,11 @@ Each union provides:
 
 These enable interaction with JavaScript APIs that accept or return multiple types.
 
-**Sources:** [src/js/pkg.generated.mbti:81-163]()
+**Sources:** `src/js/pkg.generated.mbti:81-163`
 
 ### Cast Trait
 
-The `Cast` trait [src/js/pkg.generated.mbti:203-212]() defines bidirectional conversions between MoonBit and JavaScript types:
+The `Cast` trait `src/js/pkg.generated.mbti:203-212` defines bidirectional conversions between MoonBit and JavaScript types:
 
 ```
 trait Cast {
@@ -370,7 +370,7 @@ Implementations exist for:
 
 This trait enables the `Value::cast` and `Value::cast_from` methods used throughout the JavaScript backend for type conversions.
 
-**Sources:** [src/js/pkg.generated.mbti:203-212]()
+**Sources:** `src/js/pkg.generated.mbti:203-212`
 
 ## Global Functions and Utilities
 
@@ -378,24 +378,24 @@ The FFI layer provides several global utility functions:
 
 | Function | Purpose | Source |
 |----------|---------|--------|
-| `require(String, keys? : Array[String])` | Import Node.js modules | [src/js/pkg.generated.mbti:21]() |
-| `async_run(async () -> Unit noraise)` | Execute async function | [src/js/pkg.generated.mbti:13]() |
-| `async_all[T](Array[async () -> T])` | Concurrent execution | [src/js/pkg.generated.mbti:9]() |
-| `spawn_detach[T, E]` | Fire-and-forget async | [src/js/pkg.generated.mbti:23]() |
-| `globalThis` | Access global object | [src/js/pkg.generated.mbti:17]() |
+| `require(String, keys? : Array[String])` | Import Node.js modules | `src/js/pkg.generated.mbti:21` |
+| `async_run(async () -> Unit noraise)` | Execute async function | `src/js/pkg.generated.mbti:13` |
+| `async_all[T](Array[async () -> T])` | Concurrent execution | `src/js/pkg.generated.mbti:9` |
+| `spawn_detach[T, E]` | Fire-and-forget async | `src/js/pkg.generated.mbti:23` |
+| `globalThis` | Access global object | `src/js/pkg.generated.mbti:17` |
 
-The `require` function is used in `create_server` to import the `node:http` module [src/mocket.js.mbt:58]().
+The `require` function is used in `create_server` to import the `node:http` module `src/mocket.js.mbt:58`.
 
-**Sources:** [src/js/pkg.generated.mbti:9-23](), [src/mocket.js.mbt:58]()
+**Sources:** `src/js/pkg.generated.mbti:9-23`, `src/mocket.js.mbt:58`
 
 ## Error Handling
 
-JavaScript errors are represented as the `Error_` suberror [src/js/pkg.generated.mbti:28](), which wraps a JavaScript `Value`. It provides:
+JavaScript errors are represented as the `Error_` suberror `src/js/pkg.generated.mbti:28`, which wraps a JavaScript `Value`. It provides:
 
 - `cause()`: Extract the underlying JavaScript error object
 - `wrap()`: Execute JavaScript code and convert exceptions to MoonBit errors
 - `Show` trait implementation for error display
 
-In `serve_ffi`, errors from body parsing are caught and result in 400 Bad Request responses [src/mocket.js.mbt:106-112]().
+In `serve_ffi`, errors from body parsing are caught and result in 400 Bad Request responses `src/mocket.js.mbt:106-112`.
 
-**Sources:** [src/js/pkg.generated.mbti:28-33](), [src/mocket.js.mbt:106-112]()
+**Sources:** `src/js/pkg.generated.mbti:28-33`, `src/mocket.js.mbt:106-112`

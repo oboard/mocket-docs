@@ -41,7 +41,7 @@ graph TB
     Handler -.->|returns| HttpBody
 ```
 
-**Sources:** [src/event.mbt:1-7](), [src/pkg.generated.mbti:49-78]()
+**Sources:** `src/event.mbt:1-7`, `src/pkg.generated.mbti:49-78`
 
 The type system consists of three primary public types:
 
@@ -52,7 +52,7 @@ The type system consists of three primary public types:
 | `HttpResponse` | Represents outgoing HTTP response configuration | Mutable `status_code` and `headers` |
 | `HttpBody` | Enum representing different response body types | Immutable |
 
-**Sources:** [src/pkg.generated.mbti:49-78]()
+**Sources:** `src/pkg.generated.mbti:49-78`
 
 ## HttpEvent: The Central Interface
 
@@ -78,7 +78,7 @@ graph LR
     MiddlewareFunc -.->|may read| params
 ```
 
-The `HttpEvent` struct contains three fields [src/event.mbt:2-6]():
+The `HttpEvent` struct contains three fields `src/event.mbt:2-6`:
 
 - **`req`**: The incoming HTTP request, providing access to method, URL, headers, and body
 - **`res`**: The outgoing HTTP response, allowing modification of status code and headers
@@ -103,11 +103,11 @@ app.get("/404", e => {
 })
 ```
 
-**Sources:** [README.md:49-52, 172, 175-186](), [src/event.mbt:2-6]()
+**Sources:** `README.md:49-52, 172, 175-186`, `src/event.mbt:2-6`
 
 ## HttpRequest: Reading Request Data
 
-`HttpRequest` provides access to all incoming HTTP request data through four fields [src/pkg.generated.mbti:63-68]():
+`HttpRequest` provides access to all incoming HTTP request data through four fields `src/pkg.generated.mbti:63-68`:
 
 ```mermaid
 graph TB
@@ -139,7 +139,7 @@ graph TB
 | `headers` | `Map[String, String]` | HTTP headers | `event.req.headers.get("Content-Type")` |
 | `body` | `HttpBody` | Request payload | `event.req.body` → `Json(...)` or `Text(...)` |
 
-**Sources:** [src/pkg.generated.mbti:63-68]()
+**Sources:** `src/pkg.generated.mbti:63-68`
 
 ### Request Method Usage
 
@@ -152,23 +152,23 @@ app.use_middleware(event => println(
 ))
 ```
 
-**Sources:** [README.md:118-120]()
+**Sources:** `README.md:118-120`
 
 ### URL and Path Information
 
 The `url` field contains the full request path including query parameters. Route parameters extracted from dynamic routes are available in `event.params`, not parsed from the URL directly.
 
-**Sources:** [src/pkg.generated.mbti:65]()
+**Sources:** `src/pkg.generated.mbti:65`
 
 ### Request Body
 
 The `body` field is mutable and contains the parsed request payload. Its type depends on the Content-Type header provided by the client. See [Request Body Parsing](#2.3.2) for details on how bodies are parsed by different backends.
 
-**Sources:** [src/pkg.generated.mbti:67]()
+**Sources:** `src/pkg.generated.mbti:67`
 
 ## HttpResponse: Controlling Response Behavior
 
-`HttpResponse` allows route handlers and middleware to configure the outgoing HTTP response [src/pkg.generated.mbti:75-78]():
+`HttpResponse` allows route handlers and middleware to configure the outgoing HTTP response `src/pkg.generated.mbti:75-78`:
 
 ```mermaid
 graph TB
@@ -194,7 +194,7 @@ graph TB
 | `status_code` | `Int` | Mutable | 200 | HTTP status code |
 | `headers` | `Map[StringView, StringView]` | Mutable map | Empty | Response headers |
 
-**Sources:** [src/pkg.generated.mbti:75-78]()
+**Sources:** `src/pkg.generated.mbti:75-78`
 
 ### Setting Status Codes
 
@@ -216,13 +216,13 @@ Common status codes:
 - `404`: Not Found
 - `500`: Internal Server Error
 
-**Sources:** [README.md:175-186]()
+**Sources:** `README.md:175-186`
 
 ### Response Headers
 
 Response headers can be added or modified through the `headers` map. This is useful for setting Content-Type, caching directives, cookies, and other HTTP headers. The framework automatically handles Content-Type based on the returned `HttpBody` variant, but can be overridden.
 
-**Sources:** [src/pkg.generated.mbti:77]()
+**Sources:** `src/pkg.generated.mbti:77`
 
 ## Backend Type Conversion
 
@@ -245,7 +245,7 @@ sequenceDiagram
 
 ### Internal Backend Types
 
-The framework defines two external types that serve as bridges to backend implementations [src/pkg.generated.mbti:70-83]():
+The framework defines two external types that serve as bridges to backend implementations `src/pkg.generated.mbti:70-83`:
 
 **HttpRequestInternal**
 - External type defined per-backend
@@ -259,9 +259,9 @@ The framework defines two external types that serve as bridges to backend implem
   - `end(@js.Value)`: Finalizes response (JS backend)
   - `url()`: Returns URL for logging
 
-These internal types are used by the `create_server` function [src/pkg.generated.mbti:10]() which accepts a callback that receives internal types and converts them to public types for handler invocation.
+These internal types are used by the `create_server` function `src/pkg.generated.mbti:10` which accepts a callback that receives internal types and converts them to public types for handler invocation.
 
-**Sources:** [src/pkg.generated.mbti:70-83, 10]()
+**Sources:** `src/pkg.generated.mbti:70-83, 10`
 
 ### Backend Implementations
 
@@ -280,7 +280,7 @@ Each backend is responsible for:
 
 For detailed information on backend implementations, see [JavaScript Backend](#3.1) and [Native Backend](#3.2).
 
-**Sources:** [src/pkg.generated.mbti:70-83]()
+**Sources:** `src/pkg.generated.mbti:70-83`
 
 ## Common Usage Patterns
 
@@ -319,7 +319,7 @@ app.get("/hello/**", fn(event) {
 })
 ```
 
-**Sources:** [README.md:49-71, 154-169, 199-207]()
+**Sources:** `README.md:49-71, 154-169, 199-207`
 
 ### Pattern 2: Echo Server (Request Body Passthrough)
 
@@ -331,7 +331,7 @@ app.post("/echo", e => e.req.body)
 
 This works because route handlers return `HttpBody`, which is the same type as `event.req.body`.
 
-**Sources:** [README.md:172]()
+**Sources:** `README.md:172`
 
 ### Pattern 3: Custom Status Codes
 
@@ -349,7 +349,7 @@ app.post("/create", e => {
 })
 ```
 
-**Sources:** [README.md:175-186]()
+**Sources:** `README.md:175-186`
 
 ### Pattern 4: Middleware Request Inspection
 
@@ -369,7 +369,7 @@ app.group("/api", group => {
 })
 ```
 
-**Sources:** [README.md:118-120, 127-132]()
+**Sources:** `README.md:118-120, 127-132`
 
 ### Pattern 5: Conditional Response Based on Request
 
@@ -383,11 +383,11 @@ app.get("/api/data", fn(event) {
 })
 ```
 
-**Sources:** [src/pkg.generated.mbti:63-68]()
+**Sources:** `src/pkg.generated.mbti:63-68`
 
 ## Handler Signatures
 
-All route handlers and middleware must conform to specific function signatures defined in the `Mocket` type [src/pkg.generated.mbti:113-134]():
+All route handlers and middleware must conform to specific function signatures defined in the `Mocket` type `src/pkg.generated.mbti:113-134`:
 
 | Component | Signature | Returns |
 |-----------|-----------|---------|
@@ -396,4 +396,4 @@ All route handlers and middleware must conform to specific function signatures d
 
 Both are async functions marked `noraise`, meaning they cannot propagate errors. Error handling must be performed within the handler by returning appropriate `HttpBody` variants or status codes.
 
-**Sources:** [src/pkg.generated.mbti:115-116, 121-133]()
+**Sources:** `src/pkg.generated.mbti:115-116, 121-133`

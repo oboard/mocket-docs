@@ -10,7 +10,7 @@ For more complex routing patterns with parameters and wildcards, see [Dynamic Ro
 
 ## Minimal Application Structure
 
-The most basic Mocket application requires three components: creating a Mocket instance, registering at least one route handler, and starting the server. The following example from [src/example/main.mbt:3-15]() demonstrates this pattern:
+The most basic Mocket application requires three components: creating a Mocket instance, registering at least one route handler, and starting the server. The following example from `src/example/main.mbt:3-15` demonstrates this pattern:
 
 ```moonbit
 let app = @mocket.new(logger=@mocket.new_production_logger())
@@ -22,7 +22,7 @@ app
 
 This creates a server listening on port 4000 that responds with "⚡️ Tadaa!" to GET requests at the root path `/`.
 
-**Sources:** [src/example/main.mbt:3-15](), [README.md:112-125]()
+**Sources:** `src/example/main.mbt:3-15`, `README.md:112-125`
 
 ## Code Components Breakdown
 
@@ -66,9 +66,9 @@ graph TB
 The `@mocket.new()` function creates a new Mocket application instance. The `logger` parameter accepts a `Logger` instance that controls diagnostic output during development and production.
 
 **Logger Options:**
-- `new_production_logger()` - Disabled logging for zero-overhead production use [src/logger.mbt:24-26]()
-- `new_debug_logger()` - Enabled logging with debug-level output [src/logger.mbt:30-32]()
-- `new_logger(enabled?, level?)` - Custom configuration [src/logger.mbt:18-20]()
+- `new_production_logger()` - Disabled logging for zero-overhead production use `src/logger.mbt:24-26`
+- `new_debug_logger()` - Enabled logging with debug-level output `src/logger.mbt:30-32`
+- `new_logger(enabled?, level?)` - Custom configuration `src/logger.mbt:18-20`
 
 ### Component 2: Route Registration
 
@@ -93,10 +93,10 @@ For details on all response types, see [Response Types](#2.3.1).
 ### Component 4: Server Startup
 
 The `.serve(port)` method starts the HTTP server on the specified port. This call blocks indefinitely, processing incoming requests. The actual implementation differs by backend:
-- **Native backend**: Calls `serve_ffi()` which uses Mongoose C library [src/mocket.stub.c:270-285]()
+- **Native backend**: Calls `serve_ffi()` which uses Mongoose C library `src/mocket.stub.c:270-285`
 - **JavaScript backend**: Calls Node.js `createServer()` API
 
-**Sources:** [src/example/main.mbt:3-15](), [src/logger.mbt:24-32](), [README.md:112-125]()
+**Sources:** `src/example/main.mbt:3-15`, `src/logger.mbt:24-32`, `README.md:112-125`
 
 ## Running the Application
 
@@ -133,7 +133,7 @@ Expected response:
 ⚡️ Tadaa!
 ```
 
-**Sources:** [README.md:14-37]()
+**Sources:** `README.md:14-37`
 
 ## Request Processing Flow
 
@@ -173,7 +173,7 @@ The request processing follows these steps:
 
 For details on the routing algorithm, see [Routing System](#2.1). For middleware execution in this flow, see [Middleware System](#2.2).
 
-**Sources:** [README.md:112-125](), Architecture Diagram 2 from context
+**Sources:** `README.md:112-125`, Architecture Diagram 2 from context
 
 ## Expanding the Example
 
@@ -188,7 +188,7 @@ app
   ..serve(port=4000)
 ```
 
-This pattern is demonstrated in [src/example/main.mbt:12-15]().
+This pattern is demonstrated in `src/example/main.mbt:12-15`.
 
 ### Adding Request Logging
 
@@ -203,7 +203,7 @@ app
   ..serve(port=4000)
 ```
 
-The middleware executes before the route handler for every request. This pattern appears in [src/example/main.mbt:6-9]().
+The middleware executes before the route handler for every request. This pattern appears in `src/example/main.mbt:6-9`.
 
 ### Using Different Response Types
 
@@ -219,7 +219,7 @@ Replace `Text()` with other `HttpBody` variants:
 
 For comprehensive response type documentation, see [Response Types](#2.3.1).
 
-**Sources:** [src/example/main.mbt:12-34](), [README.md:112-125]()
+**Sources:** `src/example/main.mbt:12-34`, `README.md:112-125`
 
 ## Backend Architecture Mapping
 
@@ -266,13 +266,13 @@ graph LR
 The same user code (`@mocket.new().get("/", ...).serve(port)`) compiles to different backend implementations:
 
 - **JavaScript Backend**: Uses Node.js `http.createServer()` API through MoonBit's JavaScript interop
-- **Native Backend**: Uses Mongoose embedded web server through C FFI bindings [src/mocket.stub.c:260-285]()
+- **Native Backend**: Uses Mongoose embedded web server through C FFI bindings `src/mocket.stub.c:260-285`
 
 The core framework provides a unified API that abstracts these platform differences. The actual backend selection happens at compile time based on the `--target` flag.
 
 For detailed backend architecture, see [Multi-Backend Architecture](#3). For JavaScript-specific details, see [JavaScript Backend](#3.1). For native implementation details, see [Native Backend](#3.2).
 
-**Sources:** [README.md:14-37](), [src/mocket.stub.c:260-285](), Architecture Diagram 1 from context
+**Sources:** `README.md:14-37`, `src/mocket.stub.c:260-285`, Architecture Diagram 1 from context
 
 ## Common Patterns
 
@@ -312,7 +312,7 @@ app
   ..get("/health", _ => Text("healthy"))
 ```
 
-**Sources:** [src/example/main.mbt:12-75](), [README.md:43-72]()
+**Sources:** `src/example/main.mbt:12-75`, `README.md:43-72`
 
 ## Next Steps
 
@@ -322,4 +322,4 @@ app
 - **Route Groups**: Organize related routes under common prefixes in [Route Groups](#2.1.3)
 - **Request Handling**: Access request headers and body data in [Request and Response Handling](#2.3)
 
-**Sources:** [README.md:1-219](), [src/example/main.mbt:1-85]()
+**Sources:** `README.md:1-219`, `src/example/main.mbt:1-85`

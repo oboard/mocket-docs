@@ -25,7 +25,7 @@ The framework requires MoonBit's package manager to resolve four external depend
 - `tonyfettes/uri` - URI parsing utilities
 - `moonbitlang/x` - Standard library extensions
 
-Sources: [README.md:1-11]()
+Sources: `README.md:1-11`
 
 ## Backend Selection
 
@@ -56,7 +56,7 @@ graph LR
     NativeBackend --> NativeRuntime
 ```
 
-Sources: [README.md:14-34](), [Diagram 1: Multi-Target Framework Architecture]()
+Sources: `README.md:14-34`, Diagram 1: Multi-Target Framework Architecture
 
 ## Minimal Example
 
@@ -84,7 +84,7 @@ fn main {
 
 The `_event` parameter provides access to `HttpEvent` containing request details and response configuration. For this minimal example, it's unused and prefixed with underscore.
 
-Sources: [src/example/main.mbt:1-15](), [README.md:112-124]()
+Sources: `src/example/main.mbt:1-15`, `README.md:112-124`
 
 ## Running Your Application
 
@@ -117,7 +117,7 @@ curl http://localhost:4000
 # Output: Hello, Mocket!
 ```
 
-Sources: [README.md:16-36]()
+Sources: `README.md:16-36`
 
 ## Application Structure Flow
 
@@ -144,7 +144,7 @@ sequenceDiagram
     Backend-->>User: "Server running..."
 ```
 
-Sources: [src/example/main.mbt:1-15](), [Diagram 2: Request Processing Pipeline]()
+Sources: `src/example/main.mbt:1-15`, Diagram 2: Request Processing Pipeline
 
 ## Expanded Example
 
@@ -218,18 +218,18 @@ graph TB
     PostMethod --> ReqBody
 ```
 
-Sources: [src/example/main.mbt:1-84](), [README.md:112-195]()
+Sources: `src/example/main.mbt:1-84`, `README.md:112-195`
 
 ## Core Types Reference
 
 | Type | Location | Purpose |
 |------|----------|---------|
-| `Mocket` | [index.mbt]() | Main server instance with routing methods |
-| `HttpEvent` | [event.mbt]() | Request/response container passed to handlers |
-| `HttpRequest` | [event.mbt]() | Request data (method, URL, headers, body) |
-| `HttpResponse` | [event.mbt]() | Response configuration (status, headers) |
-| `HttpBody` | [event.mbt]() | Response body enum: `Text`, `Json`, `HTML`, `Bytes`, `Empty` |
-| `Logger` | [logger.mbt]() | Logging interface with debug/info/warn/error levels |
+| `Mocket` | `index.mbt` | Main server instance with routing methods |
+| `HttpEvent` | `event.mbt` | Request/response container passed to handlers |
+| `HttpRequest` | `event.mbt` | Request data (method, URL, headers, body) |
+| `HttpResponse` | `event.mbt` | Response configuration (status, headers) |
+| `HttpBody` | `event.mbt` | Response body enum: `Text`, `Json`, `HTML`, `Bytes`, `Empty` |
+| `Logger` | `logger.mbt` | Logging interface with debug/info/warn/error levels |
 
 ### Handler Function Signature
 
@@ -244,7 +244,7 @@ The `HttpEvent` parameter provides:
 - `event.res` - `HttpResponse` for setting status codes and headers
 - `event.params` - `Map[String, String]` of extracted route parameters
 
-Sources: [src/example/main.mbt:12-74](), [README.md:38-195]()
+Sources: `src/example/main.mbt:12-74`, `README.md:38-195`
 
 ## Logger Configuration
 
@@ -274,7 +274,7 @@ let app = @mocket.new(logger=@mocket.new_debug_logger())
 
 The logger is passed during initialization and affects all framework operations including route registration, request processing, and error handling.
 
-Sources: [src/logger.mbt:17-32](), [src/example/main.mbt:3]()
+Sources: `src/logger.mbt:17-32`, `src/example/main.mbt:3`
 
 ## Route Parameter Extraction
 
@@ -296,7 +296,7 @@ app.get("/hello/:name", fn(event) {
 
 The `params` field is a `Map[String, String]` containing all extracted parameters. Use `.get()` with `.unwrap_or()` to provide default values for missing parameters.
 
-Sources: [README.md:43-56](), [src/example/main.mbt:43-46]()
+Sources: `README.md:43-56`, `src/example/main.mbt:43-46`
 
 ## Building Routes Programmatically
 
@@ -337,7 +337,7 @@ graph TB
     Serve --> Listen
 ```
 
-Sources: [src/example/main.mbt:1-84](), [Diagram 4: Routing System Architecture]()
+Sources: `src/example/main.mbt:1-84`, Diagram 4: Routing System Architecture
 
 ## Next Steps
 
@@ -352,4 +352,4 @@ After completing this quick start guide, explore:
 
 For a minimal working repository, see the example project at: https://github.com/oboard/mocket_example
 
-Sources: [README.md:38-41]()
+Sources: `README.md:38-41`

@@ -24,7 +24,7 @@ The framework achieves this through:
 
 ### Backend Selection Configuration
 
-The build configuration in [src/moon.pkg.json:18-29]() defines which source files are compiled for each target:
+The build configuration in `src/moon.pkg.json:18-29` defines which source files are compiled for each target:
 
 ```json
 "targets": {
@@ -65,7 +65,7 @@ graph TD
     WASMBackend --> WASMBinary["WASM Module"]
 ```
 
-Sources: [src/moon.pkg.json:18-29]()
+Sources: `src/moon.pkg.json:18-29`
 
 ---
 
@@ -137,7 +137,7 @@ graph LR
     HttpEvent --> HttpBody
 ```
 
-Sources: [src/moon.pkg.json:18-29](), [src/mocket.wasm.mbt:1-5]()
+Sources: `src/moon.pkg.json:18-29`, `src/mocket.wasm.mbt:1-5`
 
 ---
 
@@ -172,7 +172,7 @@ See [JavaScript Backend](#3.1) for detailed implementation.
 The Native backend uses the Mongoose embedded web server library, interfacing through C FFI. It uses callback-based request handling and defines C struct representations for requests and responses.
 
 **Key characteristics:**
-- Embeds Mongoose C library ([src/moon.pkg.json:14-16]())
+- Embeds Mongoose C library (`src/moon.pkg.json:14-16`)
 - Uses staged processing with callbacks
 - Provides zero-copy performance characteristics
 - Requires native compilation toolchain
@@ -190,9 +190,9 @@ pub fn serve_ffi(mocket : Mocket, port~ : Int) -> Unit {
 }
 ```
 
-This backend is defined to support the `wasm` and `wasm-gc` compilation targets ([src/moon.pkg.json:25-27]()), but does not yet have a functional HTTP server implementation.
+This backend is defined to support the `wasm` and `wasm-gc` compilation targets (`src/moon.pkg.json:25-27`), but does not yet have a functional HTTP server implementation.
 
-Sources: [src/mocket.wasm.mbt:1-5]()
+Sources: `src/mocket.wasm.mbt:1-5`
 
 ---
 
@@ -227,7 +227,7 @@ sequenceDiagram
     Backend-->>Runtime: "Platform-specific response"
 ```
 
-Sources: [src/moon.pkg.json:18-29](), [src/mocket.wasm.mbt:1-5]()
+Sources: `src/moon.pkg.json:18-29`, `src/mocket.wasm.mbt:1-5`
 
 ---
 
@@ -241,8 +241,8 @@ This multi-backend architecture provides several advantages:
 
 **Testing Flexibility**: Applications can be tested in the JavaScript backend during development for fast iteration, then compiled to native for production deployment.
 
-**Gradual Migration**: The WASM backend stub ([src/mocket.wasm.mbt:1-5]()) demonstrates how new backends can be added incrementally. The stub allows code to compile for WASM targets today while the implementation is developed.
+**Gradual Migration**: The WASM backend stub (`src/mocket.wasm.mbt:1-5`) demonstrates how new backends can be added incrementally. The stub allows code to compile for WASM targets today while the implementation is developed.
 
 **Clear Responsibilities**: The separation between core framework logic and platform integration makes the codebase easier to maintain and extend. Changes to routing or middleware don't require modifying backend implementations.
 
-Sources: [moon.mod.json:1-20](), [src/moon.pkg.json:1-29]()
+Sources: `moon.mod.json:1-20`, `src/moon.pkg.json:1-29`
