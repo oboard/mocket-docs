@@ -302,16 +302,16 @@ A minimal Mocket application demonstrating the core API:
 let app = @mocket.new(logger=@mocket.new_debug_logger())
 
 app
-  .use_middleware(event => println("Request: \{event.req.http_method} \{event.req.url}"))
-  .get("/", _ => Text("Hello, Mocket!"))
-  .get("/user/:id", event => {
+  ..use_middleware(event => println("Request: \{event.req.http_method} \{event.req.url}"))
+  ..get("/", _ => Text("Hello, Mocket!"))
+  ..get("/user/:id", event => {
     let id = event.params.get("id").unwrap_or("unknown")
     Json({ "user_id": id })
   })
-  .group("/api", group => {
+  ..group("/api", group => {
     group.get("/status", _ => Json({ "status": "ok" }))
   })
-  .serve(port=4000)
+  ..serve(port=4000)
 ```
 
 This example shows:

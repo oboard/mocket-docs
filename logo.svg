@@ -1,0 +1,79 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 主要渐变 - 蓝紫色调体现现代感和技术感 -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#7C3AED;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- 月亮渐变 - 温暖的黄色调 -->
+    <linearGradient id="moonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FCD34D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- 连接点渐变 -->
+    <radialGradient id="nodeGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E5E7EB;stop-opacity:1" />
+    </radialGradient>
+    
+    <!-- 发光效果 -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- 背景圆形 -->
+  <circle cx="60" cy="60" r="58" fill="url(#mainGradient)" opacity="0.1"/>
+  
+  <!-- 主要的 Socket 连接图形 - 体现网络连接概念 -->
+  <!-- 中心节点 -->
+  <circle cx="60" cy="60" r="8" fill="url(#nodeGradient)" stroke="url(#mainGradient)" stroke-width="2"/>
+  
+  <!-- 多目标连接线 - 体现 Multi-Target 特性 -->
+  <!-- 上方连接 (WASM) -->
+  <line x1="60" y1="52" x2="60" y2="25" stroke="url(#mainGradient)" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="60" cy="25" r="5" fill="url(#mainGradient)"/>
+  
+  <!-- 右上连接 (JavaScript/Node.js) -->
+  <line x1="66" y1="54" x2="85" y2="35" stroke="url(#mainGradient)" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="85" cy="35" r="5" fill="url(#mainGradient)"/>
+  
+  <!-- 右下连接 (Native/C) -->
+  <line x1="66" y1="66" x2="85" y2="85" stroke="url(#mainGradient)" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="85" cy="85" r="5" fill="url(#mainGradient)"/>
+  
+  <!-- 下方连接 -->
+  <line x1="60" y1="68" x2="60" y2="95" stroke="url(#mainGradient)" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="60" cy="95" r="5" fill="url(#mainGradient)"/>
+  
+  <!-- 左下连接 -->
+  <line x1="54" y1="66" x2="35" y2="85" stroke="url(#mainGradient)" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="35" cy="85" r="5" fill="url(#mainGradient)"/>
+  
+  <!-- 左上连接 -->
+  <line x1="54" y1="54" x2="35" y2="35" stroke="url(#mainGradient)" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="35" cy="35" r="5" fill="url(#mainGradient)"/>
+  
+  <!-- 月亮元素 - 体现 MoonBit 语言 -->
+  <path d="M 75 20 A 8 8 0 1 1 75 32 A 6 6 0 1 0 75 20 Z" fill="url(#moonGradient)" filter="url(#glow)"/>
+  
+  <!-- 装饰性的数据流动线条 - 体现 HTTP 请求流 -->
+  <path d="M 25 45 Q 45 40 65 45" stroke="url(#mainGradient)" stroke-width="2" fill="none" opacity="0.6" stroke-dasharray="4,4">
+    <animate attributeName="stroke-dashoffset" values="0;8" dur="2s" repeatCount="indefinite"/>
+  </path>
+  
+  <path d="M 95 75 Q 75 80 55 75" stroke="url(#mainGradient)" stroke-width="2" fill="none" opacity="0.6" stroke-dasharray="4,4">
+    <animate attributeName="stroke-dashoffset" values="8;0" dur="2s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- 微妙的类型安全标识 - 小的几何形状 -->
+  <polygon points="25,25 30,20 35,25 30,30" fill="url(#mainGradient)" opacity="0.7"/>
+  <polygon points="90,90 95,85 100,90 95,95" fill="url(#mainGradient)" opacity="0.7"/>
+</svg>
