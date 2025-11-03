@@ -9,7 +9,6 @@ export default withMermaid(defineConfig({
   head: [
     ['link', { rel: 'icon', href: '/logo.jpg' }]
   ],
-
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
