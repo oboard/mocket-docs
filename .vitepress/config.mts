@@ -4,10 +4,10 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 // https://vitepress.dev/reference/site-config
 export default withMermaid(defineConfig({
   title: "Mocket - MoonBit Web Framework",
-  description: "A multi-target HTTP server framework for MoonBit that enables developers to write HTTP server applications that compile to multiple target platforms.",
+  description: "A multi-target HTTP server framework for MoonBit.",
 
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }]
+    ['link', { rel: 'icon', href: '/logo.jpg' }]
   ],
 
   themeConfig: {
@@ -28,7 +28,12 @@ export default withMermaid(defineConfig({
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/oboard/mocket' }
+      { icon: 'github', link: 'https://github.com/oboard/mocket' },
+      {
+        icon: 'qq',
+        link: 'https://qm.qq.com/q/VtXeEDJcAg',
+        ariaLabel: 'QQ群 949886784'
+      }
     ],
 
     search: {
