@@ -47,4 +47,4 @@ Command: `MoonBit: Select Backend` -> `native`
 moon run src/example --target native
 ```
 
-Then visit http://localhost:4000
+Then visit `http://localhost:4000`
