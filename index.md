@@ -12,7 +12,7 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /guide/
+      link: /guide/getting-started
     - theme: alt
       text: View on GitHub
       link: https://github.com/oboard/mocket
@@ -21,14 +21,11 @@ features:
   - icon: 🎯
     title: Multi-Target Support
     details: Write once, run everywhere. Compile to JavaScript (Node.js), Native (C/Mongoose), and WASM backends with the same codebase.
-  - icon: ⚡
-    title: Zero-Cost Abstractions
-    details: Static routes use O(1) lookup, dynamic routes use optimized regex matching. Performance without compromise.
   - icon: 🛡️
     title: Type Safety
     details: Comprehensive type system for requests, responses, and errors across FFI boundaries.
   - icon: 🔧
-    title: Express.js-like API
+    title: Easy API
     details: Familiar routing patterns with get, post, middleware chains, and route groups for easy adoption.
   - icon: 📦
     title: Backend-Agnostic Core
@@ -61,8 +58,6 @@ app
 Mocket bridges the gap between MoonBit's powerful type system and modern web development needs. Whether you're building APIs, microservices, or full web applications, Mocket provides the tools you need with the performance and safety guarantees of MoonBit.
 
 - **🎯 Multi-Platform**: One codebase, multiple deployment targets
-- **⚡ High Performance**: Optimized routing and zero-cost abstractions  
 - **🛡️ Type Safe**: Catch errors at compile time, not runtime
 - **🔧 Developer Friendly**: Familiar patterns and excellent tooling
 - **📦 Production Ready**: Built-in logging, middleware, and error handling
-
