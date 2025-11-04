@@ -22,7 +22,7 @@ hero:
 #     title: Multi-Target Support
 #     details: Write once, run everywhere. Compile to JavaScript (Node.js), Native (C) backends with the same codebase.
 ---
-
+![Version](https://img.shields.io/badge/dynamic/json?url=https%3A//mooncakes.io/assets/oboard/mocket/resource.json&query=%24.meta_info.version&label=mooncakes&color=yellow) ![visitors](https://visitor-badge.laobi.icu/badge?page_id=mocket-docs-page)
 
 ```moonbit
 let app = @mocket.new()
