@@ -1,4 +1,4 @@
-# Middleware
+# Middleware (0.5.8)
 
 Middleware functions are functions that have access to the request object (`req`), the response object (`res`), and the next middleware function in the application’s request-response cycle.
 
@@ -34,8 +34,8 @@ A middleware function takes a `MocketEvent` and a `next` function as arguments. 
 ```moonbit
 pub async fn my_middleware(
   event : @mocket.MocketEvent,
-  next : async () -> &@mocket.Responder noraise,
-) -> &@mocket.Responder noraise {
+  next : async () -> @mocket.HttpBody noraise
+) -> @mocket.HttpBody noraise {
   // Pre-processing
   println("Request received: " + event.req.path)
 
@@ -56,15 +56,14 @@ Here is a simple logger middleware that logs the request method and path.
 ```moonbit
 pub async fn logger_middleware(
   event : @mocket.MocketEvent,
-  next : async () -> &@mocket.Responder noraise,
-) -> &@mocket.Responder noraise {
+  next : async () -> @mocket.HttpBody noraise,
+) -> @mocket.HttpBody noraise {
   let start_time = @env.now()
   let res = next()
   let duration = @env.now() - start_time
   println("\{event.req.http_method} \{event.req.url} - \{duration}ms")
   res
 }
-
 ```
 
 ### Example: Authentication Middleware
@@ -74,17 +73,17 @@ Middleware can also intercept requests and return a response early, effectively 
 ```moonbit
 pub async fn auth_middleware(
   event : @mocket.MocketEvent,
-  next : async () -> &@mocket.Responder noraise,
-) -> &@mocket.Responder noraise {
+  next : async () -> @mocket.HttpBody noraise
+) -> @mocket.HttpBody noraise {
   match event.req.headers.get("Authorization") {
     Some(token) => {
       if validate_token(token) {
         next()
       } else {
-        HttpResponse::new(Unauthorized).json({ "error": "Invalid token" })
+        Json({ "error": "Invalid token" })
       }
     }
-    None => HttpResponse::new(Unauthorized).json({ "error": "Unauthorized" })
+    None => Json({ "error": "Unauthorized" })
   }
 }
 ```
@@ -94,3 +93,4 @@ pub async fn auth_middleware(
 Mocket comes with some built-in middleware:
 
 - **CORS**: Handles Cross-Origin Resource Sharing. See [CORS](./cors.md) for details.
+

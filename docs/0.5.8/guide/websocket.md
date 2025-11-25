@@ -1,4 +1,4 @@
-# WebSocket
+# WebSocket (0.5.8)
 
 Mocket supports WebSocket connections, allowing you to build real-time applications.
 
@@ -7,30 +7,23 @@ Mocket supports WebSocket connections, allowing you to build real-time applicati
 Use the `ws` method on your application instance to register a WebSocket route.
 
 ```moonbit
-fn main {
-  let app = @mocket.new()
-  app.ws("/ws", event => match event {
-    Open(peer) => println("WS open: " + peer.to_string())
-    Message(peer, msg) =>
-      match msg {
-        Text(s) => {
-          println("WS message: " + s)
-          peer.text(s)
-        }
-        Binary(bytes) => {
-          println("WS binary: " + bytes.length().to_string() + " bytes")
-          peer.binary(bytes)
-        }
-        Ping => {
-          println("WS ping")
-          peer.pong()
-        }
+let app = @mocket.new()
+
+app.ws("/ws", event => match event {
+  Open(peer) => println("Client connected: " + peer.to_string())
+  Message(peer, body) => {
+    match body {
+      Text(msg) => {
+        println("Received: " + msg)
+        peer.send("Echo: " + msg)
       }
-    Close(peer) => println("WS close: " + peer.to_string())
-  })
-  println("WebSocket echo server listening on ws://localhost:8080/ws")
-  app.serve(port=8080)
-}
+      _ => ()
+    }
+  }
+  Close(peer) => println("Client disconnected: " + peer.to_string())
+})
+
+app.serve(port=8080)
 ```
 
 ## WebSocket Events
@@ -38,7 +31,7 @@ fn main {
 The handler function receives a `WebSocketEvent` enum:
 
 - `Open(WebSocketPeer)`: Triggered when a new connection is established.
-- `Message(WebSocketPeer, WebSocketAggregatedMessage)`: Triggered when a message is received. The body can be `Text` or `Binary` or `Ping`.
+- `Message(WebSocketPeer, HttpBody)`: Triggered when a message is received. The body can be `Text` or other types.
 - `Close(WebSocketPeer)`: Triggered when the connection is closed.
 
 ## WebSocketPeer
@@ -62,8 +55,8 @@ app.ws("/chat", event => match event {
     peer.subscribe("chat_room")
     @mocket.WebSocketPeer::publish("chat_room", "User joined")
   }
-  Message(peer, msg) => {
-    match msg {
+  Message(peer, body) => {
+    match body {
       Text(msg) => @mocket.WebSocketPeer::publish("chat_room", msg)
       _ => ()
     }

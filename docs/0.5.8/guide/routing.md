@@ -1,4 +1,4 @@
-# Routing
+# Routing (0.5.8)
 
 Mocket's routing system maps incoming HTTP requests to handler functions. It provides an Express.js-like API with optimized performance for both static and dynamic routes.
 
@@ -11,13 +11,13 @@ Register routes using HTTP method functions:
 ```moonbit
 let app = @mocket.new(logger=mocket.new_production_logger())
 
-app.get("/", _event => "GET request")
+app.get("/", _event => Text("GET request"))
 
-app.post("/users", _event => ({ "message": "User created" } : Json))
+app.post("/users", _event => Json({ "message": "User created" }))
 
-app.put("/users/:id", _event => "User updated")
+app.put("/users/:id", _event => Text("User updated"))
 
-app.delete("/users/:id", _event => "User deleted")
+app.delete("/users/:id", _event => Text("User deleted"))
 ```
 
 Available methods: `get`, `post`, `put`, `patch`, `delete`, `head`, `options`, `trace`, `connect`
@@ -27,7 +27,7 @@ Available methods: `get`, `post`, `put`, `patch`, `delete`, `head`, `options`, `
 Use `all()` to handle any HTTP method:
 
 ```moonbit
-app.all("/api/*", _event => "API endpoint")
+app.all("/api/*", _event => Text("API endpoint"))
 ```
 
 ## Route Patterns
@@ -53,13 +53,13 @@ Use `:parameter` to capture path segments:
 ```moonbit
 app.get("/users/:id", fn(event) {
   let user_id = event.params["id"]
-  "User ID: " + user_id
+  event.text("User ID: " + user_id)
 })
 
 app.get("/users/:id/posts/:post_id", event => {
   let user_id = event.params.get("id").unwrap_or("unknown")
   let post_id = event.params.get("post_id").unwrap_or("unknown")
-  ({ "user_id": user_id, "post_id": post_id } : Json)
+  Json({ "user_id": user_id, "post_id": post_id })
 })
 ```
 
@@ -70,7 +70,7 @@ Use `*` to match any path segment:
 ```moonbit
 app.get("/files/*", event => {
   let file_path = event.params.get("_").unwrap_or("")
-  "File path: " + file_path
+  Text("File path: " + file_path)
 })
 ```
 
@@ -81,12 +81,10 @@ app.get("/files/*", event => {
 Routes are matched in the order they are registered:
 
 ```moonbit
-app.get("/users/admin", _event => "Admin user")  // This will match first
+app.get("/users/admin", _event => Text("Admin user"))  // This will match first
 
-app.get("/users/:id", _event => "Regular user")  // This won't match for /users/admin
+app.get("/users/:id", _event => Text("Regular user"))  // This won't match for /users/admin
 ```
-
-
 
 ### Performance Characteristics
 
@@ -114,8 +112,8 @@ api_v2.post("/users", create_user_v2_handler)
 ```moonbit
 app.get("/posts/:id?", event => {
   match event.params.get("id") {
-    Some(id) => "Post ID: " + id
-    None => "All posts"
+    Some(id) => Text("Post ID: " + id)
+    None => Text("All posts")
   }
 })
 ```
@@ -124,6 +122,7 @@ app.get("/posts/:id?", event => {
 
 ```moonbit
 app.get("/api/:version/users/:id/posts/:post_id", event => {
-  event.params
+  Json(event.params)
 })
 ```
+

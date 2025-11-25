@@ -1,9 +1,8 @@
 ---
-title: Getting Started
+title: Getting Started (0.5.8)
 ---
-# Mocket - Getting Started
-
-[![Version](https://img.shields.io/badge/dynamic/json?url=https%3A//mooncakes.io/assets/oboard/mocket/resource.json&query=%24.meta_info.version&label=mooncakes&color=yellow)](https://mooncakes.io/docs/oboard/mocket)
+# Mocket - Getting Started (0.5.8)
+[![Version](https://img.shields.io/badge/docs-0.5.8-green)](../)
 
 A web framework for MoonBit.
 
@@ -16,9 +15,9 @@ moon add oboard/mocket
 
 ```moonbit
 let app = @mocket.new()
-app.get("/", _ => "Hello, Mocket!")
+app.get("/", _ => Text("Hello, Mocket!"))
 app.group("/api", group => {
-    group.get("/status", _ => ({ "status": "ok" } : Json))
+    group.get("/status", _ => Json({ "status": "ok" }))
   })
 app.serve(port=4000)
 ```
@@ -49,3 +48,4 @@ moon run src/example --target native
 ```
 
 Then visit `http://localhost:4000`
+

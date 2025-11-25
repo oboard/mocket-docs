@@ -1,4 +1,4 @@
-# Cookies
+# Cookies (0.5.8)
 
 Mocket provides methods to read and write cookies in your handlers.
 
@@ -11,7 +11,7 @@ Use `res.set_cookie` to set a cookie on the response.
 ```moonbit
 app.get("/login", event => {
   event.res.set_cookie("session_id", "12345", max_age=3600, http_only=true)
-  "Logged in"
+  Text("Logged in")
 })
 ```
 
@@ -22,8 +22,8 @@ Use `req.get_cookie` to retrieve a cookie from the request.
 ```moonbit
 app.get("/dashboard", event => {
   match event.req.get_cookie("session_id") {
-    Some(cookie) => "Session ID: " + cookie.value
-    None => "Not logged in"
+    Some(cookie) => Text("Session ID: " + cookie.value)
+    None => Text("Not logged in")
   }
 })
 ```
@@ -35,7 +35,7 @@ Use `res.delete_cookie` to delete a cookie (by setting its expiration date to th
 ```moonbit
 app.get("/logout", event => {
   event.res.delete_cookie("session_id")
-  "Logged out"
+  Text("Logged out")
 })
 ```
 
@@ -90,3 +90,4 @@ pub struct CookieItem {
   same_site : SameSiteOption?
 }
 ```
+

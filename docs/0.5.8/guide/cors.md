@@ -1,4 +1,4 @@
-# CORS
+# CORS (0.5.8)
 
 Mocket provides built-in support for Cross-Origin Resource Sharing (CORS) through the `handle_cors` middleware.
 
@@ -15,7 +15,7 @@ app.use_middleware(@cors.handle_cors())
 // Or configure specific CORS options
 app.use_middleware(@cors.handle_cors(origin="https://example.com"))
 
-app.get("/api/data", _ => ({ "data": "protected data" } : Json))
+app.get("/api/data", _ => Json({ "data": "protected data" }))
 ```
 
 ## Configuration
