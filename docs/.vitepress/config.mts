@@ -26,6 +26,8 @@ export default withMermaid(
         "/guide/": [
           { text: "🚀 Getting Started", link: "/guide/getting-started" },
           { text: "🚦 Routing", link: "/guide/routing" },
+          { text: "📡 Responder", link: "/guide/responder" },
+          { text: "📝 Body Reader", link: "/guide/body-reader" },
           { text: "🧩 Middleware", link: "/guide/middleware" },
           { text: "🍪 Cookie", link: "/guide/cookie" },
           { text: "🛡️ CORS", link: "/guide/cors" },
