@@ -14,9 +14,6 @@ hero:
       text: Get Started
       link: /guide/getting-started
     - theme: alt
-      text: Breaking Changes
-      link: /guide/breaking-changes
-    - theme: alt
       text: View on GitHub
       link: https://github.com/oboard/mocket
 ---
