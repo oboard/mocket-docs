@@ -16,8 +16,7 @@ export default withMermaid(
         {
           text: "Version",
           items: [
-            { text: "0.6.0 (latest)", link: "/" },
-            { text: "0.5.8", link: "/0.5.8/" },
+            { text: "0.7 (latest)", link: "/" },
           ],
         },
       ],
@@ -34,14 +33,6 @@ export default withMermaid(
           { text: "📁 Static Assets", link: "/guide/static-assets" },
           { text: "🌐 Fetch", link: "/guide/fetch" },
           { text: "⚡ WebSocket", link: "/guide/websocket" },
-        ],
-        "/0.5.8/guide/": [
-          { text: "🚀 Getting Started", link: "/0.5.8/guide/getting-started" },
-          { text: "🚦 Routing", link: "/0.5.8/guide/routing" },
-          { text: "🧩 Middleware", link: "/0.5.8/guide/middleware" },
-          { text: "🍪 Cookie", link: "/0.5.8/guide/cookie" },
-          { text: "🛡️ CORS", link: "/0.5.8/guide/cors" },
-          { text: "⚡ WebSocket", link: "/0.5.8/guide/websocket" },
         ],
       },
 
