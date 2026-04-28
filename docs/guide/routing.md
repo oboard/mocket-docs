@@ -9,7 +9,7 @@ Mocket's routing system maps incoming HTTP requests to handler functions. It pro
 Register routes using HTTP method functions:
 
 ```moonbit
-let app = @mocket.new(logger=mocket.new_production_logger())
+let app = @mocket.new()
 
 app.get("/", _event => "GET request")
 
@@ -27,7 +27,7 @@ Available methods: `get`, `post`, `put`, `patch`, `delete`, `head`, `options`, `
 Use `all()` to handle any HTTP method:
 
 ```moonbit
-app.all("/api/*", _event => "API endpoint")
+app.all("/api/**", _event => "API endpoint")
 ```
 
 ## Route Patterns
@@ -65,10 +65,19 @@ app.get("/users/:id/posts/:post_id", event => {
 
 #### Wildcards
 
-Use `*` to match any path segment:
+Use `*` to match one path segment:
 
 ```moonbit
 app.get("/files/*", event => {
+  let file_path = event.params.get("_").unwrap_or("")
+  "File path: " + file_path
+})
+```
+
+Use `**` to match the rest of a path:
+
+```moonbit
+app.get("/static/**", event => {
   let file_path = event.params.get("_").unwrap_or("")
   "File path: " + file_path
 })
@@ -78,7 +87,8 @@ app.get("/files/*", event => {
 
 ### Matching Priority
 
-Routes are matched in the order they are registered:
+Static routes are checked before dynamic routes for the same HTTP method. Dynamic
+routes are checked in the order they were registered:
 
 ```moonbit
 app.get("/users/admin", _event => "Admin user")  // This will match first
@@ -86,39 +96,24 @@ app.get("/users/admin", _event => "Admin user")  // This will match first
 app.get("/users/:id", _event => "Regular user")  // This won't match for /users/admin
 ```
 
-
-
-### Performance Characteristics
-
 ## Route Groups
 
 Group related routes with common prefixes:
 
 ```moonbit
-// API v1 routes
-let api_v1 = mocket.group("/api/v1")
-api_v1.get("/users", get_users_handler)
-api_v1.post("/users", create_user_handler)
-api_v1.get("/users/:id", get_user_handler)
+let app = @mocket.new()
 
-// API v2 routes
-let api_v2 = mocket.group("/api/v2")
-api_v2.get("/users", get_users_v2_handler)
-api_v2.post("/users", create_user_v2_handler)
+app.group("/api/v1", api => {
+  api.get("/users", _ => "List users")
+  api.post("/users", _ => "Create user")
+  api.get("/users/:id", event => {
+    let id = event.params.get("id").unwrap_or("unknown")
+    "User " + id
+  })
+})
 ```
 
 ## Advanced Patterns
-
-### Optional Parameters
-
-```moonbit
-app.get("/posts/:id?", event => {
-  match event.params.get("id") {
-    Some(id) => "Post ID: " + id
-    None => "All posts"
-  }
-})
-```
 
 ### Multiple Parameters
 

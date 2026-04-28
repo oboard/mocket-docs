@@ -29,7 +29,7 @@ fn main {
     Close(peer) => println("WS close: " + peer.to_string())
   })
   println("WebSocket echo server listening on ws://localhost:8080/ws")
-  app.serve(port=8080)
+  app.listen("0.0.0.0:8080")
 }
 ```
 
@@ -47,7 +47,9 @@ The `WebSocketPeer` struct represents a connected client and provides methods to
 
 ### Methods
 
-- `send(message: String)`: Sends a text message to the client.
+- `text(message: String)`: Sends a text message to the client.
+- `binary(message: Bytes)`: Sends a binary message to the client.
+- `pong()`: Sends a pong response.
 - `subscribe(channel: String)`: Subscribes the client to a pub/sub channel.
 - `unsubscribe(channel: String)`: Unsubscribes the client from a channel.
 - `publish(channel: String, message: String)`: Publishes a message to a channel (broadcasts to all subscribers).
@@ -73,4 +75,3 @@ app.ws("/chat", event => match event {
   }
 })
 ```
-

@@ -31,6 +31,8 @@ export default withMermaid(
           { text: "🧩 Middleware", link: "/guide/middleware" },
           { text: "🍪 Cookie", link: "/guide/cookie" },
           { text: "🛡️ CORS", link: "/guide/cors" },
+          { text: "📁 Static Assets", link: "/guide/static-assets" },
+          { text: "🌐 Fetch", link: "/guide/fetch" },
           { text: "⚡ WebSocket", link: "/guide/websocket" },
         ],
         "/0.5.8/guide/": [

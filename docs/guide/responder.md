@@ -16,7 +16,7 @@ Common constructs:
 - JSON: return `Json` or an object’s `.to_json()`; or `HttpResponse::json(...)`.
 - Binary: return `Bytes`.
 - HTML: use `html(showable)`.
-- Full response: return `HttpResponse::new(...).to_responder()`.
+- Full response: return `HttpResponse::new(...)`, or use `.to_responder()` when you need an explicit responder object.
 
 ## Custom Responder
 
@@ -30,7 +30,7 @@ impl @mocket.Responder for Csv with options(_, res) -> Unit {
 }
 
 impl @mocket.Responder for Csv with output(self, buf) -> Unit {
-  buf.write_bytes(@encoding/utf8.encode(self.0))
+  buf.write_bytes(@utf8.encode(self.0))
 }
 
 @mocket.HttpResponse::new(OK).body(Csv("a,b,c\n1,2,3"))
@@ -60,4 +60,9 @@ app.post("/json", event => try {
 
 // Echo Server
 app.post("/echo", e => e.req)
+
+// HTML Response
+app.get("/html", _ => {
+  HttpResponse::new(OK).body(@mocket.html("<h1>Hello</h1>"))
+})
 ```

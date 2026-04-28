@@ -15,12 +15,14 @@ moon add oboard/mocket
 ```
 
 ```moonbit
-let app = @mocket.new()
-app.get("/", _ => "Hello, Mocket!")
-app.group("/api", group => {
+async fn main {
+  let app = @mocket.new()
+  app.get("/", _ => "Hello, Mocket!")
+  app.group("/api", group => {
     group.get("/status", _ => ({ "status": "ok" } : Json))
   })
-app.serve(port=4000)
+  app.listen("0.0.0.0:4000")
+}
 ```
 
 ---
@@ -49,3 +51,8 @@ moon run src/example --target native
 ```
 
 Then visit `http://localhost:4000`
+
+::: tip
+`Mocket::serve(port=...)` is still available for compatibility, but it is
+deprecated. New code should use `Mocket::listen(address)`.
+:::

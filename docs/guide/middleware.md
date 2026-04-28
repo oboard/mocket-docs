@@ -15,7 +15,7 @@ Middleware can perform the following tasks:
 
 ## Usage
 
-You can register middleware using the `use` method on your application instance.
+You can register middleware using the `use_middleware` method on your application instance.
 
 ```moonbit
 let app = @mocket.new()
@@ -29,7 +29,7 @@ app.use_middleware(my_middleware, base_path="/api")
 
 ## Writing Middleware
 
-A middleware function takes a `MocketEvent` and a `next` function as arguments. It must return an `HttpBody`.
+A middleware function takes a `MocketEvent` and a `next` function as arguments. It returns a value that implements `Responder`.
 
 ```moonbit
 pub async fn my_middleware(
@@ -37,7 +37,7 @@ pub async fn my_middleware(
   next : async () -> &@mocket.Responder noraise,
 ) -> &@mocket.Responder noraise {
   // Pre-processing
-  println("Request received: " + event.req.path)
+  println("Request received: " + event.req.url)
 
   // Call the next middleware/handler
   let result = next()
@@ -51,7 +51,7 @@ pub async fn my_middleware(
 
 ### Example: Logger Middleware
 
-Here is a simple logger middleware that logs the request method and path.
+Here is a simple logger middleware that logs the request method and URL.
 
 ```moonbit
 pub async fn logger_middleware(
@@ -64,7 +64,6 @@ pub async fn logger_middleware(
   println("\{event.req.http_method} \{event.req.url} - \{duration}ms")
   res
 }
-
 ```
 
 ### Example: Authentication Middleware
@@ -81,10 +80,10 @@ pub async fn auth_middleware(
       if validate_token(token) {
         next()
       } else {
-        HttpResponse::new(Unauthorized).json({ "error": "Invalid token" })
+        @mocket.HttpResponse::new(Unauthorized).json({ "error": "Invalid token" })
       }
     }
-    None => HttpResponse::new(Unauthorized).json({ "error": "Unauthorized" })
+    None => @mocket.HttpResponse::new(Unauthorized).json({ "error": "Unauthorized" })
   }
 }
 ```
