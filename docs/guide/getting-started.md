@@ -21,7 +21,7 @@ async fn main {
   app.group("/api", group => {
     group.get("/status", _ => ({ "status": "ok" } : Json))
   })
-  app.listen("0.0.0.0:4000")
+  app.listen(":4000")
 }
 ```
 
@@ -54,5 +54,6 @@ Then visit `http://localhost:4000`
 
 ::: tip
 `Mocket::serve(port=...)` is still available for compatibility, but it is
-deprecated. New code should use `Mocket::listen(address)`.
+deprecated. New code should use `Mocket::listen(address)`, such as
+`app.listen(":4000")`.
 :::

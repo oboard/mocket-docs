@@ -12,7 +12,7 @@ async fn main {
   app.static_assets("/", @static_file.new("./public"))
   app.get("/", _ => "Hello, Mocket!")
 
-  app.listen("0.0.0.0:4000")
+  app.listen(":4000")
 }
 ```
 

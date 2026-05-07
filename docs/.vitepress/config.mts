@@ -9,6 +9,7 @@ export default withMermaid(
 
     head: [["link", { rel: "icon", href: "/logo.jpg" }]],
     themeConfig: {
+      logo: "/logo.jpg",
       // https://vitepress.dev/reference/default-theme-config
       nav: [
         { text: "Home", link: "/" },
@@ -31,7 +32,6 @@ export default withMermaid(
           { text: "🍪 Cookie", link: "/guide/cookie" },
           { text: "🛡️ CORS", link: "/guide/cors" },
           { text: "📁 Static Assets", link: "/guide/static-assets" },
-          { text: "🌐 Fetch", link: "/guide/fetch" },
           { text: "⚡ WebSocket", link: "/guide/websocket" },
         ],
       },
@@ -68,7 +68,7 @@ export default withMermaid(
     markdown: {
       theme: {
         light: "github-light",
-        dark: "github-dark",
+        dark: "dracula",
       },
       languages: [import("./moonbit.tmLanguage.json") as any],
     },

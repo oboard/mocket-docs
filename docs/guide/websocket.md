@@ -7,7 +7,7 @@ Mocket supports WebSocket connections, allowing you to build real-time applicati
 Use the `ws` method on your application instance to register a WebSocket route.
 
 ```moonbit
-fn main {
+async fn main {
   let app = @mocket.new()
   app.ws("/ws", event => match event {
     Open(peer) => println("WS open: " + peer.to_string())
@@ -29,7 +29,7 @@ fn main {
     Close(peer) => println("WS close: " + peer.to_string())
   })
   println("WebSocket echo server listening on ws://localhost:8080/ws")
-  app.listen("0.0.0.0:8080")
+  app.listen(":8080")
 }
 ```
 

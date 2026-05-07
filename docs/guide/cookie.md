@@ -64,7 +64,7 @@ pub fn set_cookie(
 - `domain`: The domain for the cookie.
 - `secure`: If true, the cookie is only sent over HTTPS.
 - `http_only`: If true, the cookie is not accessible via JavaScript.
-- `same_site`: Controls the `SameSite` attribute (`Lax`, `Strict`, or `None`).
+- `same_site`: Controls the `SameSite` attribute (`Lax`, `Strict`, or `SameSiteNone`).
 
 ### `HttpRequest::get_cookie`
 

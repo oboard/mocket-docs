@@ -20,7 +20,17 @@ app.put("/users/:id", _event => "User updated")
 app.delete("/users/:id", _event => "User deleted")
 ```
 
-Available methods: `get`, `post`, `put`, `patch`, `delete`, `head`, `options`, `trace`, `connect`
+Common methods: `get`, `post`, `put`, `patch`, `delete`, `head`, `options`,
+`trace`, and `connect`.
+
+Extended HTTP/WebDAV method helpers are also available: `acl`, `bind`,
+`checkin`, `checkout`, `copy`, `label`, `link`, `lock`, `merge`,
+`mkactivity`, `mkcalendar`, `mkcol`, `mkredirectref`, `mkworkspace`, `move_`,
+`orderpatch`, `pri`, `propfind`, `proppatch`, `query`, `rebind`, `report`,
+`search`, `unbind`, `uncheckout`, `unlink`, `unlock`, `update`,
+`updateredirectref`, and `version_control`.
+
+Use `on(method, path, handler)` when you need to register a method by string.
 
 ### Catch-All Routes
 
@@ -51,14 +61,14 @@ Dynamic routes use parameters and wildcards:
 Use `:parameter` to capture path segments:
 
 ```moonbit
-app.get("/users/:id", fn(event) {
-  let user_id = event.params["id"]
+app.get("/users/:id", event => {
+  let user_id = event.params.get("id").unwrap_or("unknown").to_owned()
   "User ID: " + user_id
 })
 
 app.get("/users/:id/posts/:post_id", event => {
-  let user_id = event.params.get("id").unwrap_or("unknown")
-  let post_id = event.params.get("post_id").unwrap_or("unknown")
+  let user_id = event.params.get("id").unwrap_or("unknown").to_owned()
+  let post_id = event.params.get("post_id").unwrap_or("unknown").to_owned()
   ({ "user_id": user_id, "post_id": post_id } : Json)
 })
 ```
@@ -69,7 +79,7 @@ Use `*` to match one path segment:
 
 ```moonbit
 app.get("/files/*", event => {
-  let file_path = event.params.get("_").unwrap_or("")
+  let file_path = event.params.get("_").unwrap_or("").to_owned()
   "File path: " + file_path
 })
 ```
@@ -78,7 +88,7 @@ Use `**` to match the rest of a path:
 
 ```moonbit
 app.get("/static/**", event => {
-  let file_path = event.params.get("_").unwrap_or("")
+  let file_path = event.params.get("_").unwrap_or("").to_owned()
   "File path: " + file_path
 })
 ```
@@ -107,7 +117,7 @@ app.group("/api/v1", api => {
   api.get("/users", _ => "List users")
   api.post("/users", _ => "Create user")
   api.get("/users/:id", event => {
-    let id = event.params.get("id").unwrap_or("unknown")
+    let id = event.params.get("id").unwrap_or("unknown").to_owned()
     "User " + id
   })
 })
@@ -119,6 +129,9 @@ app.group("/api/v1", api => {
 
 ```moonbit
 app.get("/api/:version/users/:id/posts/:post_id", event => {
-  event.params
+  let version = event.params.get("version").unwrap_or("v1").to_owned()
+  let id = event.params.get("id").unwrap_or("unknown").to_owned()
+  let post_id = event.params.get("post_id").unwrap_or("unknown").to_owned()
+  ({ "version": version, "id": id, "post_id": post_id } : Json)
 })
 ```

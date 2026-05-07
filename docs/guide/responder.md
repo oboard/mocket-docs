@@ -49,13 +49,22 @@ app.get("/", _event => "⚡️ Tadaa!")
 //     "name": "oboard",
 //     "age": 21
 // }'
-app.post("/json", event => try {
-  let person : Person = event.req.body()
-  HttpResponse::new(OK).body(
-    "Hello, \{person.name}. You are \{person.age} years old.",
-  )
-} catch {
-  _ => HttpResponse::new(BadRequest).body("Invalid JSON")
+app.post("/json", event => {
+  try {
+    let payload : Json = event.req.json()
+    guard payload is Object(obj) else {
+      return HttpResponse::new(BadRequest).body("Invalid JSON")
+    }
+    guard obj.get("name") is Some(String(name)) else {
+      return HttpResponse::new(BadRequest).body("Invalid JSON")
+    }
+    guard obj.get("age") is Some(Number(age, ..)) else {
+      return HttpResponse::new(BadRequest).body("Invalid JSON")
+    }
+    "Hello, \{name}. You are \{age.to_int()} years old."
+  } catch {
+    _ => return HttpResponse::new(BadRequest).body("Invalid JSON")
+  }
 })
 
 // Echo Server
