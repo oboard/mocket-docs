@@ -3,7 +3,7 @@ title: Getting Started
 ---
 # Mocket - Getting Started
 
-[![Version](https://img.shields.io/badge/dynamic/json?url=https%3A//mooncakes.io/assets/oboard/mocket/resource.json&query=%24.meta_info.version&label=mooncakes&color=yellow)](https://mooncakes.io/docs/oboard/mocket)
+[![Version](https://img.shields.io/badge/dynamic/json?url=https%3A//mooncakes.io/api/v0/manifest/oboard/mocket&query=%24.latest_version&label=mooncakes&color=yellow)](https://mooncakes.io/docs/oboard/mocket)
 
 A web framework for MoonBit.
 

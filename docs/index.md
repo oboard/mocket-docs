@@ -28,7 +28,7 @@ features:
     details: Built around typed routes, async handlers, and readable examples that map directly to MoonBit packages.
 ---
 
-[![Version](https://img.shields.io/badge/dynamic/json?url=https%3A//mooncakes.io/assets/oboard/mocket/resource.json&query=%24.meta_info.version&label=mooncakes&color=yellow)](https://mooncakes.io/docs/oboard/mocket) ![visitors](https://visitor-badge.laobi.icu/badge?page_id=mocket-docs-0-6-0)
+[![Version](https://img.shields.io/badge/dynamic/json?url=https%3A//mooncakes.io/api/v0/manifest/oboard/mocket&query=%24.latest_version&label=mooncakes&color=yellow)](https://mooncakes.io/docs/oboard/mocket) ![visitors](https://visitor-badge.laobi.icu/badge?page_id=mocket-docs-0-6-0)
 
 ```moonbit
 async fn main {
