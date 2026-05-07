@@ -3,24 +3,25 @@
   --vp-c-brand-2: #8b4dff;
   --vp-c-brand-3: #ff3fb4;
   --vp-c-brand-soft: rgba(20, 216, 229, 0.16);
-  --vp-c-bg: #070918;
-  --vp-c-bg-alt: #090d1e;
-  --vp-c-bg-soft: #10162c;
-  --vp-c-bg-mute: #151d38;
-  --vp-c-divider: rgba(139, 164, 255, 0.22);
-  --vp-c-text-1: #f6f8ff;
-  --vp-c-text-2: #b9c5e7;
-  --vp-c-text-3: #8190bd;
   --vp-button-brand-bg: #14d8e5;
   --vp-button-brand-hover-bg: #42eef4;
   --vp-button-brand-active-bg: #08b6c6;
   --vp-button-brand-text: #03131f;
-  --mocket-night: #070918;
-  --mocket-panel: rgba(10, 16, 36, 0.72);
   --mocket-cyan: #14d8e5;
   --mocket-violet: #8b4dff;
   --mocket-pink: #ff3fb4;
   --mocket-orange: #ff9a1f;
+  --mocket-hero-name: linear-gradient(100deg, #07b8d0, #14d8e5 34%, #d8299a 72%, #7c3dff);
+  --mocket-hero-text: #151827;
+  --mocket-hero-glow: rgba(20, 216, 229, 0.14);
+  --mocket-card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 255, 0.78));
+  --mocket-card-border: rgba(62, 88, 150, 0.16);
+  --mocket-quick-bg:
+    linear-gradient(135deg, rgba(20, 216, 229, 0.09), rgba(255, 63, 180, 0.05) 42%, rgba(139, 77, 255, 0.08)),
+    rgba(255, 255, 255, 0.82);
+  --mocket-code-bg: #f6f8fa;
+  --mocket-bench-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(246, 248, 255, 0.82));
+  --mocket-track-bg: rgba(54, 73, 118, 0.12);
 }
 
 .dark {
@@ -32,9 +33,24 @@
   --vp-c-text-1: #f6f8ff;
   --vp-c-text-2: #b9c5e7;
   --vp-c-text-3: #8190bd;
+  --mocket-hero-name: linear-gradient(100deg, var(--mocket-cyan), #78f7ff 34%, var(--mocket-pink) 72%, var(--mocket-violet));
+  --mocket-hero-text: #f7f9ff;
+  --mocket-hero-glow: rgba(20, 216, 229, 0.2);
+  --mocket-card-bg: linear-gradient(180deg, rgba(16, 22, 44, 0.82), rgba(10, 14, 30, 0.7));
+  --mocket-card-border: rgba(139, 164, 255, 0.18);
+  --mocket-quick-bg:
+    linear-gradient(135deg, rgba(20, 216, 229, 0.1), rgba(255, 63, 180, 0.07) 42%, rgba(139, 77, 255, 0.1)),
+    rgba(8, 12, 31, 0.72);
+  --mocket-code-bg: #070a18;
+  --mocket-bench-bg: linear-gradient(180deg, rgba(12, 17, 38, 0.88), rgba(7, 10, 24, 0.7));
+  --mocket-track-bg: rgba(139, 164, 255, 0.13);
 }
 
 body {
+  background: #fff;
+}
+
+.dark body {
   background:
     radial-gradient(circle at 50% 0%, rgba(20, 216, 229, 0.12), transparent 34rem),
     linear-gradient(180deg, #070918 0%, #090d1e 46%, #070918 100%);
@@ -47,6 +63,11 @@ body {
 
 .VPNavBar.has-sidebar .content,
 .VPNavBar:not(.has-sidebar) {
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.dark .VPNavBar.has-sidebar .content,
+.dark .VPNavBar:not(.has-sidebar) {
   background: rgba(7, 9, 24, 0.78);
 }
 
@@ -76,10 +97,17 @@ body {
   pointer-events: none;
   content: "";
   background:
+    radial-gradient(circle at 18% 22%, rgba(255, 63, 180, 0.12), transparent 13rem),
+    radial-gradient(circle at 76% 18%, rgba(20, 216, 229, 0.12), transparent 15rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.35) 72%, transparent);
+  z-index: -2;
+}
+
+.dark .VPHero::before {
+  background:
     radial-gradient(circle at 18% 22%, rgba(255, 63, 180, 0.18), transparent 13rem),
     radial-gradient(circle at 76% 18%, rgba(20, 216, 229, 0.16), transparent 15rem),
     linear-gradient(180deg, rgba(8, 12, 31, 0.96), rgba(8, 12, 31, 0.4) 72%, transparent);
-  z-index: -2;
 }
 
 .VPHero::after {
@@ -88,9 +116,9 @@ body {
   pointer-events: none;
   content: "";
   background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.82) 0 1px, transparent 1.6px),
-    radial-gradient(circle, rgba(20, 216, 229, 0.7) 0 1px, transparent 1.8px),
-    radial-gradient(circle, rgba(139, 77, 255, 0.7) 0 1px, transparent 1.8px);
+    radial-gradient(circle, rgba(20, 216, 229, 0.42) 0 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(255, 63, 180, 0.36) 0 1px, transparent 1.8px),
+    radial-gradient(circle, rgba(139, 77, 255, 0.36) 0 1px, transparent 1.8px);
   background-position: 12% 14%, 68% 22%, 82% 58%;
   background-size: 150px 150px, 210px 210px, 260px 260px;
   opacity: 0.22;
@@ -107,14 +135,14 @@ body {
 }
 
 .VPHero .name {
-  background: linear-gradient(100deg, var(--mocket-cyan), #78f7ff 34%, var(--mocket-pink) 72%, var(--mocket-violet));
+  background: var(--mocket-hero-name);
   -webkit-background-clip: text;
   background-clip: text;
-  filter: drop-shadow(0 0 20px rgba(20, 216, 229, 0.2));
+  filter: drop-shadow(0 0 20px var(--mocket-hero-glow));
 }
 
 .VPHero .text {
-  color: #f7f9ff;
+  color: var(--mocket-hero-text);
 }
 
 .VPHero .tagline {
@@ -155,15 +183,21 @@ body {
 }
 
 .VPHero .VPButton.alt {
+  border-color: rgba(139, 77, 255, 0.32);
+  background: rgba(255, 255, 255, 0.86);
+  color: #252b46;
+}
+
+.dark .VPHero .VPButton.alt {
   border-color: rgba(139, 77, 255, 0.42);
   background: rgba(17, 23, 48, 0.88);
   color: #e7ecff;
 }
 
 .VPFeature {
-  border: 1px solid rgba(139, 164, 255, 0.18);
+  border: 1px solid var(--mocket-card-border);
   border-radius: 12px;
-  background: linear-gradient(180deg, rgba(16, 22, 44, 0.82), rgba(10, 14, 30, 0.7));
+  background: var(--mocket-card-bg);
 }
 
 .VPDoc .content,
@@ -188,9 +222,9 @@ body {
 
 .vp-doc div[class*="language-"],
 .VPHome div[class*="language-"] {
-  border: 1px solid rgba(139, 164, 255, 0.18);
+  border: 1px solid var(--mocket-card-border);
   border-radius: 12px;
-  background: #070a18;
+  background: var(--mocket-code-bg);
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.18);
 }
 
@@ -199,7 +233,7 @@ body {
   font-weight: 520;
 }
 
-.vp-code span {
+.dark .vp-code span {
   color: color-mix(in srgb, var(--shiki-dark, #f6f8ff) 76%, #ffffff 24%) !important;
 }
 
@@ -219,11 +253,9 @@ body {
   align-items: stretch;
   margin: 34px 0 48px;
   padding: 28px;
-  border: 1px solid rgba(139, 164, 255, 0.18);
+  border: 1px solid var(--mocket-card-border);
   border-radius: 18px;
-  background:
-    linear-gradient(135deg, rgba(20, 216, 229, 0.1), rgba(255, 63, 180, 0.07) 42%, rgba(139, 77, 255, 0.1)),
-    rgba(8, 12, 31, 0.72);
+  background: var(--mocket-quick-bg);
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.24);
 }
 
@@ -233,7 +265,7 @@ body {
   padding: 0;
   font-size: 32px;
   line-height: 1.12;
-  color: #f7f9ff;
+  color: var(--vp-c-text-1);
 }
 
 .mocket-quickstart p {
@@ -258,7 +290,7 @@ body {
   border: 1px solid rgba(20, 216, 229, 0.22);
   border-radius: 999px;
   background: rgba(20, 216, 229, 0.08);
-  color: #dceeff;
+  color: var(--vp-c-brand-1);
   font-size: 13px;
   font-weight: 700;
 }
@@ -294,9 +326,9 @@ body {
   gap: 10px;
   margin: 24px 0 18px;
   padding: 22px;
-  border: 1px solid rgba(139, 164, 255, 0.18);
+  border: 1px solid var(--mocket-card-border);
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(12, 17, 38, 0.88), rgba(7, 10, 24, 0.7));
+  background: var(--mocket-bench-bg);
 }
 
 .bench-row {
@@ -327,7 +359,7 @@ body {
   height: 16px;
   overflow: hidden;
   border-radius: 4px;
-  background: rgba(139, 164, 255, 0.13);
+  background: var(--mocket-track-bg);
 }
 
 .bench-bar {
